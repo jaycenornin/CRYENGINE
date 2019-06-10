@@ -1170,6 +1170,13 @@ add_sources("CryRenderer_uber_6.cpp"
 		"GraphicsPipeline/Common/UtilityPasses.cpp"
 )
 
+add_sources("CryRenderer_uber_UI.cpp"
+	PROJECTS CryRenderGNM CryRenderD3D11 CryRenderD3D12 CryRenderVulkan CryRenderOpenGL
+	SOURCE_GROUP "Custom Pass Renderer"
+	"../Common/CustomPass/CustomPassRenderer.h"
+	"../Common/CustomPass/CustomPassRenderer.cpp"
+)
+
 add_sources("NoUberFile"
 	PROJECTS CryRenderGNM CryRenderD3D11 CryRenderD3D12 CryRenderVulkan CryRenderOpenGL
 	SOURCE_GROUP "Root"

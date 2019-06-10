@@ -42,6 +42,8 @@ struct SCompiledRenderPrimitive : private NoCopy
 	uint8                      m_stencilRef = 0;
 	EType                      m_type = eType_Base;
 	SDrawInfo                  m_drawInfo;
+
+	D3D11_RECT				   m_scissorRect = { 0,0,0,0 };
 };
 
 
@@ -142,6 +144,7 @@ public:
 
 	EDirtyFlags Compile(const CPrimitiveRenderPass& targetPass);
 
+	void CRenderPrimitive::SetScissorRect(const D3D11_RECT& scissorRect);
 private:
 
 	struct SPrimitiveGeometry
@@ -290,6 +293,12 @@ inline void CRenderPrimitive::SetFlags(EPrimitiveFlags flags)
 inline void CRenderPrimitive::SetRenderState(int state)
 {
 	ASSIGN_VALUE(m_renderState, state, eDirty_RenderState);
+}
+
+inline void CRenderPrimitive::SetScissorRect(const D3D11_RECT& scissorRect)
+{
+	//ASSIGN_VALUE(m_scissorRect, scissorRect, eDirty_RenderState);
+	m_scissorRect = scissorRect;
 }
 
 inline void CRenderPrimitive::SetStencilState(int state, uint8 stencilRef, uint8 stencilReadMask, uint8 stencilWriteMask)

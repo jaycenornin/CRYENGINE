@@ -41,6 +41,8 @@
 #endif
 #include <CryRenderer/IShader.h>
 
+#include "CustomPass/CustomPassRenderer.h"
+
 // TODO: replace by ID3DUserDefinedAnnotation https://msdn.microsoft.com/en-us/library/hh446881.aspx
 #if !CRY_RENDERER_GNM && !CRY_RENDERER_OPENGL && !CRY_RENDERER_VULKAN && (CRY_RENDERER_DIRECT3D < 120) && !CRY_PLATFORM_DURANGO && CRY_PLATFORM_WINDOWS
 	#ifdef ENABLE_FRAME_PROFILER_LABELS

@@ -53,6 +53,8 @@
 #include "Common/ReverseDepth.h"
 #include "D3D_SVO.h"
 
+#include "Common/CustomPass/CustomPassRenderer.h"
+
 CStandardGraphicsPipeline::CStandardGraphicsPipeline()
 	: m_defaultMaterialBindPoints()
 	, m_defaultDrawExtraRL()
@@ -982,6 +984,11 @@ void CStandardGraphicsPipeline::Execute()
 	else
 	{
 		GetOrCreateUtilityPass<CStretchRectPass>()->Execute(CRendererResources::s_ptexHDRTarget, pRenderView->GetRenderOutput()->GetColorTarget());
+	}
+
+	if (auto pPassRenderer = Cry::Renderer::CustomPass::CCustomRenderer::GetCustomPassRenderer())
+	{
+		pPassRenderer->ExecuteCustomPasses();
 	}
 
 	m_pOmniCameraStage->Execute();
