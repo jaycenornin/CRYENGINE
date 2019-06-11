@@ -293,6 +293,9 @@ void CRenderer::InitRenderer()
 
 	SRenderStatistics::s_pCurrentOutput = &m_frameRenderStats[0];
 	memset(SRenderStatistics::s_pCurrentOutput, 0, sizeof(m_frameRenderStats));
+
+	if (auto pUIRenderer = Cry::Renderer::CustomPass::CCustomRenderer::GetCustomPassRenderer())
+		pUIRenderer->Init();
 }
 
 CRenderer::~CRenderer()
