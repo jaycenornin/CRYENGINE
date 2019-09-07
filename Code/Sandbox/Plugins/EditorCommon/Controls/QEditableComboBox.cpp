@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "QEditableComboBox.h"
@@ -18,6 +18,8 @@ QEditableComboBox::QEditableComboBox(QWidget* pParent)
 	m_pComboBox->SetCanHaveEmptySelection(false);
 
 	QHBoxLayout* pLayout = new QHBoxLayout();
+	pLayout->setSpacing(0);
+	pLayout->setMargin(0);
 
 	pLayout->addWidget(m_pLineEdit);
 	pLayout->addWidget(m_pComboBox);
@@ -108,4 +110,3 @@ void QEditableComboBox::OnEditingFinished()
 	m_pLineEdit->setVisible(false);
 	m_pLineEdit->blockSignals(false);
 }
-

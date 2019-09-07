@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Script/GraphNodes/ScriptGraphGetNode.h"
@@ -59,7 +59,7 @@ namespace Schematyc2
 
 	void CScriptGraphGetNode::Refresh(const SScriptRefreshParams& params)
 	{
-		LOADING_TIME_PROFILE_SECTION;
+		CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 
 		CScriptGraphNodeBase::Refresh(params);
 		
@@ -109,7 +109,7 @@ namespace Schematyc2
 
 	void CScriptGraphGetNode::Serialize(Serialization::IArchive& archive)
 	{
-		LOADING_TIME_PROFILE_SECTION;
+		CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 
 		CScriptGraphNodeBase::Serialize(archive);
 

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -6,6 +6,7 @@
 
 struct IDevManager
 {
+	virtual ~IDevManager() {}
 	virtual bool HasValidDefaultLicense() const = 0;
 };
 
@@ -13,7 +14,6 @@ class CDevManager : public IDevManager
 {
 public:
 	CDevManager() {}
-	virtual ~CDevManager() {}
 
 	virtual bool HasValidDefaultLicense() const override
 	{
@@ -67,4 +67,3 @@ private:
 		return fullPath;
 	}
 };
-

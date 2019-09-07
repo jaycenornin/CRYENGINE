@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "GameObjectSystem.h"
@@ -50,7 +50,7 @@
 
 void CGameObjectSystem::RegisterFactories(IGameFramework* pFrameWork)
 {
-	LOADING_TIME_PROFILE_SECTION;
+	CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 	REGISTER_FACTORY(pFrameWork, "WorldQuery", CWorldQuery, false);
 	REGISTER_FACTORY(pFrameWork, "Interactor", CInteractor, false);
 

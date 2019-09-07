@@ -1,9 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "Core/Polygon.h"
 #include "Core/Model.h"
+#include "Core/Polygon.h"
 #include "Tools/ToolCommon.h"
 
 class CViewport;
@@ -54,4 +54,3 @@ private:
 
 extern ExtrusionSnappingHelper s_SnappingHelper;
 }
-

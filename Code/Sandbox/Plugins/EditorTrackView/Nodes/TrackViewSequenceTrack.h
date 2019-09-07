@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-// CryEngine Header File.
-// Copyright (C), Crytek, 1999-2014.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -30,4 +27,3 @@ private:
 	virtual SAnimTime                   GetKeyAnimDuration(const uint index) const override;
 	virtual SAnimTime                   GetKeyAnimStart(const uint index) const override;
 };
-

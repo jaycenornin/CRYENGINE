@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -32,7 +32,7 @@ public:
 	void ReadbackCounter(uint32 readLength);
 	int RetrieveCounter(uint32 readLength);
 
-	CGpuBuffer& GetDefaultParticleDataBuffer()     { return m_defaultData.Get().GetBuffer(); };
+	CGpuBuffer& GetDefaultParticleDataBuffer()     { return m_defaultData.Get().GetBuffer(); }
 	CGpuBuffer& GetDefaultParticleDataBackBuffer() { return m_defaultData.GetBackBuffer().GetBuffer(); }
 
 private:

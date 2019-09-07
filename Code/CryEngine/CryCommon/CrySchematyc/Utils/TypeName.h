@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -153,7 +153,7 @@ template<typename TYPE> struct STypeNameExtractor
 					storage.assign(szStartOfTypeName, 0, static_cast<string::size_type>(szEndOfTypeName - szStartOfTypeName));
 				}
 			}
-			CRY_ASSERT_MESSAGE(!storage.empty(), "Failed to extract type name!");
+			CRY_ASSERT(!storage.empty(), "Failed to extract type name!");
 		}
 		return storage.c_str();
 	}

@@ -1,15 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "Common/GraphicsPipelineStage.h"
 #include "Common/FullscreenPass.h"
-#include "StandardGraphicsPipeline.h"
 
 namespace ShadowMaskInternal
 {
-	class CSunShadows;
-	class CLocalLightShadows;
+class CSunShadows;
+class CLocalLightShadows;
 }
 
 class CShadowMaskStage : public CGraphicsPipelineStage
@@ -18,7 +17,9 @@ class CShadowMaskStage : public CGraphicsPipelineStage
 	friend class ShadowMaskInternal::CLocalLightShadows;
 
 public:
-	CShadowMaskStage();
+	static const EGraphicsPipelineStage StageID = eStage_ShadowMask;
+
+	CShadowMaskStage(CGraphicsPipeline& graphicsPipeline);
 
 	void Init() final;
 	void Prepare();

@@ -1,12 +1,16 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "EquipPackLib.h"
 #include "EquipPack.h"
 #include "GameEngine.h"
-#include "Util/FileUtil.h"
+
+#include <Util/FileUtil.h>
+
+#include <Util/EditorUtils.h>
 
 #include <CrySandbox/IEditorGame.h>
+#include <CrySystem/XML/IXml.h>
 
 #include "UIEnumsDatabase.h"
 
@@ -263,4 +267,3 @@ void CEquipPackLib::ExportToGame()
 		}
 	}
 }
-

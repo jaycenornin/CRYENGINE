@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SphereUnwrappingTool.h"
@@ -55,4 +55,3 @@ void SphereUnwrappingTool::Enter()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_Sphere, eUVMappingToolGroup_Unwrapping, "Sphere", SphereUnwrappingTool,
                                     sphere_unwrapping, "runs sphere unwrapping tool", "uvmapping.sphere_unwrapping");
-

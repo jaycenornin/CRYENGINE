@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "QAdvancedItemDelegate.h"
@@ -65,10 +65,7 @@ bool QAdvancedItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model
 				m_dragCheckButtons |= mouseEvent->button();
 
 				//Cancel action, example a right click has been pressed, revert all states
-				for (auto& i : m_checkedIndices)
-				{
-					RevertDragCheck(model);
-				}
+				RevertDragCheck(model);
 
 				CancelDragCheck();
 				return true;
@@ -117,6 +114,7 @@ bool QAdvancedItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model
 				}
 			}
 		}
+		break;
 	case QEvent::MouseMove:
 		{
 			QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
@@ -385,4 +383,3 @@ Qt::CheckState QAdvancedItemDelegate::Check(QAbstractItemModel* model, const QMo
 
 	return returnVal;
 }
-

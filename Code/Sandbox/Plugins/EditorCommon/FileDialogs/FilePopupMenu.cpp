@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "FilePopupMenu.h"
@@ -17,4 +17,3 @@ CFilePopupMenu::CFilePopupMenu(const QFileInfo& fileInfo, QWidget* pParent)
 	addAction(new SFilePopupMenuAction(tr("Copy Path To Clipboard"), this, [this] { QApplication::clipboard()->setText(m_fileInfo.absoluteFilePath());
 	                                   }));
 }
-

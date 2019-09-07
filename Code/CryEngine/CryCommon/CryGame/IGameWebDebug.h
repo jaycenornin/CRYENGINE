@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -28,7 +28,7 @@ struct IGameWebDebugService
 		uint32                dataSize;
 	};
 
-	virtual ~IGameWebDebugService() {};
+	virtual ~IGameWebDebugService() {}
 
 	virtual void AddChannel(IGameWebDebugEntityChannel* pChannelProvider) = 0;
 	virtual void RemoveChannel(IGameWebDebugEntityChannel* pChannelProvider) = 0;
@@ -42,7 +42,7 @@ struct IGameWebDebugService
 //! \see IGameWebDebugService.
 struct IGameWebDebugEntityChannel
 {
-	virtual ~IGameWebDebugEntityChannel() {};
+	virtual ~IGameWebDebugEntityChannel() {}
 
 	virtual void Subscribe(const TGameWebDebugClientId clientId, const EntityId entityId) = 0;
 	virtual void Unsubscribe(const TGameWebDebugClientId clientId) = 0;

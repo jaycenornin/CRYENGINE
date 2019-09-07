@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MovePipeline.h"
@@ -12,6 +12,13 @@
 
 namespace Designer
 {
+
+MovePipeline::MovePipeline()
+	: m_pModel(nullptr)
+	, m_bExecutedAdditionPass(false)
+{
+}
+
 void MovePipeline::TransformSelections(MainContext& mc, const BrushMatrix34& offsetTM)
 {
 	ComputeIntermediatePositionsBasedOnInitQueryResults(offsetTM);
@@ -640,4 +647,3 @@ void MovePipeline::InitPolygonsInUVIslands()
 	}
 }
 }
-

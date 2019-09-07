@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 #include <vector>
@@ -42,7 +42,7 @@ typedef vector<BlendSpaceDimension> BlendSpaceDimensions;
 
 struct BlendSpaceAnnotation
 {
-	vector<CryGUID> exampleGuids;
+	vector<CryGUID> m_exampleSerializedGuids;
 
 	void Serialize(IArchive& ar);
 };
@@ -266,4 +266,3 @@ struct CombinedBlendSpace
 };
 
 }
-

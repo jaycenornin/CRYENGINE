@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 #include "PythonManager.h"
 
@@ -61,17 +61,15 @@ void CEditorPythonManager::RegisterPythonModule(const SPythonModule& module)
 		registeredModule = &m_pythonModules.back();
 	}
 
-	assert(registeredModule->m_commands.size() != 0); // Register commands before module or module has no commands
 
 	for (SPythonCommand& cmd : registeredModule->m_commands)
 	{
 		cmd.m_registerFunc();
 	}
 
-	string importStatement;
 	// TODO for keeping back compatibility, doing auto import as "from sandbox import *". 
 	// But when we get rid of python calls inside sandbox we should remove the import completely.
+	string importStatement;
 	importStatement.Format("from sandbox import %s", module.m_name);
 	PyRun_SimpleString(importStatement.c_str());
 }
-

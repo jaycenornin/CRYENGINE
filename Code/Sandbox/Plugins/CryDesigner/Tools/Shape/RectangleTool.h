@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -45,7 +45,9 @@ enum EBoxPhase
 class RectangleTool : public ShapeTool
 {
 public:
-	RectangleTool(EDesignerTool tool) : ShapeTool(tool)
+	RectangleTool(EDesignerTool tool) 
+		: ShapeTool(tool)
+		, m_Phase(eBoxPhase_PlaceStartingPoint)
 	{
 	}
 
@@ -72,7 +74,7 @@ public:
 	void OnEditorNotifyEvent(EEditorNotifyEvent event) override;
 
 	//! Displays informations needed for the Rectangle tool.
-	void Display(DisplayContext& dc) override;
+	void Display(SDisplayContext& dc) override;
 
 	//! Returns if the current phase is the first phase for creating an primitive shape.
 	//! In this tool the first phase is eBoxPhase_PlaceStartingPoint.
@@ -113,4 +115,3 @@ protected:
 	PolygonPtr m_pRectPolygon;
 };
 }
-

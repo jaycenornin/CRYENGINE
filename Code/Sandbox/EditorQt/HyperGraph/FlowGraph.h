@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -123,4 +123,3 @@ protected:
 	// MultiPlayer Type of this flowgraph (default ServerOnly)
 	EMultiPlayerType m_mpType;
 };
-

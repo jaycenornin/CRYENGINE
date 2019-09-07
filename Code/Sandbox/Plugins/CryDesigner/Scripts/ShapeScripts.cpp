@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Util/BoostPythonHelpers.h"
@@ -345,4 +345,3 @@ void PyDesignerStartToAddAnotherHole()
                        "Starts to add an another hole to a polygon",
                        "designer.start_to_add_another_hole()" );
  */
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "FacialSlidersDialog.h"
@@ -207,4 +207,3 @@ BOOL CFacialSlidersDialog::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		m_pContext->MoveToFrame(direction);
 	return TRUE;
 }
-

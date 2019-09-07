@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include <PRT/SHAllocator.h>
@@ -24,4 +24,3 @@ void LoadAllocatorModule(FNC_SHMalloc& pfnMalloc, FNC_SHFreeSize& pfnFree)
 CSHAllocator<unsigned char> gsByteAllocator;
 
 #endif
-

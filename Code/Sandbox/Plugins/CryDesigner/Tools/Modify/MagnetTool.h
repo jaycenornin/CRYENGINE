@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -29,7 +29,7 @@ public:
 
 	virtual bool OnLButtonDown(CViewport* view, UINT nFlags, CPoint point) override;
 	virtual bool OnMouseMove(CViewport* view, UINT nFlags, CPoint point) override;
-	virtual void Display(DisplayContext& dc) override;
+	virtual void Display(SDisplayContext& dc) override;
 
 	bool         OnKeyDown(CViewport* view, uint32 nChar, uint32 nRepCnt, uint32 nFlags) override;
 
@@ -63,4 +63,3 @@ protected:
 	bool                      m_bApplyUndoForMagnet;
 };
 }
-

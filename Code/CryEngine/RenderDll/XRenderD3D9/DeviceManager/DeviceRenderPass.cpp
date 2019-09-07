@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "xxhash.h"
@@ -359,9 +359,9 @@ CDeviceResourceLayoutPtr CDeviceObjectFactory::CreateResourceLayout(const SDevic
 	if (it != m_ResourceLayoutCache.end())
 		return it->second;
 
-	if (resourceLayoutDesc.IsValid())
+	if (m_objectValidator.ValidateResourceLayout(resourceLayoutDesc))
 	{
-		if (pResult = CreateResourceLayoutImpl(resourceLayoutDesc))
+		if ((pResult = CreateResourceLayoutImpl(resourceLayoutDesc)))
 		{
 			m_ResourceLayoutCache[resourceLayoutDesc] = pResult;
 		}

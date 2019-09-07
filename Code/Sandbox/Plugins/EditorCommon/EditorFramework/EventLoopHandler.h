@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
 #include <QObject>
 #include <QAbstractNativeEventFilter>
 #include <vector>
+#include <functional>
 
 class EDITOR_COMMON_API CEventLoopHandler : public QObject, public QAbstractNativeEventFilter
 {
@@ -35,4 +36,3 @@ private:
 	QWidget* m_pDefaultHandler;
 	std::vector <CallBack> m_nativeListeners;
 };
-

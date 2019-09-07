@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -54,7 +54,7 @@ public:
 	virtual void OnShutDown() override;
 
 	virtual void   ProcessEvent(const SEntityEvent& event) override;
-	virtual uint64 GetEventMask() const override;
+	virtual Cry::Entity::EventFlags GetEventMask() const override;
 	// ~IEntityComponent
 
 	// IEntityCoverUserComponent

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -36,6 +36,7 @@ namespace Schematyc2
 		virtual void FatalError(const LogStreamId& streamId, CLogMessageMetaInfo metaInfo, const char* szFormat, ...) override;
 		virtual void Update() override;
 		virtual SLogSignals& Signals() override;
+		virtual bool IsLoggingEnabled() const override;
 		// ~ILog
 
 	private:

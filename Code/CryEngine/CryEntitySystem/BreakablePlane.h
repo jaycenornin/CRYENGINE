@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -10,6 +10,9 @@ struct SProcessImpactIn;
 struct SProcessImpactOut;
 struct SExtractMeshIslandIn;
 struct SExtractMeshIslandOut;
+struct IStatObj;
+struct IMaterial;
+struct IParticleEffect;
 
 class CBreakablePlane : public IOwnedObject
 {

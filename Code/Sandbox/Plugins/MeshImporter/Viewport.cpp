@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Viewport.h"
@@ -15,11 +15,15 @@ CSplitViewport::CSplitViewport(QWidget* parent)
 	, m_bSplit(false)
 	, m_splitDirection(eSplitDirection_Horizontal)
 {
+	IRenderer::SGraphicsPipelineDescription graphicsPipelineDesc;
+	graphicsPipelineDesc.type = EGraphicsPipelineType::CharacterTool;
+	graphicsPipelineDesc.shaderFlags = SHDF_SECONDARY_VIEWPORT | SHDF_ALLOWHDR | SHDF_ALLOWPOSTPROCESS | SHDF_ALLOW_AO | SHDF_ZPASS | SHDF_ALLOW_SKY;
+
 	setContentsMargins(0, 0, 0, 0);
-	m_pSecondaryViewport = new QViewport(gEnv, parent);
+	m_pSecondaryViewport = new QViewport(gEnv, graphicsPipelineDesc, parent);
 	connect(m_pSecondaryViewport, SIGNAL(SignalCameraMoved(const QuatT &)), this, SLOT(OnCameraMoved(const QuatT &)));
 
-	m_pPrimaryViewport = new QViewport(gEnv, parent);
+	m_pPrimaryViewport = new QViewport(gEnv, graphicsPipelineDesc, parent);
 	connect(m_pPrimaryViewport, SIGNAL(SignalCameraMoved(const QuatT &)), this, SLOT(OnCameraMoved(const QuatT &)));
 
 	ResetLayout();
@@ -89,4 +93,3 @@ void CSplitViewport::OnCameraMoved(const QuatT& qt)
 		m_pSecondaryViewport->SetState(state);
 	}
 }
-

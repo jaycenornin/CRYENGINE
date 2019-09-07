@@ -1,28 +1,26 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 #include "EditorCommonAPI.h"
+#include "Util/UserDataUtil.h"
+#include <IEditor.h>
 
 #include <QHash>
-#include <QVector>
-#include <QVariant>
 #include <QTimer>
 
 #define SET_PERSONALIZATION_PROPERTY(module, propName, value) \
-  GetIEditor()->GetPersonalizationManager()->SetProperty( # module, propName, value)
+	GetIEditor()->GetPersonalizationManager()->SetProperty( # module, propName, value)
 
 #define GET_PERSONALIZATION_PROPERTY(module, propName) \
-  GetIEditor()->GetPersonalizationManager()->GetProperty( # module, propName)
+	GetIEditor()->GetPersonalizationManager()->GetProperty( # module, propName)
 
 #define GET_PERSONALIZATION_STATE(module) \
-  GetIEditor()->GetPersonalizationManager()->GetState( # module)
+	GetIEditor()->GetPersonalizationManager()->GetState( # module)
 
-class EDITOR_COMMON_API CPersonalizationManager
+class EDITOR_COMMON_API CPersonalizationManager : public CUserData
 {
 public:
 	CPersonalizationManager();
 	~CPersonalizationManager();
-
-	void Init();
 
 	/* There are limited types that are serialized correctly to JSon with QJsonDocument.
 	 * http://doc.qt.io/qt-5/qjsonvalue.html#fromVariant has a list of supported types and states:
@@ -47,6 +45,10 @@ public:
 		return false;
 	}
 
+	// Returns engine defaults for the given module
+	const QVariantMap& GetDefaultState(const QString& moduleName);
+
+	// Returns user personalization for the given module
 	void               SetState(const QString& moduleName, const QVariantMap& state);
 	const QVariantMap& GetState(const QString& moduleName);
 
@@ -57,26 +59,33 @@ public:
 	bool            HasProjectProperty(const QString& moduleName, const QString& propName) const;
 
 	//! Saves the cached information to the personalization file on the hard drive.
-	void            SavePersonalization() const;
+	void SavePersonalization() const;
 
 private:
 	typedef QHash<QString, QVariantMap> ModuleStateMap;
 
-	static QVariant				ToVariant(const ModuleStateMap& map);
-	static ModuleStateMap		FromVariant(const QVariant& variant);
+	static QVariant       ToVariant(const ModuleStateMap& map);
+	static ModuleStateMap FromVariant(const QVariant& variant);
 
-	void     SaveSharedState() const;
-	void     LoadSharedState();
+	// Loads engine defaults from disk
+	void                  LoadDefaultState();
 
-	void     SaveProjectState() const;
-	void     LoadProjectState();
+	// Save/Load user personalization to/from disk
+	void                  SaveSharedState() const;
+	void                  LoadSharedState();
+
+	// Save/Load project specific personalization to/from disk
+	void                  SaveProjectState() const;
+	void                  LoadProjectState();
 
 private:
-	
+	// Engine defaults for personalization. Ex. what features should be enabled by default
+	ModuleStateMap m_defaultState;
+	// User personalization during editor use. Ex. features the user has enabled/disabled
 	ModuleStateMap m_sharedState;
+	// Project specific personalization. Ex. last folder used for opening a specific asset type
 	ModuleStateMap m_projectState;
 
-	QTimer m_saveSharedStateTimer;
-	QTimer m_saveProjectStateTimer;
+	QTimer         m_saveSharedStateTimer;
+	QTimer         m_saveProjectStateTimer;
 };
-

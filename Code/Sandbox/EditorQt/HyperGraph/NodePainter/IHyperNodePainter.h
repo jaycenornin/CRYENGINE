@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -6,7 +6,6 @@
 
 struct IHyperNodePainter
 {
+	virtual ~IHyperNodePainter() {}
 	virtual void Paint(CHyperNode* pNode, CDisplayList* pList) = 0;
 };
-
-

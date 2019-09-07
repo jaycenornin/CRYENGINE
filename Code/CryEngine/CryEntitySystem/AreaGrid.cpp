@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "AreaGrid.h"
 #include "Area.h"
 #include <CryRenderer/IRenderAuxGeom.h>
+#include <Cry3DEngine/I3DEngine.h>
 
 static constexpr int GridCellSize = 4;
 static constexpr float GridCellSizeR = 1.0f / GridCellSize;
@@ -17,6 +18,7 @@ CAreaGrid::~CAreaGrid()
 //////////////////////////////////////////////////////////////////////////
 bool CAreaGrid::GetAreas(uint32 const x, uint32 const y, TAreaPointers& outAreas)
 {
+	CRY_PROFILE_FUNCTION(PROFILE_ENTITY);
 	CRY_ASSERT(x < m_numCellsPerAxis && y < m_numCellsPerAxis);
 
 	uint32 const* const pBitsLHS = m_bitFieldX.data() + (m_bitFieldSizeU32 * x);

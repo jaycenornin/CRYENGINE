@@ -1,17 +1,25 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "UVMappingEditorCommon.h"
-#include "UVMappingEditor.h"
-#include "QViewport.h"
-#include "Util/ElementSet.h"
+
 #include "Core/UVIslandManager.h"
-#include "Core/FlexibleMesh.h"
 #include "Util/ExcludedEdgeManager.h"
+#include "Util/ElementSet.h"
+#include "UVMappingEditor/UVMappingEditor.h"
+#include "DesignerEditor.h"
+
+#include <QViewport.h>
 
 namespace Designer {
 namespace UVMapping
 {
+
+bool IsUvMappingToolStateless(EUVMappingTool tool)
+{
+	return tool == eUVMappingTool_FlipHori || tool == eUVMappingTool_FlipVert;
+}
+
 void AddUVPolygon(std::vector<UVPolygon>& uvPolygons, PolygonPtr polygon, UVIslandPtr pUVIsland)
 {
 	std::vector<UVVertex> uvs;
@@ -595,4 +603,3 @@ void GetAllUVsFromUVIsland(UVIslandPtr pUVIsland, std::set<UVVertex>& outUVs)
 }
 }
 }
-

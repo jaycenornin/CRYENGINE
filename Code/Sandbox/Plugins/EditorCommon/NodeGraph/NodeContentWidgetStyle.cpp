@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "NodeContentWidgetStyle.h"
 
 #include "NodeWidgetStyle.h"
 #include "NodePinWidgetStyle.h"
+#include <CryCore/CryCrc32.h>
 
 namespace CryGraphEditor {
 
@@ -57,4 +58,3 @@ const CNodePinWidgetStyle* CNodeContentWidgetStyle::GetPinWidgetStyle(const char
 }
 
 }
-

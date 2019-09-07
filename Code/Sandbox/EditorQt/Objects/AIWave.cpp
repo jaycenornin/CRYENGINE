@@ -1,9 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AIWave.h"
 
 #include "AI/AIManager.h"
+#include "IEditorImpl.h"
+#include <IObjectManager.h>
 
 REGISTER_CLASS_DESC(CAIWaveObjectClassDesc);
 
@@ -26,4 +28,3 @@ void CAIWaveObject::SetName(const string& newName)
 
 	GetObjectManager()->FindAndRenameProperty2("aiwave_Wave", oldName, newName);
 }
-

@@ -1,8 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SimpleEntity.h"
 #include "BrushObject.h"
+#include <Cry3DEngine/IRenderNode.h>
+#include <Cry3DEngine/IStatObj.h>
 
 REGISTER_CLASS_DESC(CSimpleEntityClassDesc);
 
@@ -119,4 +121,3 @@ bool CSimpleEntity::IsSimilarObject(CBaseObject* pObject)
 	}
 	return false;
 }
-

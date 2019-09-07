@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include <CryEntitySystem/IEntityClass.h>
@@ -71,4 +71,3 @@ QModelIndex CEntityEventsModel::parent(const QModelIndex& index) const
 {
 	return QModelIndex();
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*=============================================================================
    D3DPostProcess : Direct3D specific post processing special effects
@@ -10,7 +10,6 @@
    =============================================================================*/
 
 #include "StdAfx.h"
-#include "DriverD3D.h"
 #include <Cry3DEngine/I3DEngine.h>
 #include "D3DPostProcess.h"
 
@@ -173,7 +172,8 @@ void CPostEffectsMgr::Begin()
 
 	//gcpRendD3D->RT_SetViewport(0, 0, gcpRendD3D->GetWidth(), gcpRendD3D->GetHeight());
 
-	SPostEffectsUtils::m_fWaterLevel = gRenDev->m_p3DEngineCommon.m_OceanInfo.m_fWaterLevel;
+	auto threadID = gRenDev->GetRenderThreadID();
+	SPostEffectsUtils::m_fWaterLevel = gRenDev->m_p3DEngineCommon[threadID].m_OceanInfo.m_fWaterLevel;
 
 	PostProcessUtils().UpdateOverscanBorderAspectRatio();
 }

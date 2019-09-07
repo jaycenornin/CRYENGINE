@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "flashlight.h"
 #include "ItemSharedParams.h"
 #include "GameActions.h"
+#include "GameCVars.h"
 #include "Weapon.h"
 #include "Player.h"
 #include "EntityUtility/EntityScriptCalls.h"

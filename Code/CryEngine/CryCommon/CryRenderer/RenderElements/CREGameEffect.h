@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
 #pragma once
+#include "RendElement.h"
 
 //! Interface for game effect render elements.
 //! Designed to be instantiated in game code, and called from the CREGameEffect within the engine.

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "UnsavedChangesDialog.h"
@@ -77,4 +77,3 @@ bool EDITOR_COMMON_API UnsavedChangesDialog(QWidget* parent, DynArray<string>* s
 	CUnsavedChangedDialog dialog(parent);
 	return dialog.Exec(selectedFiles, files);
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MaterialSettings.h"
@@ -6,8 +6,8 @@
 #include <Cry3DEngine/I3DEngine.h>
 #include <IEditor.h>
 #include <IResourceSelectorHost.h>
-#include <Material\Material.h>
-#include <Material\MaterialManager.h>
+#include <Material/Material.h>
+#include <Material/MaterialManager.h>
 
 #include <CrySerialization/Decorators/Resources.h>
 #include <Serialization/Decorators/EditorActionButton.h>
@@ -98,4 +98,3 @@ void CMaterialSettings::Serialize(yasli::Archive& ar)
 		}
 	}
 }
-

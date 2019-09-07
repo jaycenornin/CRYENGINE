@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   ChickenBoids.cpp
@@ -11,8 +11,10 @@
 
 #include "StdAfx.h"
 #include "ChickenBoids.h"
+#include <Cry3DEngine/I3DEngine.h>
 #include <CrySystem/ITimer.h>
 #include <CryAnimation/ICryAnimation.h>
+#include <CryMath/Random.h>
 
 #define MIN_REST_TIME 2.0f
 #define MAX_REST_TIME 4.0f

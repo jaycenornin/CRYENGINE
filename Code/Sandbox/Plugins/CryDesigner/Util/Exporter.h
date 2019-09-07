@@ -1,12 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "Core/Polygon.h"
 
-class CBrushObject;
 class CPakFile;
-class CCryMemFile;
 
 namespace Designer
 {
@@ -51,10 +49,8 @@ private:
 
 	static void ComputeAreaSolidMemoryStatistic(AreaSolidObject* pAreaSolid, AreaSolidStatistic& outStatistic, std::vector<PolygonPtr>& optimizedPolygons);
 
-	//////////////////////////////////////////////////////////////////////////
 	std::map<CMaterial*, int>          m_mtlMap;
 	std::vector<ExportedBrushGeom>     m_geoms;
 	std::vector<ExportedBrushMaterial> m_materials;
 };
 }
-

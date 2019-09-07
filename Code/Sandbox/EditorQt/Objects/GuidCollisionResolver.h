@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -29,10 +29,10 @@ private:
 
 	void SavePrefabHierarchy(CPrefabObject* pPrefabObject);
 
+	const std::vector<CBaseObject*>* GetSavedChildrenPtr(CPrefabObject* pPrefabObject);
 	const std::vector<CBaseObject*>& GetSavedChildren(CPrefabObject* pPrefabObject);
 
 	CBaseObject* m_pConflictingObject{ nullptr };
 	CObjectArchive& m_archive;
 	std::vector<std::pair<CPrefabObject*, std::vector<CBaseObject*>>> m_hierarchy;
 };
-

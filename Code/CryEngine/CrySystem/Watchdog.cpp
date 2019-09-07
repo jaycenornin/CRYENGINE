@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "Watchdog.h"
@@ -26,7 +26,7 @@ CWatchdogThread::CWatchdogThread(int timeOutSeconds)
 	CRY_ASSERT(timeOutSeconds > 0);
 	if (!gEnv->pThreadManager->SpawnThread(this, "Watch Dog"))
 	{
-		CRY_ASSERT_MESSAGE(false, "Error spawning \"Watch Dog\" thread.");
+		CRY_ASSERT(false, "Error spawning \"Watch Dog\" thread.");
 	}
 }
 

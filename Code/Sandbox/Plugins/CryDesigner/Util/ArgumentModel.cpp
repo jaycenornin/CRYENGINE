@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ArgumentModel.h"
@@ -283,4 +283,3 @@ bool ArgumentModel::IsEdgeExcluded(const BrushEdge3D& edge) const
 	return false;
 }
 }
-

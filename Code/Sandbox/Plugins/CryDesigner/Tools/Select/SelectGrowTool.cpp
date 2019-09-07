@@ -1,11 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SelectGrowTool.h"
+
+#include "Core/Model.h"
 #include "DesignerEditor.h"
-#include "SelectGrowTool.h"
-#include "Util/ElementSet.h"
-#include "DesignerSession.h"
 
 namespace Designer
 {
@@ -137,4 +136,3 @@ bool SelectGrowTool::SelectAdjacentElements(MainContext& mc)
 }
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Grow, eToolGroup_Selection, "Grow", SelectGrowTool,
                                    growselection, "runs grow selection tool", "designer.growselection");
-

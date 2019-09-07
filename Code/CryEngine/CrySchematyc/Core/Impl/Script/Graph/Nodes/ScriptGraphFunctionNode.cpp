@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Script/Graph/Nodes/ScriptGraphFunctionNode.h"
@@ -376,7 +376,7 @@ void CScriptGraphFunctionNode::Register(CScriptGraphNodeFactory& factory)
 			std::vector<SObject> objects;
 			objects.reserve(20);
 
-			auto visitScriptComponentInstance = [&scriptView, &objects](const IScriptComponentInstance& scriptComponentInstance) -> EVisitStatus
+			auto visitScriptComponentInstance = [&objects](const IScriptComponentInstance& scriptComponentInstance) -> EVisitStatus
 			{
 				CStackString name;
 				//scriptView.QualifyName(scriptComponentInstance, EDomainQualifier::Global, name);

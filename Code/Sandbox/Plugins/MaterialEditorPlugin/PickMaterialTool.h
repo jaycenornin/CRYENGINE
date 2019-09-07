@@ -1,8 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "EditTool.h"
+#include "LevelEditor/Tools/EditTool.h"
 
 struct IMaterial;
 class CMaterialEditor;
@@ -22,7 +22,7 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	virtual string GetDisplayName() const override { return "Pick Material"; }
 	virtual bool   MouseCallback(CViewport* view, EMouseEvent event, CPoint& point, int flags);
-	virtual void   Display(DisplayContext& dc);
+	virtual void   Display(SDisplayContext& dc);
 	//////////////////////////////////////////////////////////////////////////
 
 protected:
@@ -33,12 +33,10 @@ protected:
 
 	virtual ~CPickMaterialTool();
 	// Delete itself.
-	void DeleteThis() { delete this; };
+	void DeleteThis() { delete this; }
 
-	_smart_ptr<IMaterial>	m_pHoveredMaterial;
-	string					m_displayString;
-	SRayHitInfo				m_HitInfo;
-	CMaterialEditor*		m_pMaterialEditor;
+	_smart_ptr<IMaterial> m_pHoveredMaterial;
+	string                m_displayString;
+	SRayHitInfo           m_HitInfo;
+	CMaterialEditor*      m_pMaterialEditor;
 };
-
-

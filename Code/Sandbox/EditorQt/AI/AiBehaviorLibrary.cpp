@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AiBehaviorLibrary.h"
 #include "AiBehavior.h"
+#include "IEditorImpl.h"
 
 #include <CryScriptSystem/IScriptSystem.h>
 
@@ -311,7 +312,7 @@ void CAIBehaviorLibrary::ReloadScripts()
 
 	IScriptSystem* scriptSystem = GetIEditorImpl()->GetSystem()->GetIScriptSystem();
 	// Load script files to script system.
-	for (std::set<string>::iterator it = scriptFiles.begin(); it != scriptFiles.end(); it++)
+	for (std::set<string>::iterator it = scriptFiles.begin(); it != scriptFiles.end(); ++it)
 	{
 		string file = *it;
 		CryLog("Loading AI Behavior Script: %s", (const char*)file);
@@ -374,4 +375,3 @@ void CAIBehaviorLibrary::RemoveCharacter(CAICharacter* chr)
 {
 	m_characters.erase(chr->GetName());
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "FileIOWrapper.h"
@@ -74,7 +74,7 @@ FILE* CIOWrapper::FopenEx(const char* file, const char* mode, FileIoWrapper::Fil
 FILE * CIOWrapper::FopenEx(const char* file, const char* mode)
 #endif
 {
-	LOADING_TIME_PROFILE_SECTION;
+	CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 
 #if !defined(SYS_ENV_AS_STRUCT)
 	PREFAST_ASSUME(gEnv);

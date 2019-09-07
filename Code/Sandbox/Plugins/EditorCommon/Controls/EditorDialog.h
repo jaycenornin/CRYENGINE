@@ -1,12 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
-#include "EditorFramework/PersonalizationManager.h"
-#include "QToolWindowManager/QToolWindowCustomWrapper.h"
+#include <CrySandbox/CryFunction.h>
 
 #include <QDialog>
+#include <QString>
+#include <functional>
 
+class QCustomTitleBar;
+class QGridLayout;
 /**
  * Dialog base class
  *
@@ -82,4 +85,3 @@ protected:
 	bool			 m_canClose;
 	QString			 m_dialogNameId;
 };
-

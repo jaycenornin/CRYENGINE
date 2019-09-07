@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   CrySteamReward.cpp
@@ -228,7 +228,7 @@ bool CCrySteamReward::RequestStats()
 
 CCrySteamReward::~CCrySteamReward(void)
 {
-	CRY_ASSERT_MESSAGE(m_count == 0, "CrySteamReward: still have pending awards at destruction");
+	CRY_ASSERT(m_count == 0, "CrySteamReward: still have pending awards at destruction");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

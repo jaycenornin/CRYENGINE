@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -391,7 +391,7 @@ HMDCameraSetup Device::GetHMDCameraSetup(int nEye, float projRatio, float fnear)
 {
 	const vr::HmdMatrix44_t vrproj = m_system->GetProjectionMatrix((vr::EVREye)nEye, fnear, fnear*2.f);	// We do not care about far
 	Matrix44A proj;
-	std::memcpy(proj.GetData(), vrproj.m, sizeof(vrproj.m));
+    memcpy(proj.GetData(), vrproj.m, sizeof(vrproj.m));
 
 	HMDCameraSetup ret = HMDCameraSetup::fromProjectionMatrix(proj, projRatio, fnear);
 	ret.ipd = m_system->GetFloatTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::ETrackedDeviceProperty::Prop_UserIpdMeters_Float, nullptr);
@@ -429,8 +429,6 @@ void Device::OnSystemEvent(ESystemEvent event, UINT_PTR wparam, UINT_PTR lparam)
 // -------------------------------------------------------------------------
 void Device::UpdateTrackingState(EVRComponent type, uint64_t frameID)
 {
-	IRenderer* pRenderer = gEnv->pRenderer;
-
 #if !defined(_RELEASE)
 	if (!gEnv->IsEditor())// we currently assume one system update per frame rendered, which is not always the case in editor (i.e. no level)
 	{
@@ -640,7 +638,7 @@ void Device::CreateDevice()
 	m_devInfo.fovH = 2.0f * atanf(m_symLeftTan);
 	m_devInfo.fovV = 2.0f * atanf(symTanUp);
 
-	vr::IVRSettings* vrSettings = vr::VRSettings();
+	vr::VRSettings();
 
 	m_devInfo.manufacturer = GetTrackedDeviceCharPointer(vr::k_unTrackedDeviceIndex_Hmd, vr::ETrackedDeviceProperty::Prop_ManufacturerName_String);
 	m_devInfo.productName = GetTrackedDeviceCharPointer(vr::k_unTrackedDeviceIndex_Hmd, vr::ETrackedDeviceProperty::Prop_TrackingSystemName_String);
@@ -782,7 +780,7 @@ void Device::SubmitOverlay(int id, const RenderLayer::CProperties* pOverlayPrope
 }
 
 // -------------------------------------------------------------------------
-void Device::SubmitFrame()
+void Device::SubmitFrame(uint64 frameId)
 {
 	CRY_PROFILE_FUNCTION(PROFILE_SYSTEM);
 
@@ -822,7 +820,7 @@ void Device::SubmitFrame()
 		m_overlays[id].submitted = false;
 	}
 
-	this->OnEndFrame();
+	this->OnEndFrame(frameId);
 }
 
 // -------------------------------------------------------------------------
@@ -1007,21 +1005,9 @@ void Device::OnPostPresent()
 // -------------------------------------------------------------------------
 stl::optional<Matrix34> Device::RequestAsyncCameraUpdate(uint64_t frameId, const Quat& oq, const Vec3 &op)
 {
-	// Predict time till photons in seconds
-	float secondsSinceLastVsync;
-	m_system->GetTimeSinceLastVsync(&secondsSinceLastVsync, nullptr);
-	float displayFrequency = m_system->GetFloatTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_DisplayFrequency_Float);
-	float frameDuration = 1.f / displayFrequency;
-	float vsyncToPhotons = m_system->GetFloatTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_SecondsFromVsyncToPhotons_Float);
-	float timeTillPhotons = frameDuration - secondsSinceLastVsync + vsyncToPhotons;
-
-	const auto trackingOrigin = m_pTrackingOriginCVar->GetIVal() == static_cast<int>(EHmdTrackingOrigin::Standing) ? vr::ETrackingUniverseOrigin::TrackingUniverseStanding : vr::ETrackingUniverseOrigin::TrackingUniverseSeated;
-	vr::TrackedDevicePose_t trackedDevicePoses[vr::k_unMaxTrackedDeviceCount];
-	m_system->GetDeviceToAbsoluteTrackingPose(trackingOrigin, timeTillPhotons, trackedDevicePoses, vr::k_unMaxTrackedDeviceCount);
-
 	for (int i=0;i<vr::k_unMaxTrackedDeviceCount;++i)
 	{
-		const auto& trackedDevicePose = trackedDevicePoses[i];
+		const auto& trackedDevicePose = m_predictedRenderPose[i];
 		if (trackedDevicePose.bPoseIsValid && trackedDevicePose.bDeviceIsConnected)
 		{
 			vr::ETrackedDeviceClass devClass = m_system->GetTrackedDeviceClass(i);

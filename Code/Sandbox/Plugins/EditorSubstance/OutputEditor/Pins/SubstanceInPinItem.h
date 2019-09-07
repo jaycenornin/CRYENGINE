@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -16,12 +16,9 @@ namespace EditorSubstance
 			CSubstanceInPinItem(CryGraphEditor::CAbstractNodeItem& nodeItem, EOutputPinType pinType)
 				: CSubstanceBasePinItem(nodeItem, pinType)
 			{}
-			virtual ~CSubstanceInPinItem() {};
+			virtual ~CSubstanceInPinItem() {}
 			virtual bool IsInputPin() const override { return true; }
 			virtual bool IsOutputPin() const override { return false; }
 		};
 	}
 }
-
-
-

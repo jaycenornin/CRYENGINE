@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   MFXDecalEffect.cpp
@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////
 #include "StdAfx.h"
 #include "MFXDecalEffect.h"
+#include <Cry3DEngine/CryEngineDecalInfo.h>
 
 CMFXDecalEffect::CMFXDecalEffect()
 	: CMFXEffectBase(eMFXPF_Decal)

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "Common.cfi"
 #include "ShadeLib.cfi"
@@ -24,7 +24,7 @@ vert2FragGeneral ReferenceImageVS(app2vertGeneral IN)
   return OUT;
 }
 
-float4 ReferenceImagePS(in vert2FragGeneral IN) : COLOR
+float4 ReferenceImagePS(in vert2FragGeneral IN) : SV_Target0
 { 
   float4 cColor = GetDiffuseTex(diffuseTex, IN.baseTC);
 

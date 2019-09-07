@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -10,7 +10,7 @@
 
 class BlockPalette;
 struct BlockPaletteItem;
-class QPropertyTree;
+class QPropertyTreeLegacy;
 
 namespace CharacterTool {
 
@@ -48,9 +48,8 @@ private:
 	void PresetsChanged();
 	EventContentToColorMap                     m_eventContentToColorMap;
 	BlockPalette*                              m_palette;
-	QPropertyTree*                             m_tree;
+	QPropertyTreeLegacy*                             m_tree;
 	std::unique_ptr<AnimEventPresetCollection> m_presetCollection;
 };
 
 }
-

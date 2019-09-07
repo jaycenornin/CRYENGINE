@@ -1,11 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryMath/Cry_Geo.h>
+#include <CryMath/LCGRandom.h>
+#include <CryPhysics/physinterface.h>
 
 struct IMeshObj;
-struct IPhysicalEntity;
 struct IGeometry;
 struct IArea;
 

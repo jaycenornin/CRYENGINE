@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // #SchematycTODO : Can we use shallow copy and reference counting to reduce cost of copying containers?
 // #SchematycTODO : Move declaration of CVariantContainer after declaration of CVariant?
@@ -69,7 +69,7 @@ namespace Schematyc2
 			}
 		}
 
-		bool RemoveByIndex(const size_t index);
+		bool RemoveByIndex(const size_t index, const size_t stride);
 		bool RemoveByValue(const TVariantConstArray& value);
 
 		size_t FindByValue(const CVariant& value) const;
@@ -1075,10 +1075,9 @@ namespace Schematyc2
 		return !(lhs == rhs);
 	}
 
-	inline bool CVariantContainer::RemoveByIndex(const size_t index)
+	inline bool CVariantContainer::RemoveByIndex(const size_t index, const size_t stride)
 	{
 		const size_t size = m_data.size();
-		const size_t stride = 1;
 		if (index < size)
 		{
 			m_data.erase(m_data.begin() + index, m_data.begin() + index + stride);

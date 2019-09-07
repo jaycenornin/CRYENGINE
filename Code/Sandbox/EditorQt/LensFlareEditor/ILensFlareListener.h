@@ -1,20 +1,19 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 class CLensFlareItem;
 class CLensFlareElement;
 
-class ILensFlareChangeItemListener
+struct ILensFlareChangeItemListener
 {
-public:
+	virtual ~ILensFlareChangeItemListener() {}
 	virtual void OnLensFlareChangeItem(CLensFlareItem* pLensFlareItem) = 0;
 	virtual void OnLensFlareDeleteItem(CLensFlareItem* pLensFlareItem) = 0;
 };
 
-class ILensFlareChangeElementListener
+struct ILensFlareChangeElementListener
 {
-public:
+	virtual ~ILensFlareChangeElementListener() {}
 	virtual void OnLensFlareChangeElement(CLensFlareElement* pLensFlareElement) = 0;
 };
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "InstantEvaluatorBlueprint.h"
@@ -24,7 +24,7 @@ namespace UQS
 
 		Client::IInstantEvaluatorFactory& CInstantEvaluatorBlueprint::GetFactory() const
 		{
-			assert(m_pInstantEvaluatorFactory);
+			CRY_ASSERT(m_pInstantEvaluatorFactory);
 			return *m_pInstantEvaluatorFactory;
 		}
 
@@ -106,7 +106,7 @@ namespace UQS
 
 		const Client::IInputParameterRegistry& CInstantEvaluatorBlueprint::GetInputParameterRegistry() const
 		{
-			assert(m_pInstantEvaluatorFactory);
+			CRY_ASSERT(m_pInstantEvaluatorFactory);
 			return m_pInstantEvaluatorFactory->GetInputParameterRegistry();
 		}
 

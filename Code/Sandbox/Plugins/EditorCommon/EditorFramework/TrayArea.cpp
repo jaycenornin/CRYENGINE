@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 
@@ -47,4 +47,3 @@ void CTrayArea::ReorderTrayObjects()
 		m_pMainLayout->addWidget(m_trayObjects[i]->GetWidget(), Qt::AlignRight);
 	}
 }
-

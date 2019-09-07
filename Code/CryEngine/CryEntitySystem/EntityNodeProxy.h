@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -19,11 +19,11 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	virtual void   Initialize() final;
 	virtual void   ProcessEvent(const SEntityEvent& event) final;
-	virtual uint64 GetEventMask() const final;
+	virtual Cry::Entity::EventFlags GetEventMask() const final;
 	//////////////////////////////////////////////////////////////////////////
 
-	virtual void         GetMemoryUsage(ICrySizer* pSizer) const final {};
-	virtual EEntityProxy GetProxyType() const final                    { return ENTITY_PROXY_ENTITYNODE; };
+	virtual void         GetMemoryUsage(ICrySizer* pSizer) const final {}
+	virtual EEntityProxy GetProxyType() const final                    { return ENTITY_PROXY_ENTITYNODE; }
 
 	virtual void         Release() final                               { delete this; }
 };

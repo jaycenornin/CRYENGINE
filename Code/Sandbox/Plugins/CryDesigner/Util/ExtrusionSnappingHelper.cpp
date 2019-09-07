@@ -1,9 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ExtrusionSnappingHelper.h"
-#include "ViewManager.h"
+
 #include "DesignerEditor.h"
+
+#include <Viewport.h>
 
 namespace Designer
 {
@@ -163,4 +165,3 @@ PolygonPtr ExtrusionSnappingHelper::FindAlignedPolygon(PolygonPtr pCapPolygon, c
 	return NULL;
 }
 }
-

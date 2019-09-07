@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "FilePreviewContainer.h"
 
@@ -7,11 +7,13 @@
 #include "EditorCommonInit.h"
 
 #include "Controls/EditorDialog.h"
+#include <IEditor.h>
 
 #include <QFileInfo>
 
 #include <QVBoxLayout>
 #include <QToolButton>
+#include <QVariant.h>
 
 CFilePreviewContainer::CFilePreviewContainer(QWidget* parent)
 	: QWidget(parent)
@@ -128,4 +130,3 @@ QAbstractButton* CFilePreviewContainer::CreateToggleButton(QWidget* parent)
 
 	return button;
 }
-

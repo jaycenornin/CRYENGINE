@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "StartupConsistencyChecker.h"
@@ -397,7 +397,7 @@ namespace UQS
 
 		const char* CStartupConsistencyChecker::GetError(size_t index) const
 		{
-			assert(index < m_errors.size());
+			CRY_ASSERT(index < m_errors.size());
 			return m_errors[index].c_str();
 		}
 

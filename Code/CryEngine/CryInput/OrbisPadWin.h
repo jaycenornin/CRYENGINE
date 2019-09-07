@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /********************************************************************
    ---------------------------------------------------------------------
@@ -23,7 +23,7 @@
 	#pragma message("Unable to use OrbisPad on Windows with MSVC newer than 2015 due to missing libs.")
 #endif
 
-#if defined(USE_DXINPUT) && (CRY_PLATFORM_WINDOWS && CRY_PLATFORM_64BIT) && defined(WANT_ORBISPAD_WIN)
+#if defined(USE_DXINPUT) && CRY_PLATFORM_WINDOWS && defined(WANT_ORBISPAD_WIN)
 	#ifndef USE_ORBISPAD_WIN
 		#define USE_ORBISPAD_WIN
 	#endif

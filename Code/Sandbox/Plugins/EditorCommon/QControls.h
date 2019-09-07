@@ -1,16 +1,16 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
 
+#include <QColor>
+#include <QElapsedTimer>
+#include <QFrame>
+#include <QLabel>
 #include <QMenu>
 #include <QSlider>
-#include <QFrame>
-#include <QWidgetAction>
-#include <QColor>
-#include <QLabel>
 #include <QTimer>
-#include <QElapsedTimer>
+#include <QWidgetAction>
 
 //////////////////////////////////////////////////////////////////////////
 // This file is intended to contain reusable Qt Widgets that are
@@ -35,8 +35,8 @@ public:
 	}
 
 protected:
-	virtual void OnTrigger(QAction* action) {};
-	virtual void OnPopulateMenu()           {};
+	virtual void OnTrigger(QAction* action) {}
+	virtual void OnPopulateMenu()           {}
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,9 +79,9 @@ class EDITOR_COMMON_API QContainer : public QFrame
 public:
 	QContainer(QWidget* parent = 0);
 
-	void SetChild(QWidget* child);
+	void     SetChild(QWidget* child);
 	QWidget* GetChild() { return m_child; }
-	void Clear() { SetChild(nullptr); }
+	void     Clear()    { SetChild(nullptr); }
 
 private:
 	QWidget* m_child;
@@ -139,3 +139,21 @@ protected:
 	bool          m_bLoading;
 };
 
+//! Provides extended feature-set to QLabel like text elision
+class CLabel : public QLabel
+{
+public:
+	CLabel(QWidget* pParent = nullptr);
+	void SetText(const QString& text);
+	void SetTextElideMode(Qt::TextElideMode textElideMode);
+
+private:
+	virtual void resizeEvent(QResizeEvent* pEvent) override;
+	void         setText(const QString& text);
+
+	void         UpdatePresentation();
+
+private:
+	QString           m_text;
+	Qt::TextElideMode m_textElideMode;
+};

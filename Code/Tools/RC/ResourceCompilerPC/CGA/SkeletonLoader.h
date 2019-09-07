@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __PACKED_CHR_LOADER__H__
 #define __PACKED_CHR_LOADER__H__
@@ -6,14 +6,14 @@
 #include "SkeletonInfo.h"
 
 struct IPakSystem;
-class ICryXML;
+struct ICryXML;
 
 class SkeletonLoader
 {
 public:
 	SkeletonLoader();
 
-	CSkeletonInfo* Load(const char* filename, IPakSystem* pakSystem, ICryXML* xml, const string& tempPath);
+	CSkeletonInfo* Load(const char* filename, const char* szAssetRootDir, IPakSystem* pakSystem, ICryXML* xml, const string& tempPath);
 
 	const char* GetTempName() const { return m_tempFileName.c_str(); }
 	const CSkeletonInfo& Skeleton() const{ return m_skeletonInfo; }

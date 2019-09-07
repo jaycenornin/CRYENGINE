@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PlaneUnwrappingTool.h"
@@ -38,4 +38,3 @@ void PlaneUnwrappingTool::Enter()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_Plane, eUVMappingToolGroup_Unwrapping, "Plane", PlaneUnwrappingTool,
                                     plane_unwrapping, "runs plane unwrapping tool", "uvmapping.plane_unwrapping")
-

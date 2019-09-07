@@ -1,12 +1,13 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ExtrudeEdgeTool.h"
-#include "Util/ElementSet.h"
-#include "Util/ExcludedEdgeManager.h"
+
 #include "Core/Model.h"
+#include "Core/ModelCompiler.h"
 #include "DesignerEditor.h"
-#include "Serialization/Decorators/EditorActionButton.h"
+
+#include <Serialization/Decorators/EditorActionButton.h>
 
 using Serialization::ActionButton;
 
@@ -16,7 +17,6 @@ void ExtrudeEdgeTool::Enter()
 {
 	__super::Enter();
 	m_bManipulatingGizmo = false;
-	;
 	m_bHitGizmo = false;
 	m_CreatedPolygons.clear();
 
@@ -111,14 +111,9 @@ void ExtrudeEdgeTool::OnManipulatorBegin(
 	}
 }
 
-void ExtrudeEdgeTool::OnManipulatorDrag(
-  IDisplayViewport* pView,
-  ITransformManipulator* pManipulator,
-  CPoint& p0,
-  BrushVec3 value,
-  int nFlags)
-{
-	BrushMatrix34 offsetTM = GetOffsetTM(pManipulator, value, GetWorldTM());
+void ExtrudeEdgeTool::OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData)
+ {
+	BrushMatrix34 offsetTM = GetOffsetTM(pManipulator, dragData.accumulateDelta, GetWorldTM());
 	Extrude(offsetTM);
 }
 
@@ -227,4 +222,3 @@ void ExtrudeEdgeTool::FlipPolygons()
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_ExtrudeEdge, eToolGroup_Edit, "Extrude Edge", ExtrudeEdgeTool,
                                                            extrudeedge, "runs extrude edge tool", "designer.extrudeedge")
-

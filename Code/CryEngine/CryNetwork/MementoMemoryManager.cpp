@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MementoMemoryManager.h"
@@ -361,13 +361,6 @@ CMementoMemoryManager::CMementoMemoryManagerAllocator::CMementoMemoryManagerAllo
 CMementoMemoryManager::CMementoMemoryManagerAllocator::~CMementoMemoryManagerAllocator()
 {
 	NET_ASSERT(m_handles.size() == m_freeHandles.size());
-
-#if !defined(PURE_CLIENT)
-	if (m_pGeneralHeap)
-	{
-		m_pGeneralHeap->Release();
-	}
-#endif
 }
 
 void CMementoMemoryManager::CMementoMemoryManagerAllocator::AddCMementoMemoryManager()

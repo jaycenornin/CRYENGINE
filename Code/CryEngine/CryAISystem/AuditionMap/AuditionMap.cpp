@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -122,7 +122,7 @@ void CAuditionMap::UnregisterGlobalListener(const SListenerInstanceId& listenerI
 	m_globalListeners.erase(listenerInstanceId);
 }
 
-void CAuditionMap::Update(float deltaTime)
+void CAuditionMap::Update(const CTimeValue frameStartTime, const float frameDeltaTime)
 {
 /*
 #if (AUDITION_MAP_GENERIC_DEBUGGING != 0)

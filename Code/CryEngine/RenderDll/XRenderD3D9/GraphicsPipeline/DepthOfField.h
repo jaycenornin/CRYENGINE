@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -9,6 +9,25 @@
 class CDepthOfFieldStage : public CGraphicsPipelineStage
 {
 public:
+	static const EGraphicsPipelineStage StageID = eStage_DepthOfField;
+
+	CDepthOfFieldStage(CGraphicsPipeline& graphicsPipeline)
+		: CGraphicsPipelineStage(graphicsPipeline)
+		, m_passCopySceneTarget(&graphicsPipeline)
+		, m_passLayerDownscale(&graphicsPipeline)
+		, m_passGather0(&graphicsPipeline)
+		, m_passGather1(&graphicsPipeline)
+		, m_passComposition(&graphicsPipeline)
+	{
+		for (auto& pass : m_passTileMinCoC)
+			pass.SetGraphicsPipeline(&graphicsPipeline);
+	}
+
+	bool IsStageActive(EShaderRenderingFlags flags) const final
+	{
+		return CRenderer::CV_r_dof > 0;
+	}
+
 	void Execute();
 
 private:

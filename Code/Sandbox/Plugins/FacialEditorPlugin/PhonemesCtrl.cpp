@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PhonemesCtrl.h"
@@ -27,11 +27,6 @@ public:
 	}
 
 	// IUndoObject
-	virtual int GetSize()
-	{
-		return sizeof(*this);
-	}
-
 	virtual const char* GetDescription()
 	{
 		return "PhonemeCtrl";
@@ -1186,4 +1181,3 @@ void CPhonemesCtrl::SetSentenceEndTime(int sentenceIndex, float endTime)
 {
 	m_sentences[sentenceIndex].endTime = endTime;
 }
-

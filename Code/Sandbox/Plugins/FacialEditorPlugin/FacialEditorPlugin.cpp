@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "FacialEditorPlugin.h"
 
 #include <CryCore/Platform/platform_impl.inl>
+#include <CrySystem/ConsoleRegistration.h>
 
 #include "Vicon/Vicon_ClientCodes.h"
 
@@ -49,4 +50,3 @@ namespace Commands
 REGISTER_PYTHON_COMMAND_WITH_EXAMPLE(&Commands::ViconConnect, vicon, connect, "Connects Vicon", "");
 REGISTER_PYTHON_COMMAND_WITH_EXAMPLE(&Commands::ViconDisconnect, vicon, disconnect,"Connects Vicon", "");
 #endif
-

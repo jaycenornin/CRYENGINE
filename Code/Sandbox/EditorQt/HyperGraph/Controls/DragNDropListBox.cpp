@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "DragNDropListBox.h"
@@ -156,7 +156,7 @@ void CDragNDropListBox::DropDraggedItem()
 	SetRedraw(FALSE);
 
 	int topIdx = GetTopIndex();
-	int newIdx;
+	int newIdx = 0;
 	if (m_itemPrevIdx < m_itemNextIdx)
 	{
 		newIdx = InsertString(m_itemNextIdx, sItemText);
@@ -291,6 +291,3 @@ void CDragNDropListBox::OnMouseMove(UINT nFlags, CPoint point)
 		}
 	}
 }
-
-
-

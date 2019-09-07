@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <CryAction/IMaterialEffects.h>
@@ -140,8 +140,7 @@ private:
 
 	inline TMFXContainerPtr InternalGetEffect(TMFXEffectId effectId) const
 	{
-		assert(effectId < m_effectContainers.size());
-		if (effectId < m_effectContainers.size())
+		if (CRY_VERIFY(effectId < m_effectContainers.size()))
 			return m_effectContainers[effectId];
 		return 0;
 	}

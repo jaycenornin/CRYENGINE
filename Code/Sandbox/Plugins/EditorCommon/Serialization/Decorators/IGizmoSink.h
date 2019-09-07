@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -18,6 +18,7 @@ struct GizmoFlags
 
 struct IGizmoSink
 {
+	virtual ~IGizmoSink() {}
 	virtual int  CurrentGizmoIndex() const = 0;
 	virtual int  Write(const LocalPosition&, const GizmoFlags& flags, const void* handle) = 0;
 	virtual int  Write(const LocalOrientation&, const GizmoFlags& flags, const void* handle) = 0;
@@ -30,4 +31,3 @@ struct IGizmoSink
 };
 
 }
-

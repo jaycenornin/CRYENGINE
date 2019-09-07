@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -62,7 +62,7 @@ class CDeviceRenderPass_Base : public NoCopy
 
 public:
 	CDeviceRenderPass_Base();
-	virtual ~CDeviceRenderPass_Base() {};
+	virtual ~CDeviceRenderPass_Base() {}
 
 	bool         IsValid() const { return m_bValid; }
 	void         Invalidate() { m_bValid = false; }

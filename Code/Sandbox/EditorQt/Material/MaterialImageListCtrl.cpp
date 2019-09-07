@@ -1,9 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MaterialImageListCtrl.h"
+
+#include "IEditorImpl.h"
 #include "MaterialManager.h"
-#include "FilePathUtil.h"
+#include "PathUtils.h"
 
 #define ME_BG_TEXTURE "%EDITOR%/Materials/Stripes.dds"
 
@@ -165,7 +167,7 @@ void CMaterialImageListCtrl::OnUpdateItem(CImageListCtrlItem* pItem)
 
 		if (!(pMtlItem->pMaterial->GetFlags() & MTL_FLAG_NOPREVIEW) || bTerrain)
 		{
-			if (!m_renderCtrl.GetObject())
+			if (!m_renderCtrl.GetObject_())
 				LoadModel();
 
 			m_renderCtrl.MoveWindow(pItem->rect);
@@ -468,4 +470,3 @@ void CMaterialImageListCtrl::CalcLayout(bool bUpdateScrollBar /*=true */)
 
 	bNoRecurse = false;
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef ITEXTURESTREAMER_H
 #define ITEXTURESTREAMER_H
@@ -31,7 +31,7 @@ public:
 	virtual void  EndPrepare(STexStreamPrepState*& pState) = 0;
 
 	virtual void  Precache(CTexture* pTexture) = 0;
-	virtual void  UpdateMip(CTexture* pTexture, const float fMipFactor, const int nFlags, const int nUpdateId, const int nCounter) = 0;
+	virtual void  UpdateMip(CTexture* pTexture, const float fMipFactor, const int nFlags, const int nUpdateId) = 0;
 
 	virtual void  OnTextureDestroy(CTexture* pTexture) = 0;
 

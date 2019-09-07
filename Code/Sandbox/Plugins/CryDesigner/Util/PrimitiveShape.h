@@ -1,9 +1,7 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "Tools/Shape/PolylineTool.h"
-#include "ArgumentModel.h"
 #include "Core/Polygon.h"
 
 namespace Designer
@@ -27,4 +25,3 @@ private:
 	void CreateCircle(const BrushVec3& mins, const BrushVec3& maxs, int numSides, std::vector<BrushVec3>& outVertexList) const;
 };
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CylinderUnwrappingTool.h"
@@ -60,4 +60,3 @@ void CylinderUnwrappingTool::Enter()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_Cylinder, eUVMappingToolGroup_Unwrapping, "Cylinder", CylinderUnwrappingTool,
                                     cylinder_unwrapping, "runs cylinder unwrapping tool", "uvmapping.cylinder_unwrapping")
-

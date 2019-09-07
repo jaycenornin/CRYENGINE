@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PluginDll.h"
@@ -9,6 +9,7 @@
 // Included only once per DLL module.
 #include <CryCore/Platform/platform_impl.inl>
 #include <CrySystem/VR/IHMDManager.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 namespace CryVR
 {

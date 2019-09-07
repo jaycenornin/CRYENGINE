@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -304,7 +304,6 @@ namespace CryEngine.Game
 			string mannequinContextName = MannequinContext;
 			string animationDatabasePath = AnimationDatabase;
 			string startFragmentName = StartFragmentName;
-
 
 			if(string.IsNullOrWhiteSpace(characterGeometry) ||
 			   string.IsNullOrWhiteSpace(mannequinControllerDefinition) ||

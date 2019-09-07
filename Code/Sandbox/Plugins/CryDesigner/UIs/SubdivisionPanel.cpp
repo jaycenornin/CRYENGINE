@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SubdivisionPanel.h"
@@ -150,7 +150,6 @@ void SubdivisionPanel::OnItemChanged(QTreeWidgetItem* item, int column)
 
 void SubdivisionPanel::OnCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous)
 {
-	EdgeSharpnessManager* pEdgeMgr = m_pSubdivisionTool->GetModel()->GetEdgeSharpnessMgr();
 	if (current)
 		m_pSubdivisionTool->HighlightEdgeGroup(current->text(0).toStdString().c_str());
 	else
@@ -189,4 +188,3 @@ void SubdivisionPanel::OnDeleteUnused()
 	RefreshEdgeGroupList();
 }
 }
-

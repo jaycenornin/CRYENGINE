@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   terrain_light.cpp
@@ -18,6 +18,7 @@
 #include "PolygonClipContext.h"
 #include "RoadRenderNode.h"
 #include <Cry3DEngine/IIndexedMesh.h>
+#include <CryRenderer/RenderElements/RendElement.h>
 
 _smart_ptr<IRenderMesh> CTerrain::MakeAreaRenderMesh(const Vec3& vPos, float fRadius,
                                                      IMaterial* pMat, const char* szLSourceName,

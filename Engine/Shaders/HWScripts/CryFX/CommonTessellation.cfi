@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #if ENABLE_TESSELLATION
 
@@ -175,6 +175,11 @@ struct HS_CONTROL_POINT_OUTPUT_ZPASS
 #if %_RT_MOTION_BLUR && !%_RT_ALPHABLEND
 	float3 HPosPrev : TEXCOORDN;
 #endif
+};
+
+struct HS_CONTROL_POINT_OUTPUT_ZPREPASS
+{
+	hsControlPointShared controlPoint;
 };
 
 struct HS_CONTROL_POINT_OUTPUT_ILLUM

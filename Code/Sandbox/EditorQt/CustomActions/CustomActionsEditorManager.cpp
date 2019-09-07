@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CustomActionsEditorManager.h"
+#include "IEditorImpl.h"
 
 #include <CryEntitySystem/IEntitySystem.h>
 
@@ -14,6 +15,7 @@
 #include <CryAction/ICustomActions.h>
 #include <CryGame/IGameFramework.h>
 #include "Controls/QuestionDialog.h"
+#include <Util/FileUtil.h>
 
 #define GRAPH_FILE_FILTER "Graph XML Files (*.xml)|*.xml"
 
@@ -232,4 +234,3 @@ void CCustomActionsEditorManager::GetCustomActions(std::vector<CString>& values)
 		}
 	}
 }
-

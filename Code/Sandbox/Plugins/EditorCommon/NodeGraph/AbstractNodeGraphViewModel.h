@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -14,6 +14,8 @@
 
 #include <CrySerialization/Forward.h>
 #include <CrySandbox/CrySignal.h>
+
+#include "GraphEditorData.h"
 
 namespace CryGraphEditor {
 
@@ -35,34 +37,36 @@ public:
 	CNodeGraphViewModel() {}
 	virtual ~CNodeGraphViewModel();
 
-	virtual INodeGraphRuntimeContext& GetRuntimeContext() = 0;
-	virtual QString                   GetGraphName()                                                             { return QString(); }
+	virtual INodeGraphRuntimeContext&        GetRuntimeContext() = 0;
+	virtual QString                          GetGraphName()                                                             { return QString(); }
+	virtual CGraphEditorData&                GetEditorData()                                                            { return m_graphEditorData; }	
+	virtual CAbstractNodeGraphViewModelItem* GetAbstractModelItemById(QVariant id) const                                { return nullptr; }
 
-	virtual uint32                    GetNodeItemCount() const                                                   { return 0; }
-	virtual CAbstractNodeItem*        GetNodeItemByIndex(uint32 index) const                                     { return nullptr; }
-	virtual CAbstractNodeItem*        GetNodeItemById(QVariant id) const                                         { return nullptr; }
-	virtual CAbstractNodeItem*        CreateNode(QVariant typeId, const QPointF& position = QPointF())           { return false; }
-	virtual bool                      RemoveNode(CAbstractNodeItem& node)                                        { return false; }
+	virtual uint32                           GetNodeItemCount() const                                                   { return 0; }
+	virtual CAbstractNodeItem*               GetNodeItemByIndex(uint32 index) const                                     { return nullptr; }
+	virtual CAbstractNodeItem*               GetNodeItemById(QVariant id) const                                         { return nullptr; }
+	virtual CAbstractNodeItem*               CreateNode(QVariant typeId, const QPointF& position = QPointF())           { return false; }
+	virtual bool                             RemoveNode(CAbstractNodeItem& node)                                        { return false; }
 
-	virtual uint32                    GetConnectionItemCount() const                                             { return 0; }
-	virtual CAbstractConnectionItem*  GetConnectionItemByIndex(uint32 index) const                               { return nullptr; }
-	virtual CAbstractConnectionItem*  GetConnectionItemById(QVariant id) const                                   { return nullptr; }
-	virtual CAbstractConnectionItem*  CreateConnection(CAbstractPinItem& sourcePin, CAbstractPinItem& targetPin) { return false; }
-	virtual bool                      RemoveConnection(CAbstractConnectionItem& connection)                      { return false; }
+	virtual uint32                           GetConnectionItemCount() const                                             { return 0; }
+	virtual CAbstractConnectionItem*         GetConnectionItemByIndex(uint32 index) const                               { return nullptr; }
+	virtual CAbstractConnectionItem*         GetConnectionItemById(QVariant id) const                                   { return nullptr; }
+	virtual CAbstractConnectionItem*         CreateConnection(CAbstractPinItem& sourcePin, CAbstractPinItem& targetPin) { return false; }
+	virtual bool                             RemoveConnection(CAbstractConnectionItem& connection)                      { return false; }
 
-	virtual uint32                    GetCommentItemCount() const                                                { return 0; }
-	virtual CAbstractCommentItem*     GetCommentItemByIndex(uint32 index) const                                  { return nullptr; }
-	virtual CAbstractCommentItem*     GetCommentItemById(QVariant id) const                                      { return nullptr; }
-	virtual CAbstractCommentItem*     CreateComment()                                                            { return false; }
-	virtual bool                      RemoveComment(CAbstractCommentItem& comment)                               { return false; }
+	virtual uint32                           GetCommentItemCount() const                                                { return 0; }
+	virtual CAbstractCommentItem*            GetCommentItemByIndex(uint32 index) const                                  { return nullptr; }
+	virtual CAbstractCommentItem*            GetCommentItemById(QVariant id) const                                      { return nullptr; }
+	virtual CAbstractCommentItem*            CreateComment(const QPointF& position)                                     { return false; }
+	virtual bool                             RemoveComment(CAbstractCommentItem& comment)                               { return false; }
 
-	virtual uint32                    GetGroupItemCount() const                                                  { return 0; }
-	virtual CAbstractGroupItem*       GetGroupItemByIndex(uint32 index) const                                    { return nullptr; }
-	virtual CAbstractGroupItem*       GetGroupItemById(QVariant id) const                                        { return nullptr; }
-	virtual CAbstractGroupItem*       CreateGroup()                                                              { return false; }
-	virtual bool                      RemoveGroup(CAbstractGroupItem& group)                                     { return false; }
+	virtual uint32                           GetGroupItemCount() const                                                  { return 0; }
+	virtual CAbstractGroupItem*              GetGroupItemByIndex(uint32 index) const                                    { return nullptr; }
+	virtual CAbstractGroupItem*              GetGroupItemById(QVariant id) const                                        { return nullptr; }
+	virtual CAbstractGroupItem*              CreateGroup(const QPointF& position)                                       { return false; }
+	virtual bool                             RemoveGroup(CAbstractGroupItem& group)                                     { return false; }
 
-	virtual CItemCollection*          CreateClipboardItemsCollection()                                           { return nullptr; }
+	virtual CItemCollection*                 CreateClipboardItemsCollection()                                           { return nullptr; }
 
 	CCrySignal<void()> SignalDestruction;
 
@@ -80,7 +84,9 @@ Q_SIGNALS:
 	void SignalRemoveGroup(CAbstractGroupItem& group);
 
 	void SignalRemoveCustomItem(CAbstractNodeGraphViewModelItem&);
+
+private:
+	CGraphEditorData m_graphEditorData;
 };
 
 }
-

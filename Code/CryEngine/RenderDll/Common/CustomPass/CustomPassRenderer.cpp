@@ -242,7 +242,7 @@ void CCustomRenderer::ExecuteCustomPasses()
 
 	for (auto &instance : m_instances)
 	{
-		PROFILE_LABEL_SCOPE(instance->GetName());
+		PROFILE_LABEL_SCOPE_DYNAMIC(instance->GetName(), "CustomPass");
 		instance->Execute();
 	}
 }
@@ -520,7 +520,7 @@ void CCustomPass::SetNamedConstantParams(const SConstantParams& paramsConstParam
 		constantManager.SetNamedConstantArray(constantName, constant.values.Data(), constant.values.size(), shaderClass);
 	}
 
-	constantManager.EndNamedConstantUpdate(&m_pPass->GetViewport());
+	constantManager.EndNamedConstantUpdate(&m_pPass->GetViewport(), gcpRendD3D->GetActiveGraphicsPipeline()->GetCurrentRenderView());
 
 
 }
@@ -529,7 +529,7 @@ void CCustomPass::SetInlineConstantParams(const SConstantParams& paramsConstPara
 	if (paramsConstParams.type != EConstantParamsType::ConstantBuffer)
 		return;
 
-	auto &constantManager = primitive.GetConstantManager();
+	//auto &constantManager = primitive.GetConstantManager();
 	const SInlineConstantParams& params = static_cast<const SInlineConstantParams&>(paramsConstParams);
 	for (auto &buffer : params.buffers)
 	{

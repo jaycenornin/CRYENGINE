@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 // Sandbox plugin wrapper.
 #include "StdAfx.h"
 #include "SandboxPlugin.h"
@@ -12,7 +12,7 @@
 #include <EditorFramework/PersonalizationManager.h>
 #include "SubstanceCommon.h"
 #include "EditorSubstanceManager.h"
-#include "FilePathUtil.h"
+#include "PathUtils.h"
 
 #include <CryCore/ToolsHelpers/ResourceCompilerHelper.h>
 #include <CryCore/ToolsHelpers/ResourceCompilerHelper.inl>
@@ -52,11 +52,8 @@ class CFileHandler : public IFileManipulator
 
 	virtual string GetAbsolutePath(const string& filename) const override
 	{
-		//char buffer[ICryPak::g_nMaxPath];
-		//const char* absfilename = gEnv->pCryPak->AdjustFileName(filename, buffer, ICryPak::FLAGS_FOR_WRITING);
 		return PathUtil::Make(PathUtil::GetGameProjectAssetsPath(), filename);
 	}
-
 };
 
 CSubstancePlugin::CSubstancePlugin()
@@ -147,6 +144,3 @@ void Log(const char* szFormat, ...)
 
 } // namespace Detail
 } // namespace EditorSubstance
-
-
-

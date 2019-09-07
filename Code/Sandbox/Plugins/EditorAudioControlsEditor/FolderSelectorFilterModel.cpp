@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "FolderSelectorFilterModel.h"
@@ -7,13 +7,6 @@
 
 namespace ACE
 {
-//////////////////////////////////////////////////////////////////////////
-CFolderSelectorFilterModel::CFolderSelectorFilterModel(QString const& assetpath, QObject* const pParent)
-	: QDeepFilterProxyModel(QDeepFilterProxyModel::Behavior::AcceptIfChildMatches, pParent)
-	, m_assetPath(assetpath)
-{
-}
-
 //////////////////////////////////////////////////////////////////////////
 bool CFolderSelectorFilterModel::rowMatchesFilter(int sourceRow, QModelIndex const& sourceParent) const
 {

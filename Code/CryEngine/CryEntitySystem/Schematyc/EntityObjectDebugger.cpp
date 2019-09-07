@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "EntityObjectDebugger.h"
@@ -11,6 +11,7 @@
 #include  <CrySchematyc/Runtime/IRuntimeClass.h>
 #include  <CrySchematyc/IObject.h>
 #include  <CrySchematyc/Services/ITimerSystem.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 namespace
 {

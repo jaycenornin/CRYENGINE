@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 
@@ -25,11 +25,11 @@
 #include <QResizeEvent>
 #include <QTextDocument>
 
-// Switched window flag Qt::SubWindow to Qt::Tool to prevent it from stealing focus / closing menus
+// Notifications need to be windows of type Qt::Tool to prevent it from stealing focus / closing menus
 // Qt::Tool is commonly used for pop ups
 
 CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /* = nullptr*/)
-	: QWidget(pParent, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+	: QWidget(nullptr, Qt::Tool | Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus) // Parent cannot be set at this point or the notification will steal focus
 	, m_id(notificationId)
 	, m_pHideTimer(nullptr)
 	, m_count(1)
@@ -38,15 +38,24 @@ CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /*
 	, m_pProgressBar(nullptr)
 	, m_bIsAccepted(false)
 	, m_bDisableTimerHide(false)
+	, m_pParent(pParent)
 {
+	// Notifications should not steal focus from any other window
+	setFocusPolicy(Qt::FocusPolicy::NoFocus);
+	setAttribute(Qt::WA_ShowWithoutActivating);
+	// Force this window to have a native window handle since we need to force it to draw on top of other windows as well
+	// Also make sure not to create native windows for it's ancestors
+	setAttribute(Qt::WA_DontCreateNativeAncestors);
+	setAttribute(Qt::WA_NativeWindow);
+	// Now that the correct flags are set for this widget not to steal focus, set the parent
+	setParent(pParent);
+
 	CNotificationCenter* pNotificationCenter = static_cast<CNotificationCenter*>(GetIEditor()->GetNotificationCenter());
 	Internal::CNotification* pNotificationDesc = pNotificationCenter->GetNotification(m_id);
 	connect(pNotificationDesc, &Internal::CNotification::Hidden, this, &CNotificationWidget::OnAccepted);
 	m_title = pNotificationDesc->GetTitle();
 	m_bIsLogMessage = pNotificationDesc->IsLogMessage();
 
-	setFocusPolicy(Qt::FocusPolicy::NoFocus);
-	setAttribute(Qt::WA_ShowWithoutActivating);
 	// Create inset widget and layout so we can fake a border around the widget
 	QVBoxLayout* pInsetLayout = new QVBoxLayout();
 	QWidget* pInsetContainer = new QWidget();
@@ -63,7 +72,6 @@ CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /*
 	QFontMetrics metrics(m_pTitle->font());
 	QString elidedText = metrics.elidedText(m_title, Qt::ElideRight, sizeHint().width() - 50);
 	m_pTitle->setText(elidedText);
-	m_pTitle->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	m_pTitle->setObjectName("title"); // name accessible through qss
 	m_pTitle->setAttribute(Qt::WA_TransparentForMouseEvents);
 	pMainLayout->addWidget(m_pTitle, Qt::AlignTop | Qt::AlignLeft);
@@ -81,10 +89,11 @@ CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /*
 	m_pMessage->setObjectName("message");
 	m_pMessage->setWordWrap(true);
 	m_pMessage->setOpenExternalLinks(false);
+	m_pMessage->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::MinimumExpanding);
 	pInfoLayout->addWidget(m_pMessage, Qt::AlignTop | Qt::AlignLeft);
 	pMainLayout->addLayout(pInfoLayout);
 
-	connect(m_pMessage, &QLabel::linkActivated , [pNotificationDesc](const QString& link)
+	connect(m_pMessage, &QLabel::linkActivated, [pNotificationDesc](const QString& link)
 	{
 		pNotificationDesc->Execute();
 	});
@@ -102,10 +111,10 @@ CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /*
 			m_pProgressBar = new QProgressBar(this);
 			pMainLayout->addWidget(m_pProgressBar);
 		}
-		
+
 		m_pIconLabel = new QLoading(this);
 		pInfoLayout->addWidget(m_pIconLabel);
-		
+
 		if (pProgress->IsTaskComplete())
 			TaskComplete();
 	}
@@ -124,7 +133,7 @@ CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /*
 			m_pIconLabel->setPixmap(CryIcon("icons:Dialogs/dialog-error.ico").pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On));
 			break;
 		}
-		pInfoLayout->addWidget(m_pIconLabel);
+		pInfoLayout->addWidget(m_pIconLabel, Qt::AlignRight);
 	}
 
 	if (m_pIconLabel)
@@ -135,6 +144,8 @@ CNotificationWidget::CNotificationWidget(int notificationId, QWidget* pParent /*
 
 	pInsetContainer->setLayout(pMainLayout);
 	setLayout(pInsetLayout);
+
+	adjustSize();
 }
 
 CNotificationWidget::~CNotificationWidget()
@@ -159,16 +170,28 @@ void CNotificationWidget::CombineNotifications(const QString& newTitle)
 	QString elidedText = metrics.elidedText(m_title, Qt::ElideRight, sizeHint().width() - 20);
 	m_pTitle->setText(elidedText);
 	m_pMessage->setText("There are currently <b><font color=" + GetStyleHelper()->selectedIconTint().name() + ">" + QString::number(++m_count) + " " + m_title + "s</b>");
-	// Force resize of notification
-	layout()->setSizeConstraint(QLayout::SetMinAndMaxSize);
-	adjustSize();
+	// Force resize of notification. This needs to be done on the next frame because changing the text of labels does not have an immediate effect on their sizes
+	QTimer::singleShot(0, [this]
+	{
+		adjustSize();
+	});
 }
 
 void CNotificationWidget::ShowAt(const QPoint& globalPos)
 {
+	QPoint localPos = globalPos;
+	QWidget* pParent = parentWidget();
+	if (pParent)
+	{
+		localPos = pParent->mapFromGlobal(localPos);
+	}
+
 	show();
+	layout()->setSizeConstraint(QLayout::SetMinAndMaxSize);
+	adjustSize();
+	
 	// Move the Widget after calling show(). Size is otherwise incorrect
-	move(globalPos.x() - width(), globalPos.y());
+	move(localPos.x() - width(), localPos.y());
 
 	CNotificationCenter* pNotificationCenter = static_cast<CNotificationCenter*>(GetIEditor()->GetNotificationCenter());
 	Internal::CNotification* pNotification = pNotificationCenter->GetNotification(m_id);
@@ -183,8 +206,8 @@ void CNotificationWidget::ShowAt(const QPoint& globalPos)
 }
 
 bool CNotificationWidget::CanHide() const
-{ 
-	return m_pProgressBar == nullptr || m_pProgressBar->value() == m_pProgressBar->maximum(); 
+{
+	return m_pProgressBar == nullptr || m_pProgressBar->value() == m_pProgressBar->maximum();
 }
 
 void CNotificationWidget::Hide()
@@ -199,7 +222,7 @@ void CNotificationWidget::OnAccepted()
 {
 	if (m_bIsAccepted)
 		return;
-	
+
 	m_bIsAccepted = true;
 	CNotificationCenter* pNotificationCenter = static_cast<CNotificationCenter*>(GetIEditor()->GetNotificationCenter());
 	Internal::CNotification* pNotification = pNotificationCenter->GetNotification(m_id);
@@ -257,7 +280,6 @@ void CNotificationWidget::mousePressEvent(QMouseEvent* pEvent)
 		pEvent->setAccepted(false);
 		return;
 	}
-
 	else if (pEvent->modifiers() & Qt::KeyboardModifier::ShiftModifier)
 		signalNotificationHideAll();
 	else if (parent()) // Check if it's a pop up notification
@@ -286,13 +308,6 @@ void CNotificationWidget::paintEvent(QPaintEvent* pEvent)
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void CNotificationWidget::resizeEvent(QResizeEvent* pEvent)
-{
-	QFontMetrics metrics(m_pTitle->font());
-	QString elidedText = metrics.elidedText(m_title, Qt::ElideRight, pEvent->size().width() - 20);
-	m_pTitle->setText(elidedText);
-}
-
 void CNotificationWidget::enterEvent(QEvent* pEvent)
 {
 	m_bDisableTimerHide = true;
@@ -304,4 +319,3 @@ void CNotificationWidget::leaveEvent(QEvent* pEvent)
 	if (m_pHideTimer && !m_pHideTimer->isActive())
 		signalNotificationHide();
 }
-

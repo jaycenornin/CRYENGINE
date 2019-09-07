@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "FBXExporterDialog.h"
-#include "Controls/QuestionDialog.h"
+
+#include <Controls/QuestionDialog.h>
 
 namespace
 {
@@ -117,4 +118,3 @@ BOOL CFBXExporterDialog::OnInitDialog()
 
 	return TRUE;
 }
-

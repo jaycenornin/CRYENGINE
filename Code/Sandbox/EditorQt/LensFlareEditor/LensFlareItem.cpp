@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "LensFlareItem.h"
@@ -93,7 +93,7 @@ void CLensFlareItem::SetName(const string& name, bool bRefreshWhenUndo, bool bRe
 
 void CLensFlareItem::UpdateLights(IOpticsElementBasePtr pSrcOptics)
 {
-	string srcFullOpticsName = GetFullName();
+	string srcFullOpticsName = GetName();
 	bool bUpdateChildren = false;
 	if (pSrcOptics == NULL)
 	{
@@ -155,4 +155,3 @@ void CLensFlareItem::ReplaceOptics(IOpticsElementBasePtr pNewData)
 	pLensFlareEditor->UpdateLensFlareItem(this);
 	pLensFlareEditor->RemovePropertyItems();
 }
-

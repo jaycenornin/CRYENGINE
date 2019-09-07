@@ -1,11 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SampleAssetEditor.h"
 
 #include <AssetSystem/Asset.h>
 #include <AssetSystem/EditableAsset.h>
-#include <FilePathUtil.h>
+#include <PathUtils.h>
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -107,7 +107,7 @@ bool CSampleAssetEditor::OnSaveAsset(CEditableAsset& editAsset)
 		return false;
 	}
 
-	editAsset.SetFiles("", { dataFilePath });
+	editAsset.SetFiles({ dataFilePath });
 
 	return true;
 }

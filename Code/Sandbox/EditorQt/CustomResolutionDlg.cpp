@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "CustomResolutionDlg.h"
 
 #include "Controls/QMenuComboBox.h"
+#include <Util/Math.h>
 
 #include <QGridLayout>
 #include <QPushButton>
@@ -196,4 +197,3 @@ void QCustomResolutionDialog::AspectOptionChanged(int index)
 		break;
 	}
 }
-

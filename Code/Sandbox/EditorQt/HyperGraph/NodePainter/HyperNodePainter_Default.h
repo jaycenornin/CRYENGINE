@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -17,4 +17,3 @@ static const float BREAKPOINT_X_OFFSET = 10.0f;
 static const float MINIMIZE_BOX_MAX_HEIGHT = 12.0f;
 static const float MINIMIZE_BOX_WIDTH = 16.0f;
 static const int PORTS_OUTER_MARGIN = 12;
-

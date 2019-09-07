@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <CrySerialization/Forward.h>
 
 #include <QAbstractItemModel>
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 
 class QAbstractItemView;
 
@@ -20,7 +20,7 @@ public:
 
 	typedef std::function<std::unique_ptr<SSerializer>(QAbstractItemModel* pModel, const QModelIndex& modelIndex)> CreateSerializerFunc;
 
-	explicit CModelProperties(QPropertyTree* pPropertyTree);
+	explicit CModelProperties(QPropertyTreeLegacy* pPropertyTree);
 
 	void AddCreateSerializerFunc(const CreateSerializerFunc& f);
 
@@ -32,8 +32,7 @@ private:
 	std::unique_ptr<SSerializer> GetSerializer(QAbstractItemModel* pModel, const QModelIndex& modelIndex);
 
 	QAbstractItemModel* m_pInspectedModel;
-	QPropertyTree* m_pPropertyTree;
+	QPropertyTreeLegacy* m_pPropertyTree;
 	std::vector<CreateSerializerFunc> m_createSerializerFuncs;
 	std::vector<std::shared_ptr<void>> m_serializedObjects;
 };
-

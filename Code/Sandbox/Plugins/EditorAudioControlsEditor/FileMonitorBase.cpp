@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "FileMonitorBase.h"
 
-#include "AudioControlsEditorPlugin.h"
+#include <IEditor.h>
+#include <CryString/CryPath.h>
 
 namespace ACE
 {
@@ -26,7 +27,10 @@ CFileMonitorBase::~CFileMonitorBase()
 //////////////////////////////////////////////////////////////////////////
 void CFileMonitorBase::OnFileChange(char const* szFileName, EChangeType type)
 {
-	start(m_delay);
+	if (_stricmp(PathUtil::GetExt(szFileName), "cryasset") != 0)
+	{
+		start(m_delay);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

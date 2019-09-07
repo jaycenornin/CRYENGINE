@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ColorButton.h"
@@ -47,7 +47,7 @@ void CColorButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 	DWORD style = GetStyle();
 
-	UINT uiDrawState(DFCS_ADJUSTRECT);
+	//UINT uiDrawState(DFCS_ADJUSTRECT);
 	UINT state(lpDrawItemStruct->itemState);
 
 	/*
@@ -192,4 +192,3 @@ CColorButton::GetShowText() const
 {
 	return(m_showText);
 }
-

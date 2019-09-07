@@ -1,12 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AlignTool.h"
 
 #include "Objects/BaseObject.h"
 #include "Objects/ShapeObject.h"
+#include "Objects/SelectionGroup.h"
 
 #include "QtUtil.h"
+#include "IEditorImpl.h"
 
 //////////////////////////////////////////////////////////////////////////
 bool CAlignPickCallback::m_bActive = false;
@@ -203,5 +205,4 @@ void CAlignPickCallback::OnCancelPick()
 bool CAlignPickCallback::OnPickFilter(CBaseObject* filterObject)
 {
 	return true;
-};
-
+}

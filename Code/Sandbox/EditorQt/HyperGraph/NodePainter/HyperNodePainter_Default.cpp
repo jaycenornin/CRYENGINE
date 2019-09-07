@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HyperNodePainter_Default.h"
+#include "IEditorImpl.h"
 
 #include <CryFlowGraph/IFlowGraphDebugger.h>
 
@@ -196,8 +197,7 @@ struct SDefaultRenderPort
 
 void CHyperNodePainter_Default::Paint(CHyperNode* pNode, CDisplayList* pList)
 {
-	static SAssets* pAssets = 0;
-	struct IHyperGraph* pPrevGraph = 0;
+	static SAssets* pAssets = nullptr;
 
 	if (pNode->GetBlackBox()) //hide node
 		return;
@@ -325,7 +325,7 @@ void CHyperNodePainter_Default::Paint(CHyperNode* pNode, CDisplayList* pList)
 				bool bIsInitializationPhase;
 				pNode->GetAdditionalDebugPortInformation(pp, bIsInitializationPhase);
 				pr.pBackground = pList->Add<CDisplayRectangle>()
-				                 ->SetFilled(bIsInitializationPhase? &pAssets->brushPortDebugActivatedForInitialization : &pAssets->brushPortDebugActivated)
+				                 ->SetFilled(bIsInitializationPhase ? &pAssets->brushPortDebugActivatedForInitialization : &pAssets->brushPortDebugActivated)
 				                 ->SetHitEvent(eSOID_FirstInputPort + i);
 			}
 
@@ -742,4 +742,3 @@ void CHyperNodePainter_Default::CheckBreakpoint(IFlowGraphPtr pFlowGraph, const 
 		bIsTracepoint = pFlowGraphDebugger->IsTracepoint(pFlowGraph, addr);
 	}
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  Created:     06/30/2010 by Morgan K
@@ -13,6 +13,7 @@
 #include "GameCVars.h"
 #include "CodeCheckpointDebugMgr.h"
 #include <CryRenderer/IRenderAuxGeom.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 const static int LABEL_LENGTH = 100;
 const static int BUFF_SIZE = LABEL_LENGTH + 3;
@@ -107,7 +108,7 @@ void CCodeCheckpointDebugMgr::ReadFile(const char* fileName)
 		char* lineBlock = new char[BUFF_SIZE + 1];
 		//char* appendBlock = lineBlock;
 
-		while (int numRead = GetLine(lineBlock, cpFile))
+		while (GetLine(lineBlock, cpFile) > 0)
 		{
 			ICodeCheckpointMgr* pCheckpointManager = gEnv->pCodeCheckpointMgr;
 			if (pCheckpointManager)

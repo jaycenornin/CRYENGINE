@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-// CryEngine Header File.
-// Copyright (C), Crytek, 1999-2016.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -15,7 +12,6 @@ class CTrackViewComponentsManager
 {
 public:
 	CTrackViewComponentsManager();
-	~CTrackViewComponentsManager();
 
 	void                               Init(CTrackViewCore* pTrackViewCore);
 	void                               BroadcastTrackViewEditorEvent(ETrackViewEditorEvent event);
@@ -52,4 +48,3 @@ private:
 		return component;
 	}
 };
-

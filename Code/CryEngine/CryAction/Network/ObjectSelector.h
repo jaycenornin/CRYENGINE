@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -15,6 +15,7 @@
 #pragma once
 
 #include "DebugBreakage.h"
+#include <CryPhysics/IPhysics.h>
 
 static const float CObjectSelector_Eps = 1.0f;
 

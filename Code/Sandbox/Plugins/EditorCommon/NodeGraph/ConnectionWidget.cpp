@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "ConnectionWidget.h"
@@ -59,6 +59,11 @@ void CConnectionWidget::DeleteLater()
 
 	SetSourceConnectionPoint(nullptr);
 	SetTargetConnectionPoint(nullptr);
+}
+
+const CNodeGraphViewStyleItem& CConnectionWidget::GetStyle() const
+{
+	return *m_pStyle;
 }
 
 void CConnectionWidget::SetSourceConnectionPoint(const CConnectionPoint* pPoint)
@@ -388,4 +393,3 @@ void CConnectionWidget::UpdatePath()
 }
 
 }
-

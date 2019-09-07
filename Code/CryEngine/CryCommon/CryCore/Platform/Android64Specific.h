@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #define SIZEOF_PTR    8
 //#define TARGET_DEFAULT_ALIGN (0x8U)
@@ -28,7 +28,7 @@ typedef intptr_t INT_PTR, *PINT_PTR;
 typedef uintptr_t UINT_PTR, *PUINT_PTR;
 typedef char* LPSTR, *PSTR;
 typedef uint64                        __uint64;
-#if !defined(__clang__)
+#if !CRY_COMPILER_CLANG
 typedef int64                         __int64;
 #endif
 typedef int64                         INT64;

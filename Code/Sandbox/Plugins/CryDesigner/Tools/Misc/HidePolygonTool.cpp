@@ -1,11 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HidePolygonTool.h"
-#include "Tools/Select/SelectTool.h"
+
+#include "Core/Model.h"
 #include "DesignerEditor.h"
-#include "Serialization/Decorators/EditorActionButton.h"
-#include "DesignerSession.h"
+
+#include <Serialization/Decorators/EditorActionButton.h>
 
 using Serialization::ActionButton;
 
@@ -90,4 +91,3 @@ void HidePolygonTool::Serialize(Serialization::IArchive& ar)
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_HidePolygon, eToolGroup_Misc, "Hide Polygon", HidePolygonTool,
                                                            hide, "runs hide tool", "designer.hide")
-

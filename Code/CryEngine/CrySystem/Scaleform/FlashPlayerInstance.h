@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -359,17 +359,13 @@ private:
 
 		GRendererCommandBuffer& operator[](size_t i)
 		{
-	#if !defined(_RELEASE)
-			if (!m_pCmdDB) __debugbreak();
-	#endif
+			CRY_ASSERT_MESSAGE(m_pCmdDB, "Fatal error");
 			return (*m_pCmdDB)[i];
 		}
 
 		const GRendererCommandBuffer& operator[](size_t i) const
 		{
-	#if !defined(_RELEASE)
-			if (!m_pCmdDB) __debugbreak();
-	#endif
+			CRY_ASSERT_MESSAGE(m_pCmdDB, "Fatal error");
 			return (*m_pCmdDB)[i];
 		}
 

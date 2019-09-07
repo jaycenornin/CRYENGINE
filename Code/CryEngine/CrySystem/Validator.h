@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //
 //	File: Validator.h
@@ -55,6 +55,8 @@ struct SDefaultValidator : public IValidator
 				case eQR_Ignore:
 					bNoMsgBoxOnWarnings = true;
 					m_pSystem->m_sysWarnings->Set(0);
+					break;
+				default:
 					break;
 				}
 			}

@@ -1,9 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
+
+#pragma once
 
 #include "Util/FileChangeMonitor.h"
-
-#ifndef __FOLDER_TREE_CTRL__H__
-	#define __FOLDER_TREE_CTRL__H__
+#include <CryCore/StlUtils.h>
 
 class CFolderTreeCtrl : public CTreeCtrl, public CFileChangeMonitorListener
 {
@@ -82,6 +82,3 @@ protected:
 
 	std::map<CString, CTreeItem*, stl::less_stricmp<CString>> m_pathToTreeItem;
 };
-
-#endif
-

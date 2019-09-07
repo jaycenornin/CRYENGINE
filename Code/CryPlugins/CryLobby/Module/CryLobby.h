@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __CRYLOBBY_H__
 #define __CRYLOBBY_H__
@@ -15,11 +15,7 @@
 #define USE_CRY_FRIENDS              1
 #define USE_CRY_TCPSERVICE           1
 
-#if PC_CONSOLE_NET_COMPATIBLE
-	#define NETWORK_HOST_MIGRATION (1)
-#else
-	#define NETWORK_HOST_MIGRATION (0)
-#endif
+#define NETWORK_HOST_MIGRATION (0)
 
 #if NETWORK_HOST_MIGRATION
 	#if defined(PURE_CLIENT)
@@ -47,11 +43,7 @@
 
 #define RESET_CONNECTED_CONNECTION (0)
 
-#if !PC_CONSOLE_NET_COMPATIBLE
-	#define ENCRYPT_LOBBY_PACKETS (0)
-#else
-	#define ENCRYPT_LOBBY_PACKETS 0
-#endif
+#define ENCRYPT_LOBBY_PACKETS (0)
 
 // USE_CRY_DEDICATED_SERVER_ARBITRATOR
 // When set and game is started in dedicated arbitrator mode CryLobby will also have a CryDedicatedServerArbitrator service.
@@ -864,7 +856,7 @@ private:
 #endif
 
 		static LobbyBuckets m_bucketAllocator;
-		IGeneralMemoryHeap* m_pGeneralHeap;
+		_smart_ptr<IGeneralMemoryHeap> m_pGeneralHeap;
 
 		size_t              m_totalBucketAllocated;
 		size_t              m_totalGeneralHeapAllocated;

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -27,12 +27,12 @@ public:
 
 	bool       TraverseAndValidateSequence();
 	void       Start();
-	void       PrepareAgentSequenceBehavior();
 	void       SequenceBehaviorReady();
 	void       SequenceInterruptibleBehaviorLeft();
 	void       Stop();
 	void       Cancel();
 	void       RequestActionStart(TFlowNodeId actionNodeId);
+	void       RequestActionRestart();
 	void       ActionComplete();
 	void       SetBookmark(TFlowNodeId bookmarkNodeId);
 

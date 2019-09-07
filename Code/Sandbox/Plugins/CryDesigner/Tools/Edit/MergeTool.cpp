@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MergeTool.h"
@@ -74,7 +74,7 @@ void MergeTool::MergeObjects()
 	for (int i = 0; i < nSelectionCount - 1; ++i)
 		GetIEditor()->DeleteObject(selections[i].pObject);
 
-	GetIEditor()->SelectObject(lastSelection.pObject);
+	GetIEditor()->GetObjectManager()->AddObjectToSelection(lastSelection.pObject);
 
 	DesignerEditor* pDesignerTool = GetDesigner();
 	if (pDesignerTool)
@@ -137,4 +137,3 @@ void MergeTool::MergePolygons()
 
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Merge, eToolGroup_Edit, "Merge", MergeTool,
                                    merge, "runs merge tool", "designer.merge")
-

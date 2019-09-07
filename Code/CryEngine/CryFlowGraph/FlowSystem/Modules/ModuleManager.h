@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -6,6 +6,7 @@
 #include <CryGame/IGameFramework.h>
 #include <CryCore/Containers/CryListenerSet.h>
 #include <CryCore/Containers/VectorMap.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 struct SActivationInfo;
 class CFlowGraphModule;

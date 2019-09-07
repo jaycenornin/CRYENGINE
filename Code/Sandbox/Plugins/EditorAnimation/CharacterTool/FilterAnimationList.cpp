@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 
@@ -42,7 +42,6 @@ void FilterAnimationList::Populate()
 		{
 			SAnimationFilterItem filterItem;
 			filterItem.tags = settings.build.tags;
-			filterItem.skeletonAlias = settings.build.skeletonAlias;
 			filterItem.path = PathUtil::ReplaceExtension(PathUtil::ToUnixPath(filename), "caf");
 			m_items.push_back(filterItem);
 		}
@@ -126,4 +125,3 @@ void FilterAnimationList::OnFileChange(const char* filename, EChangeType eType)
 }
 
 }
-

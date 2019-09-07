@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 
 //===========================================================================
@@ -58,7 +58,7 @@
 	#endif
 #endif
 
-#if !%ALLOW_SILHOUETTE_POM || %DECAL || !FEATURE_GEOMETRY_SHADERS
+#if %DECAL || !FEATURE_GEOMETRY_SHADERS
 #if %SILHOUETTE_PARALLAX_OCCLUSION_MAPPING
 	#undefine %SILHOUETTE_PARALLAX_OCCLUSION_MAPPING
 #endif

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "RcLoader.h"
@@ -76,4 +76,3 @@ uint64 CRcInOrderCaller::GetTimpestamp() const
 {
 	return m_timestamp;
 }
-

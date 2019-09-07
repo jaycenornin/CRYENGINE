@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Target.h"
@@ -19,6 +19,12 @@ void CTargetSource::Serialize(Serialization::IArchive& ar)
 {
 	ar(m_source, "Source", "^");
 	ar(m_offset, "Offset", "Offset");
+}
+
+void CTargetSource::AddToComponent(CParticleComponent* pComponent)
+{
+	if (m_source == ETargetSource::Target)
+		pComponent->AddEnvironFlags(ENV_TARGET);
 }
 
 }

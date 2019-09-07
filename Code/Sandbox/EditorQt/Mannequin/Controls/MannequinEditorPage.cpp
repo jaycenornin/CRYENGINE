@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MannequinEditorPage.h"
@@ -13,11 +13,6 @@ CMannequinEditorPage::CMannequinEditorPage(UINT nIDTemplate, CWnd* pParentWnd)
 {
 }
 
-CMannequinEditorPage::~CMannequinEditorPage()
-{
-}
-
-//////////////////////////////////////////////////////////////////////////
 BOOL CMannequinEditorPage::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
@@ -49,7 +44,7 @@ BOOL CMannequinEditorPage::PreTranslateMessage(MSG* pMsg)
 			if (pNodeCtrl)
 			{
 				std::vector<CSequencerNode*>::reverse_iterator itEnd = pSelectedNodes.rend();
-				for (std::vector<CSequencerNode*>::reverse_iterator it = pSelectedNodes.rbegin(); it != itEnd; it++)
+				for (std::vector<CSequencerNode*>::reverse_iterator it = pSelectedNodes.rbegin(); it != itEnd; ++it)
 				{
 					if (!pNodeCtrl->IsNodeExpanded(*it))
 					{
@@ -102,4 +97,3 @@ BOOL CMannequinEditorPage::PreTranslateMessage(MSG* pMsg)
 
 	return FALSE;
 }
-

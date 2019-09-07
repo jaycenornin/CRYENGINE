@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   LipSync_TransitionQueue.h
@@ -89,7 +89,7 @@ public:
 	virtual void                 Update(SEntityUpdateContext& ctx, int updateSlot) override;
 	virtual void                 HandleEvent(const SGameObjectEvent& event) override;
 	virtual void                 ProcessEvent(const SEntityEvent& event) override;
-	virtual uint64               GetEventMask() const override { return 0; }
+	virtual Cry::Entity::EventFlags GetEventMask() const override { return Cry::Entity::EventFlags(); }
 	virtual void                 SetChannelId(uint16 id) override;
 	virtual void                 PostUpdate(float frameTime) override;
 	virtual void                 PostRemoteSpawn() override;

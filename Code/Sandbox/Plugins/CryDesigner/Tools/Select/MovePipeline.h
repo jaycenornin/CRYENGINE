@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -11,10 +11,7 @@ namespace Designer
 class MovePipeline
 {
 public:
-
-	MovePipeline(){}
-	~MovePipeline(){}
-
+	MovePipeline();
 	void           TransformSelections(MainContext& mc, const BrushMatrix34& offsetTM);
 	void           SetQueryResultsFromSelectedElements(const ElementSet& selectedElements);
 	bool           ExcutedAdditionPass() const           { return m_bExecutedAdditionPass; }
@@ -52,4 +49,3 @@ private:
 	std::set<PolygonPtr>              m_PolygonsInUVIslands;
 };
 }
-

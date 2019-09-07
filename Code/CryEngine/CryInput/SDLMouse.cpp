@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -291,7 +291,7 @@ void CSDLMouse::Update(bool focus)
 
 void CSDLMouse::GrabInput()
 {
-	SInputSymbol* pSymbol = NULL;
+	//SInputSymbol* pSymbol = NULL;
 	//unsigned width, height;
 
 	if (m_bGrabInput)

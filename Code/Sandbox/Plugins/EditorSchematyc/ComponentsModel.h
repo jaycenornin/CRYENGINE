@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -48,6 +48,7 @@ private:
 class CAbstractComponentsModel
 {
 public:
+	virtual ~CAbstractComponentsModel() {}
 	virtual uint32                     GetComponentItemCount() const = 0;
 	virtual CComponentItem*            GetComponentItemByIndex(uint32 index) const = 0;
 	virtual CComponentItem*            CreateComponent(CryGUID typeId, const char* szName) = 0;
@@ -63,4 +64,3 @@ public:
 };
 
 }
-

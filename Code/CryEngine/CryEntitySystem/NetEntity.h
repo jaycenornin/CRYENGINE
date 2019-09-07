@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <CryNetwork/INetEntity.h>
@@ -7,6 +7,7 @@
 class CEntity;
 
 struct SEntitySchedulingProfiles;
+struct SEntitySpawnParams;
 
 class CNetEntity final : public INetEntity
 {
@@ -26,7 +27,7 @@ public:
 	virtual void                  ClearProfileManager() override;
 
 	virtual void                  SetChannelId(uint16 id) override;
-	virtual uint16                GetChannelId() const override     { return m_channelId; };
+	virtual uint16                GetChannelId() const override     { return m_channelId; }
 	virtual NetworkAspectType     GetEnabledAspects() const override;
 	virtual void                  BecomeBound() override            { m_isBoundToNetwork = true; }
 	virtual bool                  IsBoundToNetwork() const override { return m_isBoundToNetwork; }

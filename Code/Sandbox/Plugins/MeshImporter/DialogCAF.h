@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -15,7 +15,7 @@ struct ICharacterInstance;
 
 class QTemporaryDir;
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 
 namespace Serialization
 {
@@ -151,7 +151,7 @@ private:
 	SJointsViewSettings                                     m_viewSettings;
 	CSplitViewportContainer*                                m_pViewportContainer;
 	Private_DialogCAF::CRootMotionNodePanel* m_pRootMotionNodePanel;
-	QPropertyTree* m_pPropertyTree;
+	QPropertyTreeLegacy* m_pPropertyTree;
 	std::unique_ptr<Serialization::CContextList> m_pSerializationContextList;
 	std::unique_ptr<Private_DialogCAF::SProperties> m_pSkeletonProperties;
 	std::unique_ptr<SScene>                                 m_pScene;
@@ -164,4 +164,3 @@ private:
 };
 
 } // namespace MeshImporter
-

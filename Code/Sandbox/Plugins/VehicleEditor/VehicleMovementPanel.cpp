@@ -1,9 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "VehicleMovementPanel.h"
 
-#include "Controls\PropertyItem.h"
+#include "Controls/PropertyItem.h"
 
 #include "VehicleData.h"
 #include "VehicleEditorDialog.h"
@@ -192,4 +192,3 @@ void CVehicleMovementPanel::OnSize(UINT nType, int cx, int cy)
 	if (m_propsCtrl.m_hWnd)
 		m_propsCtrl.MoveWindow(0, 0, rc.right, rc.bottom, true);
 }
-

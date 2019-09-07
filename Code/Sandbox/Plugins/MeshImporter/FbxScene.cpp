@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 // Tools for FBX file importing.
 
 #include "StdAfx.h"
@@ -1076,7 +1076,6 @@ void CScene::InitializeAnimations()
 SNode* CScene::Initialize(const SFileImportDescriptor& desc)
 {
 	// Create and link nodes
-	int nextId = 0;
 	int meshCount = 0;
 
 	const int nodeCount = m_pScene->GetNodeCount();
@@ -1564,4 +1563,3 @@ string GetFormattedAxes(FbxTool::Axes::EAxis up, FbxTool::Axes::EAxis fwd)
 {
 	return string(GetFormattedAxis(fwd)) + string(GetFormattedAxis(up));
 }
-

@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MonoProperty.h"
 #include "MonoMethod.h"
 #include "MonoRuntime.h"
+#include "MonoDomain.h"
 
 CMonoProperty::CMonoProperty(MonoInternals::MonoProperty* pProperty, const char* szName)
 	: m_pProperty(pProperty)

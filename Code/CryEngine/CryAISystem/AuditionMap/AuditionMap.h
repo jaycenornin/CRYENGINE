@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 //
 // The audition map keeps track of which 'listeners' need to be notified in the world
 // when certain sound stimuli managed to reach them.
@@ -73,7 +73,7 @@ public:
 	virtual void OnSoundEvent(const SSoundStimulusParams& soundParams, const char* szDebugText) override;
 	virtual void SetSoundObstructionOnHitCallback(const IAuditionMap::SoundObstructionOnHitCallback& callback) override;
 
-	void Update(float deltaTime);
+	void Update(const CTimeValue frameStartTime, const float frameTime);
 
 protected:
 

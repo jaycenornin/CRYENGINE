@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <vector>
@@ -32,4 +32,3 @@ void CreateMaterial(CMaterial* pParentMaterial, FbxTool::CScene* pFbxScene, cons
 string GetMaterialNameFromFilePath(const string& filePath);
 
 const char* GetTextureSemanticFromChannelType(FbxTool::EMaterialChannelType channelType);
-

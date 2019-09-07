@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -6,6 +6,7 @@
 
 #include <CryCore/CryVariant.h>
 #include <CrySystem/XML/IXml.h>
+#include <CryCore/smartptr.h>
 
 struct IReadXMLSink;
 struct IWriteXMLSource;

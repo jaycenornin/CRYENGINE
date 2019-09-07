@@ -1,4 +1,6 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
+
+#pragma once
 
 class ScopedLock
 {
@@ -26,4 +28,3 @@ private:
     STATIC_RECURSION_GUARD(__VA_ARGS__);
 
 #define RECURSION_GUARD_SCOPE_END() }
-

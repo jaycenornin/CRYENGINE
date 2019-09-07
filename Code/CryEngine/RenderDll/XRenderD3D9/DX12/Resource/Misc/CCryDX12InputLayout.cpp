@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CCryDX12InputLayout.hpp"
@@ -6,7 +6,6 @@
 
 CCryDX12InputLayout* CCryDX12InputLayout::Create(CCryDX12Device* pDevice, const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs11, UINT NumElements, const void* pShaderBytecodeWithInputSignature, SIZE_T BytecodeLength)
 {
-	ID3D12Device* pDevice12 = pDevice->GetD3D12Device();
 	CCryDX12InputLayout* pResult = DX12_NEW_RAW(CCryDX12InputLayout());
 	pResult->m_Descriptors.resize(NumElements);
 

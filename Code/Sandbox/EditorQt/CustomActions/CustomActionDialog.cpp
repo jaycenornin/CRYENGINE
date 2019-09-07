@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
 #include "CustomActionDialog.h"
+#include "IEditorImpl.h"
 
 #include "HyperGraph/FlowGraphManager.h"
 #include "HyperGraph/FlowGraph.h"
@@ -151,4 +152,3 @@ BOOL CCustomActionDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
-

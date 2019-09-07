@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
@@ -25,7 +25,7 @@ public:
 	void         RemoveFilter(AttributeFilterSharedPtr pFilter);
 	void         ClearFilters();
 
-	void         InvalidateFilter() { QDeepFilterProxyModel::invalidateFilter(); }
+	virtual void InvalidateFilter() { QDeepFilterProxyModel::invalidateFilter(); }
 
 	CCrySignal<void()> signalAttributesChanged;
 
@@ -47,4 +47,3 @@ private:
 protected:
 	std::vector<AttributeFilterSharedPtr> m_filters;
 };
-

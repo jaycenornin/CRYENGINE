@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -118,7 +118,7 @@ struct IFlowGraphDebugListener
 	virtual void OnEnableTracepoint(const STracePoint& tracepoint, bool enable) = 0;
 
 protected:
-	virtual ~IFlowGraphDebugListener() {};
+	virtual ~IFlowGraphDebugListener() {}
 };
 
 struct IFlowGraphDebugger : public ICryUnknown

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "SequencerNode.h"
@@ -189,7 +189,6 @@ bool CSequencerNode::CanAddTrackForParameter(ESequencerParamType paramId) const
 	if (!GetParamInfoFromId(paramId, paramInfo))
 		return false;
 
-	int flags = 0;
 	CSequencerTrack* track = GetTrackForParameter(paramId);
 	if (track && !(paramInfo.flags & CSequencerNode::PARAM_MULTIPLE_TRACKS))
 	{
@@ -210,4 +209,3 @@ void CSequencerNode::ClearMenuOptions(CMenu& menu)
 void CSequencerNode::OnMenuOption(int menuOption)
 {
 }
-

@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "SelectGameTokenDialog.h"
+#include "IEditorImpl.h"
 
 #include <IDataBaseItem.h>
 #include <IDataBaseManager.h>
@@ -209,4 +210,3 @@ void CSelectGameTokenDialog::OnTvnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
 		EndDialog(IDOK);
 	}
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "PinWidget.h"
@@ -32,11 +32,6 @@ public:
 	{
 		setWidget(pWidget);
 		setAcceptHoverEvents(false);
-	}
-
-	~CProxyWidget()
-	{
-		return;
 	}
 
 	void hoverEnterEvent(QGraphicsSceneHoverEvent* pEvent) override
@@ -157,12 +152,16 @@ void CPinWidget::DeleteLater()
 	CNodeGraphViewGraphicsWidget::DeleteLater();
 }
 
+const CNodeGraphViewStyleItem& CPinWidget::GetStyle() const
+{
+	return *m_pStyle;
+}
+
 void CPinWidget::SetNameWidget(CPinName* pWidget)
 {
 	if (m_pContent == pWidget)
 		return;
 
-	QGraphicsScene* pScene = GetView().scene();
 	if (m_pContent)
 	{
 		m_pName = nullptr;
@@ -517,4 +516,3 @@ void CPinWidget::UpdateConnectionPoint()
 }
 
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HeightManipulator.h"
@@ -106,7 +106,7 @@ bool HeightManipulator::IsCursorCloseToPole(const BrushMatrix34& worldTM, CViewp
 	return GetProjectedPosToPole(worldTM, view, ray, projectedPos);
 }
 
-void HeightManipulator::Display(DisplayContext& dc)
+void HeightManipulator::Display(SDisplayContext& dc)
 {
 	if (!m_bValid)
 		return;
@@ -128,4 +128,3 @@ void HeightManipulator::Display(DisplayContext& dc)
 	}
 }
 }
-

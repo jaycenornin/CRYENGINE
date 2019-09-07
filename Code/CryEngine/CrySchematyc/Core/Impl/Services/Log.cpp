@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Log.h"
@@ -9,6 +9,7 @@
 #include <CrySerialization/STL.h>
 #include <CryString/CryStringUtils.h>
 #include <CrySystem/File/ICryPak.h>
+#include <CrySystem/ConsoleRegistration.h>
 #include <CrySchematyc/Utils/Assert.h>
 #include <CrySchematyc/Utils/ScopedConnection.h>
 
@@ -208,14 +209,20 @@ private:
 				CStackString backupFileName("LogBackups/");
 				backupFileName.append(m_fileName.c_str());
 #if CRY_PLATFORM_DURANGO
-				CRY_ASSERT_MESSAGE(false, "MoveFileEx not supported on Durango!");
+				CRY_ASSERT(false, "MoveFileEx not supported on Durango!");
 #else
 				CopyFile(m_fileName.c_str(), backupFileName.c_str(), true);
 #endif
 			}
 
-			m_pFile = fxopen(m_fileName.c_str(), "wtc");
-			setvbuf(m_pFile, m_writeBuffer, _IOFBF, sizeof(m_writeBuffer));
+			if (m_pFile = fxopen(m_fileName.c_str(), "wtc"))
+			{
+				setvbuf(m_pFile, m_writeBuffer, _IOFBF, sizeof(m_writeBuffer));
+			}
+			else
+			{
+				CryWarning(VALIDATOR_MODULE_UNKNOWN, VALIDATOR_WARNING, "Failed to write Schematyc log to disk!");
+			}
 
 			m_messagQueue.reserve(100);
 		}

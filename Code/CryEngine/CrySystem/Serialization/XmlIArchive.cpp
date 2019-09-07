@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include <CryExtension/ClassWeaver.h>
@@ -9,6 +9,7 @@
 #include "XmlIArchive.h"
 
 #include <CrySerialization/BlackBox.h>
+#include <CrySystem/ISystem.h>
 
 namespace XmlUtil
 {
@@ -344,7 +345,7 @@ bool Serialization::CXmlInputArchive::operator()(IString& value, const char* nam
 
 bool Serialization::CXmlInputArchive::operator()(IWString& value, const char* name, const char* label)
 {
-	CRY_ASSERT_MESSAGE(0,"CXmlInputArchive::operator() with IWString is not implemented");
+	CRY_ASSERT(0,"CXmlInputArchive::operator() with IWString is not implemented");
 	CryFatalError("CXmlInputArchive::operator() with IWString is not implemented");
 	return false;
 }

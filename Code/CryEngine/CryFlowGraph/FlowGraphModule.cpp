@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // CryDB.cpp : Defines the exported functions for the DLL application.
 //
@@ -6,7 +6,7 @@
 #include "StdAfx.h"
 
 // Included only once here
-#include <CryCore//Platform/platform_impl.inl>
+#include <CryCore/Platform/platform_impl.inl>
 
 #include "FlowSystem/FlowSystem.h"
 #include "FlowSystem/Modules/ModuleManager.h"
@@ -35,8 +35,6 @@ class CEngineModule_FlowGraph : public IFlowSystemEngineModule
 	//////////////////////////////////////////////////////////////////////////
 	virtual bool Initialize( SSystemGlobalEnvironment &env,const SSystemInitParams &initParams ) override
 	{
-		ISystem* pSystem = env.pSystem;
-		
 		CFlowSystem* pFlowSystem = new CFlowSystem();
 		env.pFlowSystem = pFlowSystem;
 		pFlowSystem->PreInit();

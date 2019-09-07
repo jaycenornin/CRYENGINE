@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <QMetaType>
@@ -34,4 +34,3 @@ struct SActionSequence
 
 // allow to use with signal & slots
 Q_DECLARE_METATYPE(FileSystem::Internal::Win32::SActionSequence)
-

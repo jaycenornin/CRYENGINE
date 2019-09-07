@@ -1,8 +1,7 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "LightVolumeBuffer.h"
-#include "DriverD3D.h"
 
 namespace
 {
@@ -41,8 +40,6 @@ void CLightVolumeBuffer::Release()
 void CLightVolumeBuffer::UpdateContent()
 {
 	PROFILE_FRAME(DLightsInfo_UpdateSRV);
-
-	CD3D9Renderer* pRenderer = gcpRendD3D;
 
 	struct SLightVolume* pLightVols;
 	uint32 numVols;

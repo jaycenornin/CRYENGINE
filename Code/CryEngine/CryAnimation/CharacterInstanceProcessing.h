@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryAnimation/ICryAnimation.h>
 #include "SkeletonAnim.h"
 #include "CharacterInstance.h"
+#include <CryThreading/IJobManager.h>
 
 class CAttachmentBONE;
 class CAttachmentManager;
@@ -36,24 +37,24 @@ struct SContext
 {
 	SContext()
 		: pInstance(nullptr)
-		, pBone(nullptr)
+		, attachmentNameCRC(0)
 		, pParent(nullptr)
 		, numChildren(0)
 		, slot(-1)
 		, pCommandBuffer(nullptr)
 		, job(nullptr)
-		, state(EState::Unstarted) 
+		, state(EState::Unstarted)
 	{
 	}
 
-	void Initialize(CCharInstance* pInst, const CAttachmentBONE* pBone, const CCharInstance* pParent, int numChildren);
+	void Initialize(CCharInstance* pInst, const IAttachment* pAttachment, const CCharInstance* pParent, int numChildren);
 
 	//! Checks if computation of this processing context is currently in progress.
 	//! \return True if computation is still in progress. False if computation did not yet start or already finished for the current frame.
 	bool IsInProgress() const;
 
 	_smart_ptr<CCharInstance> pInstance;
-	const CAttachmentBONE*    pBone;
+	uint32                    attachmentNameCRC;
 	const CCharInstance*      pParent;
 
 	int                       numChildren;
@@ -112,6 +113,17 @@ public:
 		{
 			auto& ctx = m_contexts[i];
 			ctx.state = f(ctx);
+		}
+	}
+	template<class Function>
+	void ExecuteForContextAndAllChildrenRecursivelyWithoutStateChange(int parentIndex, Function f)
+	{
+		const int start = parentIndex;
+		const int end = start + m_contexts[parentIndex].numChildren + 1;
+		for (int i = start; i < end; ++i)
+		{
+			auto& ctx = m_contexts[i];
+			f(ctx);
 		}
 	}
 	template<class Function>

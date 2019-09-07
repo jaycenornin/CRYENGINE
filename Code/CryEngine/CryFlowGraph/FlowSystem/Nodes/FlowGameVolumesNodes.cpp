@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // Generic nodes for GameVolumes
 
@@ -56,7 +56,7 @@ public:
 
 	virtual void ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo) override
 	{
-		LOADING_TIME_PROFILE_SECTION;
+		CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 		switch (event)
 		{
 		case eFE_Activate:
@@ -195,7 +195,7 @@ public:
 
 	virtual void ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo) override
 	{
-		LOADING_TIME_PROFILE_SECTION;
+		CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 		switch (event)
 		{
 		case eFE_Activate:
@@ -359,7 +359,7 @@ public:
 
 	virtual void ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo) override
 	{
-		LOADING_TIME_PROFILE_SECTION;
+		CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 		switch (event)
 		{
 		case eFE_Activate:

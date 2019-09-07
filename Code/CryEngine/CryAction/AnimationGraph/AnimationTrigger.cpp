@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
+#include <CryRenderer/IRenderAuxGeom.h>
 #include <CryMath/Cry_Math.h>
 #include "AnimationTrigger.h"
 #include "AnimationGraphCVars.h"
@@ -98,9 +99,6 @@ void CAnimationTrigger::Update(float frameTime, Vec3 userPos, Quat userOrient, b
 		else
 			m_sideTime -= frameTime;
 	}
-
-	Vec3 curDir = userOrient.GetColumn1();
-	Vec3 wantDir = m_orient.GetColumn1();
 
 	if (m_state == eS_Before)
 	{

@@ -1,6 +1,6 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "AssetManager.h"
 #include "Cryasset.h"
 #include "IResCompiler.h"
@@ -148,8 +148,8 @@ bool CAssetManager::SaveCryasset(const IConfig* const pConfig, const char* szSou
 		files.emplace_back(pFiles[i]);
 	}
 
-	const string metadataFilename = GetMetadataFilename(files.front());
-	std::unique_ptr<CAsset> pAsset = CAsset::Create(m_pRc, metadataFilename);
+	const string metadataFilepath = szOutputFolder ? PathUtil::Make(szOutputFolder, PathUtil::GetFile(GetMetadataFilename(files.front()))) : GetMetadataFilename(files.front());
+	std::unique_ptr<CAsset> pAsset = CAsset::Create(m_pRc, metadataFilepath);
 	if (!pAsset)
 	{
 		return false;
@@ -157,39 +157,38 @@ bool CAssetManager::SaveCryasset(const IConfig* const pConfig, const char* szSou
 
 	UpdateFiles(pAsset.get(), m_pRc, pConfig, szSourceFilepath, files);
 
-	if (!CollectMetadataDetails(pAsset->GetMetadataRoot(), files))
+	RemoveDetails(pAsset->GetMetadataRoot());
+
+	// For the moment we get details only for the main data file (the first one).
+	CollectMetadataDetails(pAsset->GetMetadataRoot(), files.front());
+
+	// Substance compiler embeds metadata to the source tiff file. See CSubstanceRenderer::OnOutputAvailable and CollectTifImageDetails
+	if (szSourceFilepath && *szSourceFilepath)
 	{
-		return false;
+		CollectMetadataDetails(pAsset->GetMetadataRoot(), szSourceFilepath);
 	}
 
-	const string targetFile = szOutputFolder ? PathUtil::Make(szOutputFolder, PathUtil::GetFile(metadataFilename)) : metadataFilename;
-	if (!pAsset->Save(targetFile))
+	if (!pAsset->Save(metadataFilepath))
 	{
-		RCLogError("Can't write metadata file '%s'", targetFile.c_str());
+		RCLogError("Can't write metadata file '%s'", metadataFilepath.c_str());
 		return false;
 	}
-	m_pRc->AddInputOutputFilePair(szSourceFilepath ? files.front() : szSourceFilepath, targetFile.c_str());
+	m_pRc->AddInputOutputFilePair(szSourceFilepath ? files.front() : szSourceFilepath, metadataFilepath.c_str());
 	return true;
 }
 
-bool CAssetManager::CollectMetadataDetails(XmlNodeRef& xml, const std::vector<string>& files) const
+bool CAssetManager::CollectMetadataDetails(XmlNodeRef& xml, const string& filename) const
 {
-	for (const string& filename : files)
+	const string ext = string(PathUtil::GetExt(filename)).MakeLower();
+	auto detailsProvider = m_providers.find(ext);
+	if (detailsProvider == m_providers.end())
 	{
-		const string ext = string(PathUtil::GetExt(filename)).MakeLower();
-		auto detailsProvider = m_providers.find(ext);
-		if (detailsProvider == m_providers.end())
-		{
-			continue;
-		}
+		return false;
+	}
 
-		if (!detailsProvider->second(xml, filename, m_pRc))
-		{
-			RCLogWarning("Can't collect detail information for the file '%s'", filename.c_str());
-		}
-
-		// For the moment we get details only for the main data file (the first one).
-		break;
+	if (!detailsProvider->second(xml, filename, m_pRc))
+	{
+		RCLogWarning("Can't collect detail information for the file '%s'", filename.c_str());
 	}
 	return true;
 }

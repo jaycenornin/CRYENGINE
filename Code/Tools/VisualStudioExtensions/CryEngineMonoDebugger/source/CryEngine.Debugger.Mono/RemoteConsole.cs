@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -337,7 +337,7 @@ namespace CryEngine.Debugger.Mono
 #endif
 					}
 
-					_isConnected = _clientSocket != null ? _clientSocket.Connected : false;
+					_isConnected = _clientSocket.Client != null ? _clientSocket.Connected : false;
 					if (!_isConnected)
 					{
 						_autoCompleteIsDone = false;

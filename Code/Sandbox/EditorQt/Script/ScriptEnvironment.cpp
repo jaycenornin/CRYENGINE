@@ -1,10 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ScriptEnvironment.h"
 
 #include "IEditorImpl.h"
 #include "Objects/EntityObject.h"
+#include "Objects/SelectionGroup.h"
+#include "Commands/CommandManager.h"
 
 EditorScriptEnvironment::EditorScriptEnvironment()
 {
@@ -70,4 +72,3 @@ int EditorScriptEnvironment::Command(IFunctionHandler* pH, const char* commandNa
 
 	return pH->EndFunction();
 }
-

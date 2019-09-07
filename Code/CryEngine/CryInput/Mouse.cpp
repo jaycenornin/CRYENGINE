@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -273,11 +273,11 @@ bool CMouse::SetExclusiveMode(bool value)
 
 	if (value)
 	{
-		hr = GetDirectInputDevice()->SetCooperativeLevel(GetDXInput().GetHWnd(), DISCL_EXCLUSIVE | DISCL_FOREGROUND);
+		hr = GetDirectInputDevice()->SetCooperativeLevel((HWND)GetDXInput().GetHWnd(), DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 	}
 	else
 	{
-		hr = GetDirectInputDevice()->SetCooperativeLevel(GetDXInput().GetHWnd(), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
+		hr = GetDirectInputDevice()->SetCooperativeLevel((HWND)GetDXInput().GetHWnd(), DISCL_NONEXCLUSIVE | DISCL_FOREGROUND);
 	}
 
 	if (FAILED(hr))

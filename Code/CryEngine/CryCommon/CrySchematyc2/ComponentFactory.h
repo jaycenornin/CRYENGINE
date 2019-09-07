@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -188,6 +188,10 @@ namespace Schematyc2
 			return m_pDefaultNetworkParams ? m_pDefaultNetworkParams->Clone() : INetworkSpawnParamsPtr();
 		}
 
+		virtual Cry::Type::CTypeDesc GetTypeDesc() const final
+		{
+			return Cry::Type::DescOf<COMPONENT>();
+		}
 		// ~IComponentFactory
 
 	private:

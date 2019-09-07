@@ -1,15 +1,20 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 
-#include <CryCore/Platform/platform_impl.inl>
-#include "IEditorClassFactory.h"
-#include "ICommandManager.h"
-#include "IPlugin.h"
-#include "IResourceSelectorHost.h"
 #include "AnimationCompressionManager.h"
 #include "CharacterTool/CharacterToolForm.h"
-#include "QtViewPane.h"
+#include "CharacterTool/CharacterToolSystem.h"
+#include "Serialization.h"
+
+//EditorCommon
+#include <Commands/ICommandManager.h>
+#include <IEditorClassFactory.h>
+#include <IPlugin.h>
+#include <IResourceSelectorHost.h>
+#include <QtViewPane.h>
+
+#include <CryCore/Platform/platform_impl.inl>
 
 // just for CGFContent:
 #include <CryRenderer/VertexFormats.h>
@@ -19,12 +24,6 @@
 #include <Cry3DEngine/IIndexedMesh_info.h>
 #include <Cry3DEngine/CGF/CGFContent_info.h>
 // ^^^
-
-#include "Serialization.h"
-
-#include "CharacterTool/CharacterToolForm.h"
-#include "CharacterTool/CharacterToolSystem.h"
-
 
 void Log(const char* format, ...)
 {

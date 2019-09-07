@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
+#include "EditorCommonAPI.h"
 #include <CrySystem/File/ICryPak.h>
 
-// forward references.
 struct ICryArchive;
 class CCryMemFile;
 class CMemoryBlock;
@@ -39,10 +39,8 @@ public:
 	bool RemoveDir(const char* directory);
 
 	//! Return archive of this pak file wrapper.
-	ICryArchive* GetArchive() { return m_pArchive; };
+	ICryArchive* GetArchive() { return m_pArchive; }
 private:
 	ICryArchive_AutoPtr m_pArchive;
 	ICryPak*            m_pCryPak;
 };
-
-

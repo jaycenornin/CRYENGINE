@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CrySerialization/Forward.h>
+#include <CryEntitySystem/IEntityComponent.h>
 
 #include "SensorMap.h"
 #include "SensorTagLibrary.h"
@@ -98,7 +99,7 @@ namespace Cry
 
 			// IEntityComponent
 			virtual void                       Initialize() override;
-			virtual uint64                     GetEventMask() const override;
+			virtual Cry::Entity::EventFlags                     GetEventMask() const override;
 			virtual void                       ProcessEvent(const SEntityEvent& event) override;
 			virtual void                       OnShutDown() override;
 			// ~IEntityComponent

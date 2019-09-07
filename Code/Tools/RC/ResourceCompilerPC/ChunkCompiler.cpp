@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 //
 //  Crytek Engine Source File
 //  Copyright (C) Crytek GmbH
@@ -15,7 +15,7 @@
 #include "../Cry3DEngine/CGF/ChunkFileWriters.h"
 #include <Cry3DEngine/CGF/CryHeaders.h>
 #include <Cry3DEngine/CGF/IChunkFile.h>
-#include "iconfig.h"
+#include "IConfig.h"
 #include "ResourceCompiler.h"
 #include <CryCore/ToolsHelpers/ResourceCompilerHelper.h>
 #include "StringHelpers.h"

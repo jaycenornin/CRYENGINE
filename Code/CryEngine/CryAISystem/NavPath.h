@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /********************************************************************
    -------------------------------------------------------------------------
@@ -189,7 +189,7 @@ public:
 	bool AdjustPathAroundObstacles(const Vec3& currentpos, const AgentMovementAbility& movementAbility, const INavMeshQueryFilter* pFilter) override;
 
 	/// Returns true if the path points can pass the specified filter starting from 'fromPointIndex'
-	virtual bool CanPassFilter(size_t fromPointIndex, const INavMeshQueryFilter* pFilter) override;
+	virtual bool CanPassFilter(size_t fromPointIndex, const INavMeshQueryFilter* pFilter) const override;
 
 	/// Advances path state until it represents agentPos. If allowPathToFinish = false then
 	/// it won't allow the path to finish

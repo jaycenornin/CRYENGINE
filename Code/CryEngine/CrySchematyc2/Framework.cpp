@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Framework.h"
@@ -29,7 +29,7 @@ namespace Schematyc2
 		static const char* OLD_SCRIPT_SUB_FOLDER = "docs";
 		static const char* OLD_SCRIPT_EXTENSION  = "xml";
 		static const char* g_szScriptsFolder     = "scripts";
-		static const char* g_szScriptExtension   = "ssf";
+		//static const char* g_szScriptExtension   = "ssf";
 		static const char* g_szSettingsFolder    = "settings";
 		static const char* g_szSettingsExtension = "xml";
 
@@ -51,30 +51,28 @@ namespace Schematyc2
 		static const SGUID	DIALOG_NAME_TYPE_GUID          = "839adde8-cc62-4636-9f26-16dd4236855f";
 		static const SGUID	FORCE_FEEDBACK_ID_TYPE_GUID    = "40dce92c-9532-4c02-8752-4afac04331ef";
 
-		//////////////////////////////////////////////////////////////////////////
 		static void OnLogToFileChange(ICVar* pCVar)
 		{
 			static_cast<CFramework*>(gEnv->pSchematyc2)->RefreshLogFileConfiguration();
 		}
 
-		//////////////////////////////////////////////////////////////////////////
 		static void OnLogFileStreamsChange(ICVar* pCVar)
 		{
 			static_cast<CFramework*>(gEnv->pSchematyc2)->RefreshLogFileStreams();
 		}
 
-		//////////////////////////////////////////////////////////////////////////
 		static void OnLogFileMessageTypesChange(ICVar* pCVar)
 		{ 
 			static_cast<CFramework*>(gEnv->pSchematyc2)->RefreshLogFileMessageTypes();
 		}
+
 	}
 
-	//////////////////////////////////////////////////////////////////////////
 	CFramework::CFramework()
-		: m_updateRelevanceContext(nullptr, 0, 0.f, 0.f) {}
+	: m_updateRelevanceContext(nullptr, 0, 0.f, 0.f)
+	{
+	}
 
-	//////////////////////////////////////////////////////////////////////////
 	CFramework::~CFramework() 
 	{
 		Schematyc2::CVars::Unregister();
@@ -84,7 +82,6 @@ namespace Schematyc2
 		// ~TODO
 	}
 
-	//////////////////////////////////////////////////////////////////////////
 	bool CFramework::Initialize(SSystemGlobalEnvironment& env, const SSystemInitParams& initParams)
 	{
 		env.pSchematyc2 = this;
@@ -105,17 +102,17 @@ namespace Schematyc2
 			}
 			m_pLogFileOutput = m_log.CreateFileOutput(logFileName.c_str());
 			SCHEMATYC2_SYSTEM_ASSERT(m_pLogFileOutput);
-			CVars::sc_LogToFile->SetOnChangeCallback(OnLogToFileChange);
+			CVars::sc2_LogToFile->AddOnChange(OnLogToFileChange);
 			RefreshLogFileStreams();
-			CVars::sc_LogFileStreams->SetOnChangeCallback(OnLogFileStreamsChange);
+			CVars::sc2_LogFileStreams->AddOnChange(OnLogFileStreamsChange);
 			RefreshLogFileMessageTypes();
-			CVars::sc_LogFileMessageTypes->SetOnChangeCallback(OnLogFileMessageTypesChange);
+			CVars::sc2_LogFileMessageTypes->AddOnChange(OnLogFileMessageTypesChange);
 		}
 		SCHEMATYC2_SYSTEM_COMMENT("Initializing Schematyc framework");
 		// Refresh environment.
 		RefreshEnv();
 		// Run unit tests.
-		if(CVars::sc_RunUnitTests)
+		if(CVars::sc2_RunUnitTests)
 		{
 			CUnitTestRegistrar::RunUnitTests();
 		}
@@ -163,13 +160,13 @@ namespace Schematyc2
 	//////////////////////////////////////////////////////////////////////////
 	const char* CFramework::GetFileFormat() const
 	{
-		return CVars::GetStringSafe(CVars::sc_FileFormat);
+		return CVars::GetStringSafe(CVars::sc2_FileFormat);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	const char* CFramework::GetRootFolder() const
 	{
-		return CVars::GetStringSafe(CVars::sc_RootFolder);
+		return CVars::GetStringSafe(CVars::sc2_RootFolder);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -214,7 +211,7 @@ namespace Schematyc2
 	//////////////////////////////////////////////////////////////////////////
 	bool CFramework::IsExperimentalFeatureEnabled(const char* szFeatureName) const
 	{
-		return CryStringUtils::stristr(CVars::GetStringSafe(CVars::sc_ExperimentalFeatures), szFeatureName) != nullptr;
+		return CryStringUtils::stristr(CVars::GetStringSafe(CVars::sc2_ExperimentalFeatures), szFeatureName) != nullptr;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -292,6 +289,7 @@ namespace Schematyc2
 	//////////////////////////////////////////////////////////////////////////
 	void CFramework::RefreshLogFileSettings()
 	{
+		RefreshLogFileConfiguration();
 		RefreshLogFileStreams();
 		RefreshLogFileMessageTypes();
 	}
@@ -334,12 +332,14 @@ namespace Schematyc2
 	//////////////////////////////////////////////////////////////////////////
 	void CFramework::PrePhysicsUpdate()
 	{
+		MEMSTAT_FUNCTION_CONTEXT(EMemStatContextType::Other);
 		m_pBaseEnv->PrePhysicsUpdate();
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	void CFramework::Update()
 	{
+		MEMSTAT_FUNCTION_CONTEXT(EMemStatContextType::Other);
 		m_pBaseEnv->Update(&m_updateRelevanceContext);
 	}
 
@@ -348,7 +348,7 @@ namespace Schematyc2
 	{
 		if (m_pLogFileOutput)
 		{
-			int sc_LogToFile = CVars::sc_LogToFile->GetIVal();
+			int sc_LogToFile = CVars::sc2_LogToFile->GetIVal();
 			m_pLogFileOutput->ConfigureFileOutput(sc_LogToFile == 1, sc_LogToFile == 2);
 		}
 	}
@@ -360,7 +360,7 @@ namespace Schematyc2
 		{
 			m_pLogFileOutput->ClearStreams();
 
-			stack_string logFileStreams = CVars::GetStringSafe(CVars::sc_LogFileStreams);
+			stack_string logFileStreams = CVars::GetStringSafe(CVars::sc2_LogFileStreams);
 			const size_t length = logFileStreams.length();
 			int          pos = 0;
 			do
@@ -371,7 +371,8 @@ namespace Schematyc2
 				{
 					m_pLogFileOutput->EnableStream(logStreamId);
 				}
-			} while(pos < length);
+		}
+		while (pos < length);
 		}
 	}
 
@@ -382,7 +383,7 @@ namespace Schematyc2
 		{
 			m_pLogFileOutput->ClearMessageTypes();
 
-			stack_string logFileMessageTypes = CVars::GetStringSafe(CVars::sc_LogFileMessageTypes);
+			stack_string logFileMessageTypes = CVars::GetStringSafe(CVars::sc2_LogFileMessageTypes);
 			const size_t length = logFileMessageTypes.length();
 			int          pos = 0;
 			do
@@ -393,7 +394,8 @@ namespace Schematyc2
 				{
 					m_pLogFileOutput->EnableMessageType(logMessageType);
 				}
-			} while(pos < length);
+		}
+		while (pos < length);
 		}
 	}
 

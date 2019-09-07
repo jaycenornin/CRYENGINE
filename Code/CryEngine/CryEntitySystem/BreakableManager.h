@@ -1,12 +1,17 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryEntitySystem/IBreakableManager.h>
+#include <Cry3DEngine/IStatObj.h>
 
 class CEntitySystem;
 class CEntity;
 struct GeomRef;
+struct EventPhysCreateEntityPart;
+struct EventPhysRevealEntityPart;
+struct EventPhysUpdateMesh;
+struct EventPhysRemoveEntityParts;
 //////////////////////////////////////////////////////////////////////////
 //
 // BreakableManager manager handles all the code for breaking/destroying entity geometry.

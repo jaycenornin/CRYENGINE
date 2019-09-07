@@ -1,17 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-////////////////////////////////////////////////////////////////////////////
-//
-//  CryEngine Source File.
-//  Copyright (C), Crytek, 2014.
-// -------------------------------------------------------------------------
-//  File name: QtMain.h
-//  Created:   26/09/2014 by timur
-//  Description: QT Main entry point
-// -------------------------------------------------------------------------
-//  History:
-//
-////////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include <processenv.h>
@@ -29,11 +16,12 @@
 #include <QSettings>
 #include <QFileSystemWatcher>
 #include <QMenuBar>
+#include <QProxyStyle>
 //////////////////////////////////////////////////////////////////////////
 
 #include "Util/BoostPythonHelpers.h"
-#include "Serialization/PropertyTree/PropertyTreeStyle.h"
-#include "Serialization/PropertyTree/PropertyTree.h"
+#include "Serialization/PropertyTreeLegacy/PropertyTreeStyle.h"
+#include "Serialization/PropertyTreeLegacy/PropertyTreeLegacy.h"
 #include "QtMainFrame.h"
 #include "SplashScreen.h"
 #include "EditorStyleHelper.h"
@@ -43,10 +31,11 @@
 #include "EditorStyleHelper.h"
 
 #include "Controls/QuestionTimeoutDialog.h"
-#include "Material/StandaloneMaterialEditor.h"
 #include "SessionData.h"
+#include "IEditorImpl.h"
 
 #include <CryCore/Platform/CryLibrary.h>
+#include <CryString/CryPath.h>
 
 static const char* styleSheetPath = "Editor/Styles/stylesheet.qss";
 
@@ -77,7 +66,7 @@ void EnableXTDarkSkin()
 		XTPOffice2007Images()->SetHandle(PathUtil::Make(PathUtil::GetEnginePath(), "Editor\\Styles\\Office2007Black.dll").c_str());
 
 		//CXTPPaintManager::SetCustomTheme(new CCrytekTheme());
-		BOOL bLoaded = XTPSkinManager()->LoadSkin(PathUtil::Make(PathUtil::GetEnginePath(), "Editor\\Styles\\CryDark.cjstyles").c_str());
+		XTPSkinManager()->LoadSkin(PathUtil::Make(PathUtil::GetEnginePath(), "Editor\\Styles\\CryDark.cjstyles").c_str());
 		// Apply skin, including metrics, coloring and frame
 		XTPSkinManager()->SetApplyOptions(xtpSkinApplyMetrics | xtpSkinApplyColors | xtpSkinApplyMenus);
 
@@ -124,7 +113,34 @@ void SetVisualStyle()
 	   WindowsVista
 	   Fusion
 	 */
-	qApp->setStyle(QStyleFactory::create("Fusion"));
+
+	class CIconProxyStyle : public QProxyStyle
+	{
+	public:
+		CIconProxyStyle(QStyle* pStyle)
+			: QProxyStyle(pStyle)
+		{
+
+		}
+
+	public:
+		QIcon standardIcon(StandardPixmap standardIcon, const QStyleOption* pOption = nullptr, const QWidget* pWidget = nullptr) const override
+		{
+			// check the standardIcon parameter for the icon type 
+			if (standardIcon == QStyle::SP_ToolBarHorizontalExtensionButton)
+			{
+				return CryIcon("icons:common/general_dropdown_arrow.ico");
+			}
+			else if (standardIcon == QStyle::SP_ToolBarVerticalExtensionButton)
+			{
+				return CryIcon("icons:common/general_dropdown_arrow.ico");
+			}
+			return QProxyStyle::standardIcon(standardIcon, pOption, pWidget);
+		}
+	};
+
+	CIconProxyStyle* pStyle = new CIconProxyStyle(QStyleFactory::create("Fusion"));
+	qApp->setStyle(pStyle);
 
 	LoadStyleSheet();
 
@@ -141,7 +157,7 @@ void SetVisualStyle()
 	treeStyle.showSliderCursor = false;
 	treeStyle.groupRectangle = true;
 
-	PropertyTree::setDefaultTreeStyle(treeStyle);
+	PropertyTreeLegacy::setDefaultTreeStyle(treeStyle);
 
 	EnableXTDarkSkin();
 
@@ -199,6 +215,11 @@ int main(int argc, char* argv[])
 		{
 			QMfcApp::setAttribute(Qt::AA_EnableHighDpiScaling);
 		}
+
+		// Force Qt to not create native widgets for children of native windows. If not set, every descendant of every window
+		// will receive a window handle. Not setting this flag breaks resizing functionality of windows and has performance 
+		// implications
+		qApp->setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
 	}
 
 	QDir::setSearchPaths("icons", QStringList(":/icons"));
@@ -217,7 +238,7 @@ int main(int argc, char* argv[])
 		timeoutDialog.Execute(waitForSeconds);
 	}
 
-	QPixmap pixmap(":/splash.bmp");
+	QPixmap pixmap(":/splash.png");
 	SplashScreen splash(pixmap);
 	splash.show();
 	qApp->processEvents();
@@ -235,7 +256,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	LOADING_TIME_PROFILE_SECTION_NAMED("Sanbox::main() after initting app instance");
+	CRY_PROFILE_SECTION(PROFILE_LOADING_ONLY, "Sanbox::main() after initting app instance");
 
 	WriteSessionData();
 
@@ -244,7 +265,7 @@ int main(int argc, char* argv[])
 	// We must to [re]load style sheet after creating the main form to display the logo on the title bar.
 	// Please see: #1350577. !XB (EditorQt) Restore logo by creating main frame before loading stylesheet.
 	{
-		LOADING_TIME_PROFILE_SECTION_NAMED("SetVisualStyle()");
+		CRY_PROFILE_SECTION(PROFILE_LOADING_ONLY, "SetVisualStyle()");
 		SetVisualStyle();
 	}
 
@@ -265,14 +286,6 @@ int main(int argc, char* argv[])
 	mainFrame->PostLoad();
 
 	splash.close();
-	
-	if (GetIEditorImpl()->IsInMatEditMode())//special mode where we only show a material editor. Currently handled here for code clarity
-	{
-		StandaloneMaterialEditor* standaloneMatEdit = new StandaloneMaterialEditor();
-		standaloneMatEdit->Execute();
-
-		mainFrame->hide();
-	}
 
 	theApp.PostInit();
 
@@ -290,4 +303,3 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-

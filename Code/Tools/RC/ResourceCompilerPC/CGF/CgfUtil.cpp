@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CgfUtil.h"
 #include "CGF/ChunkFile.h"
+#include "FileUtil.h"
 
 namespace CgfUtil
 {
@@ -19,7 +20,7 @@ bool WriteTempRename(CChunkFile& chunkFile, const string& targetFilename)
 	}
 
 	// Force remove of the read only flag.
-	SetFileAttributes(targetFilename.c_str(), FILE_ATTRIBUTE_ARCHIVE);
+	FileUtil::MakeWritable(targetFilename.c_str());
 	remove(targetFilename.c_str());
 
 	return rename(tmpFilename.c_str(), targetFilename.c_str()) == 0;

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 struct v2fCaustic
 {
@@ -111,9 +111,9 @@ technique WaterCausticPass
 {
 	pass p0
 	{
-		ZEnable = true; // todo use downscaled depth target for zculling
+		ZEnable = true;
 		CullMode = Back;
-		ZWriteEnable = true;
+		ZWriteEnable = false;
 		IgnoreMaterialState = true;
 
 		VertexShader = WaterCausticVS() WaterSurfaceVS;

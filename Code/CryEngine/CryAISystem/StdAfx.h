@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #if !defined(AFX_STDAFX_H__81DAABA0_0054_42BF_8696_D99BA6832D03__INCLUDED_)
 #define AFX_STDAFX_H__81DAABA0_0054_42BF_8696_D99BA6832D03__INCLUDED_
@@ -74,10 +74,6 @@
 
 // Hijack the old CCCPOINT definition (and add a semi-colon to allow compilation)
 #define CCCPOINT(x) CODECHECKPOINT(x);
-
-#include <CrySystem/Profilers/FrameProfiler/FrameProfiler_JobSystem.h>  // to be removed
-
-#define AI_STRIP_OUT_LEGACY_LOOK_TARGET_CODE
 
 /// This frees the memory allocation for a vector (or similar), rather than just erasing the contents
 template<typename T>

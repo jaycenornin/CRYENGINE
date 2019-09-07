@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
 #pragma once
+#include <limits>
 
 /*!
     Class TRange, can represent anything that is a range between two values.

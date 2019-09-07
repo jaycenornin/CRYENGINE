@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HyperNodePainter_CommentBox.h"
@@ -35,7 +35,7 @@ struct SAssetsCommentBox
 	{
 	}
 
-	std::auto_ptr<Gdiplus::Font> m_fonts[NUM_FONTS];   // only fonts that are actually used are created, although there is room in the array for pointers to all of them
+	std::unique_ptr<Gdiplus::Font> m_fonts[NUM_FONTS];   // only fonts that are actually used are created, although there is room in the array for pointers to all of them
 	Gdiplus::StringFormat        sf;
 	Gdiplus::SolidBrush          blackBrush;
 };
@@ -223,4 +223,3 @@ void CHyperNodePainter_CommentBox::Paint(CHyperNode* pNode, CDisplayList* pList)
 	rectTemp.Y = rectFillArea.GetBottom() - borderThickness * 2;
 	pBorderDownRight->SetRect(rectTemp);
 }
-

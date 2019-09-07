@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef CRYFONT_ICRYFONT_H
 #define CRYFONT_ICRYFONT_H
@@ -112,12 +112,12 @@ struct STextDrawContext
 		, m_clipY(0)
 		, m_clipWidth(0)
 		, m_clipHeight(0)
+		, m_drawTextFlags(0)
 		, m_proportional(true)
 		, m_sizeIn800x600(true)
 		, m_clippingEnabled(false)
 		, m_framed(false)
 		, m_colorOverride(0, 0, 0, 0)
-		, m_drawTextFlags(0)
 	{
 	}
 

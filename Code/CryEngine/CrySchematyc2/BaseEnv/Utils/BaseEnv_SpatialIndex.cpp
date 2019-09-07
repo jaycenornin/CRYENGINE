@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "BaseEnv/Utils/BaseEnv_SpatialIndex.h"
@@ -656,7 +656,6 @@ namespace SchematycBaseEnv
 	{
 		CRY_PROFILE_FUNCTION(PROFILE_GAME);
 		// Send out all events in queue. N.B. This is performed after the update logic in order to reduce cache misses.
-		const uint32 volumeCount = m_volumes.size();
 		for(const SSpatialIndexEvent& event : eventQueue)
 		{
 			const SVolume& volume = m_volumes[VolumeIdxFromId(event.volumeIds[0])];

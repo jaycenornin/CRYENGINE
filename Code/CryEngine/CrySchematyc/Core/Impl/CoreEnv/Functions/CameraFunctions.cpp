@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -9,7 +9,9 @@
 
 #include <CrySchematyc/CoreAPI.h>
 #include <CrySchematyc/Env/IEnvRegistrar.h>
+#include <CryPhysics/physinterface.h>
 #include "CoreEnv/CoreEnv.h"
+#include <CryCore/StaticInstanceList.h>
 
 static void ReflectType(Schematyc::CTypeDesc<CCamera>& desc)
 {

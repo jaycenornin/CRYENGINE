@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "NodePinWidgetStyle.h"
@@ -13,7 +13,7 @@ CNodePinWidgetStyle::CNodePinWidgetStyle(const char* szStyleId, CNodeGraphViewSt
 
 	viewStyle.RegisterPinWidgetStyle(this);
 
-	SetColor(QColor(94, 94, 94));
+	SetColor(QColor(145, 145, 145));
 	SetIcon(QIcon("icons:Graph/Node_connection_circle.ico"));
 }
 
@@ -49,4 +49,3 @@ void CNodePinWidgetStyle::GeneratePixmaps()
 }
 
 }
-

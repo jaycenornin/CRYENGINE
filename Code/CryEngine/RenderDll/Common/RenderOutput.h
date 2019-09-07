@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -36,7 +36,7 @@ public:
 	bool                   RequiresTemporaryDepthBuffer() const { return m_bUseTempDepthBuffer; }
 
 	//! Retrieve display context associated with this RenderOutput.
-	CRenderDisplayContext* GetDisplayContext() const { return m_pDisplayContext; };
+	CRenderDisplayContext* GetDisplayContext() const { return m_pDisplayContext; }
 
 	void                   SetViewport(const SRenderViewport& viewport);
 	const SRenderViewport& GetViewport() const { return m_viewport; }

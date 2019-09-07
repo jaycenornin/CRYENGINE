@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -42,7 +42,7 @@ public:
 	EFlareType GetType() { return eFT_ImageSpaceShafts; }
 
 	void       InitEditorParamGroups(DynArray<FuncVariableGroup>& groups);
-	bool       PrepareOcclusion(CTexture* pDestRT, CTexture* pGoboTex, SamplerStateHandle samplerState);
+	bool       PrepareOcclusion(CTexture* pDestRT, CTexture* pGoboTex, SamplerStateHandle samplerState, const SPreparePrimitivesContext& context);
 	bool       PrepareShaftGen(CTexture* pDestRT, CTexture* pOcclTex, SamplerStateHandle samplerState);
 	bool       PreparePrimitives(const SPreparePrimitivesContext& context);
 	void       Load(IXmlNode* pNode);

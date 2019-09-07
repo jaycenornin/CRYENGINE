@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -32,6 +32,7 @@ public:
 	virtual void                             DeleteLater() override;
 	virtual int32                            GetType() const override         { return Type; }
 	virtual CAbstractNodeGraphViewModelItem* GetAbstractItem() const override { return m_pItem; }
+	virtual const CNodeGraphViewStyleItem&   GetStyle() const override;
 	// ~CNodeGraphViewGraphicsWidget
 
 	CAbstractConnectionItem* GetItem() const                         { return m_pItem; }
@@ -75,4 +76,3 @@ private:
 };
 
 }
-

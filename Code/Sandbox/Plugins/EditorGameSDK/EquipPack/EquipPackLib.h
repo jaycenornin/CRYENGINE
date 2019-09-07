@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <map>
 
 class CEquipPack;
+class XmlNodeRef;
 typedef std::map<string, CEquipPack*> TEquipPackMap;
 
 class CEquipPackLib
@@ -33,4 +34,3 @@ private:
 	static CEquipPackLib s_rootEquips;
 	TEquipPackMap        m_equipmentPacks;
 };
-

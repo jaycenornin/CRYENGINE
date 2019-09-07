@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Foundation.h"
@@ -66,7 +66,7 @@ namespace Schematyc2
 	//////////////////////////////////////////////////////////////////////////
 	const char* CFoundation::GetNamespace(size_t namespaceIdx) const
 	{
-		return namespaceIdx < m_namespaces.size() ? m_namespaces[namespaceIdx] : "";
+		return namespaceIdx < m_namespaces.size() ? m_namespaces[namespaceIdx].c_str() : "";
 	}
 
 	//////////////////////////////////////////////////////////////////////////

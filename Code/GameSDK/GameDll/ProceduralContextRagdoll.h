@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 -------------------------------------------------------------------------
@@ -23,6 +23,8 @@ History:
 #include <CryExtension/ClassWeaver.h>
 #include <CryExtension/ICryFactoryRegistryImpl.h>
 #include <CryExtension/RegFactoryNode.h>
+
+struct IActor;
 
 class CProceduralContextRagdoll
 	: public IProceduralContext

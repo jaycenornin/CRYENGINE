@@ -1,16 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
+
+#include "HyperGraphNode.h"
 
 #include <CryEntitySystem/IEntitySystem.h>
 #include <CryFlowGraph/IFlowSystem.h>
 
-#include "HyperGraphNode.h"
-
-class CFlowNode;
 class CEntityObject;
 
-//////////////////////////////////////////////////////////////////////////
 class CFlowNode : public CHyperNode
 {
 	friend class CFlowGraphManager;
@@ -92,4 +90,3 @@ protected:
 	std::map<TFlowPortId, bool>   m_portActivationAdditionalDebugInformationMap;
 	std::vector<TFlowPortId>      m_debugPortActivations;
 };
-

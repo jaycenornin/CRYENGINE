@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "TagComment.h"
@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(CTagComment, CEntityObject)
 //////////////////////////////////////////////////////////////////////////
 CTagComment::CTagComment()
 {
-	SetColor(RGB(255, 160, 0));
+	SetColor(ColorB(255, 160, 0));
 
 	m_entityClass = "Comment";
 
@@ -83,4 +83,3 @@ void CTagComment::Serialize(CObjectArchive& ar)
 		// Old "Comment" attribute will be gone once it's saved, and no special treatment is needed.
 	}
 }
-

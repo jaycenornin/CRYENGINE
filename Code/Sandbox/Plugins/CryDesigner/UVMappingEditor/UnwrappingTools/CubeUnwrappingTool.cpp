@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CubeUnwrappingTool.h"
@@ -82,4 +82,3 @@ void CubeUnwrappingTool::Enter()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_Cube, eUVMappingToolGroup_Unwrapping, "Cube", CubeUnwrappingTool,
                                     cube_unwrmapping, "runs cube unwrapping tool", "uvmapping.cube_unwrapping")
-

@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-#ifndef _STARS_H_
-#define _STARS_H_
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -23,5 +20,3 @@ private:
 	_smart_ptr<IRenderMesh> m_pStarMesh;
 	CShader*                m_pShader;
 };
-
-#endif  // #ifndef _STARS_H_

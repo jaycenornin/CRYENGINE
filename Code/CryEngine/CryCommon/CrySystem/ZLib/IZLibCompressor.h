@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -124,7 +124,7 @@ enum EZDeflateState
 struct IZLibDeflateStream
 {
 protected:
-	virtual ~IZLibDeflateStream() {};    //!< Use Release().
+	virtual ~IZLibDeflateStream() {}    //!< Use Release().
 
 public:
 	struct SStats
@@ -177,7 +177,7 @@ struct IZLibCompressor
 {
 protected:
 	//! Use Release().
-	virtual ~IZLibCompressor()  {};
+	virtual ~IZLibCompressor() {}
 
 public:
 	// <interfuscator:shuffle>

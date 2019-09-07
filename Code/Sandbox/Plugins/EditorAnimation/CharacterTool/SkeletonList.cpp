@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 
@@ -58,7 +58,6 @@ bool SkeletonList::Load()
 		XmlNodeRef xmlEntry = xmlRoot->getChild(i);
 
 		const char* name = xmlEntry->getAttr("name");
-		;
 		const char* file = xmlEntry->getAttr("file");
 		if (file[0] != '\0' && name[0] != '\0')
 		{

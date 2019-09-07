@@ -1,15 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
 #include <QStyledItemDelegate>
 #include <QSet>
 
-//! QAdvancedItemDelegate is meant to provide extra generic functionnality that we want to use in many QTreeViews. 
+//! QAdvancedItemDelegate is meant to provide extra generic functionality that we want to use in many QTreeViews. 
 //! It is designed to be used with QAdvancedTreeView.
 //! Check the behavior flags to discover all the features it provides
 //! Please add all generic behavior you need for your improved tree views so they can be reused easily, maintained properly and not duplicated.
-//TODO : Have a default behavior for all columns which can be overriden for specific ones, for convenience and easier setup. Also useful for models which dynamically add or remove columns.
+//TODO : Have a default behavior for all columns which can be overridden for specific ones, for convenience and easier setup. Also useful for models which dynamically add or remove columns.
 class EDITOR_COMMON_API QAdvancedItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
@@ -37,10 +37,12 @@ public:
 
 	bool IsDragChecking() { return m_dragChecking; }
 
+	//QStyledItemDelegate interface
+	bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index) override;
+
 protected:
 
 	//QStyledItemDelegate interface
-	bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index) override;
 	void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 	void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 
@@ -66,4 +68,3 @@ private:
 	QVariant                 m_checkValue;
 	QSet<QModelIndex>        m_checkedIndices;
 };
-

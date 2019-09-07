@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -17,8 +17,10 @@ protected:
 	virtual void        OnTrackViewEditorEvent(ETrackViewEditorEvent event) override {}
 	virtual const char* GetComponentTitle() const override                           { return "Sequence Toolbar"; }
 
+private:
+	void                OnAddSelectedEntitiesContextMenu();
+
 private slots:
 	void OnAddSelectedEntities();
 	void OnShowProperties();
 };
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AutoGeneratorMeshCreator.h"
@@ -27,7 +27,6 @@ namespace LODGenerator
 	bool CAutoGeneratorMeshCreator::Generate(const int index,const int nLodId)
 	{
 		CAutoGeneratorDataBase* pAutoGeneratorDataBase = &m_AutoGenerator->GetDataBase();
-		SAutoGeneratorParams& autoGeneratorParams = m_AutoGenerator->GetDataBase().GetParams();
 
 		std::vector<CMesh*> pLodMeshList;
 		bool bGenerated = false;

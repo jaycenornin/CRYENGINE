@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "ParticleParams.h"
 
@@ -285,9 +285,11 @@ STRUCT_INFO_BEGIN(ParticleParams::SMoveRelativeEmitter)
 STRUCT_INFO_END(ParticleParams::SMoveRelativeEmitter)
 
 STRUCT_INFO_BEGIN(ParticleParams::SPlatforms)
-	VAR_INFO(PCDX11)
+	VAR_INFO(PCDX)
 	VAR_INFO(PS4)
+	VAR_INFO(PS4Pro)
 	VAR_INFO(XBoxOne)
+	VAR_INFO(XBoxOneX)
 STRUCT_INFO_END(ParticleParams::SPlatforms)
 
 // *INDENT-ON* - disable uncrustify's indenting, as it doesn't make sense here.

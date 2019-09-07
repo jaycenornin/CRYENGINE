@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "DocTransitionGraph.h"
@@ -119,6 +119,7 @@ namespace Schematyc2
 	//////////////////////////////////////////////////////////////////////////
 	IScriptGraphNodePtr CDocTransitionGraph::CreateNode(const SGUID& guid, EScriptGraphNodeType type, const SGUID& contextGUID, const SGUID& refGUID, Vec2 pos)
 	{
+		MEMSTAT_CONTEXT(EMemStatContextType::Other, "Schematyc: Create Node(Doc Transition Graph)");
 		switch(type)
 		{
 		case EScriptGraphNodeType::Branch:

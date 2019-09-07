@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -14,20 +14,25 @@ class CMaterialType : public CAssetType
 public:
 	DECLARE_ASSET_TYPE_DESC(CMaterialType);
 
-	virtual const char*                       GetTypeName() const override { return "Material"; }
-	virtual const char*                       GetUiTypeName() const override { return QT_TR_NOOP("Material"); }
-	virtual const char* GetFileExtension() const override { return "mtl"; }
-	virtual bool CanBeEdited() const override { return true; }
-	virtual bool CanBeCreated() const override { return true; }
-	virtual bool HasThumbnail() const override { return true; }
-	virtual void GenerateThumbnail(const CAsset* pAsset) const override;
+	virtual const char*                       GetTypeName() const override       { return "Material"; }
+	virtual const char*                       GetUiTypeName() const override     { return QT_TR_NOOP("Material"); }
+	virtual const char*                       GetFileExtension() const override  { return "mtl"; }
+	virtual bool                              CanBeEdited() const override       { return true; }
+	virtual bool                              CanBeCreated() const override      { return true; }
+	virtual bool                              CanBeCopied() const                { return true; }
+	virtual bool                              HasThumbnail() const override      { return true; }
+	virtual QColor                            GetThumbnailColor() const override { return QColor(187, 191, 63); }
 	virtual std::vector<CItemModelAttribute*> GetDetails() const override;
 	virtual QVariant                          GetDetailValue(const CAsset* pAsset, const CItemModelAttribute* pDetail) const override;
+	virtual const char*                       GetEditorName() const { return "Material Editor"; }
 
-	virtual CAssetEditor* Edit(CAsset* pAsset) const override;
-	virtual bool OnCreate(CEditableAsset& editAsset, const void* pTypeSpecificParameter) const override;
+	virtual void                              GenerateThumbnail(const CAsset* pAsset) const override;
+	virtual CAssetEditor*                     Edit(CAsset* pAsset) const override;
+	virtual bool                              OnCreate(INewAsset& asset, const SCreateParams* pCreateParams) const override;
+	virtual bool                              RenameAsset(CAsset* pAsset, const char* szNewName) const override;
+	virtual void                              PreDeleteAssetFiles(const CAsset& asset) const;
 private:
-	virtual CryIcon GetIconInternal() const override;
+	virtual CryIcon                           GetIconInternal() const override;
 
 private:
 	mutable QScopedPointer<QPreviewWidget> m_pPreviewWidget;
@@ -36,4 +41,3 @@ private:
 	static CItemModelAttribute s_subMaterialCountAttribute;
 	static CItemModelAttribute s_textureCountAttribute;
 };
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "../UVMappingEditor.h"
@@ -51,4 +51,3 @@ void AlignTool::AlignSelectedVertices()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_Alignment, eUVMappingToolGroup_Manipulation, "Alignment", AlignTool,
                                     alignment, "runs alignment tool", "designer.alignment")
-

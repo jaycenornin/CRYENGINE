@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*=============================================================================
    D3DShaders.cpp : Direct3D specific effectors/shaders functions implementation.
@@ -9,7 +9,6 @@
    =============================================================================*/
 
 #include "StdAfx.h"
-#include "DriverD3D.h"
 #include "../Common/DevBuffer.h"
 #include <Cry3DEngine/I3DEngine.h>
 #include <CrySystem/Profilers/IStatoscope.h>

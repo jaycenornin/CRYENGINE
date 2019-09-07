@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 -------------------------------------------------------------------------
@@ -837,7 +837,6 @@ void CVehicleMovementStdWheeled::DebugDrawMovement(const float deltaTime)
       { 
         pGeom->DrawSphere(ws.ptContact, 0.05f, colRed);
 
-        float slip = ws.velSlip.len();        
         if (ws.bSlip>0)
         { 
           pGeom->DrawLine(wp.pos, colRed, wp.pos+ws.velSlip, colRed);

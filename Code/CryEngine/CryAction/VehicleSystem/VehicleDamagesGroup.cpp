@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -307,9 +307,7 @@ bool CVehicleDamagesGroup::IsPotentiallyFatal()
 
 		for (TVehicleDamageBehaviorVector::iterator behaviorIte = damageBehaviors.begin(); behaviorIte != damageBehaviors.end(); ++behaviorIte)
 		{
-			//IVehicleDamageBehavior* pBehavio
-			if (CVehicleDamageBehaviorDestroy* pBehaviorDestroy =
-			      CAST_VEHICLEOBJECT(CVehicleDamageBehaviorDestroy, (*behaviorIte)))
+			if (CAST_VEHICLEOBJECT(CVehicleDamageBehaviorDestroy, (*behaviorIte)) != nullptr)
 			{
 				return true;
 			}

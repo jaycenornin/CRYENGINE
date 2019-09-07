@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   UISettings.cpp
@@ -32,7 +32,7 @@ static float g_sfx = 1.0f;
 ////////////////////////////////////////////////////////////////////////////
 static void SetVolume(CryAudio::ControlId id, float volume)
 {
-	gEnv->pAudioSystem->SetParameter(id, volume);
+	gEnv->pAudioSystem->SetParameterGlobally(id, volume);
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CharacterToolSystem.h"
@@ -149,13 +149,12 @@ void SkeletonContent::OnNewAnimEvents(System& system, const string& skeletonPath
 		return;
 	}
 
-	char realPath[ICryPak::g_nMaxPath];
-	gEnv->pCryPak->AdjustFileName(relativePath.c_str(), realPath, ICryPak::FLAGS_FOR_WRITING);
-
+	CryPathString realPath;
+	gEnv->pCryPak->AdjustFileName(relativePath, realPath, ICryPak::FLAGS_FOR_WRITING);
 	// Create folders on disk if needed
 	{
-		string path;
-		string filename;
+		CryPathString path;
+		CryPathString filename;
 		PathUtil::Split(realPath, path, filename);
 		QDir().mkpath(QString::fromLocal8Bit(path.c_str()));
 	}
@@ -251,4 +250,3 @@ void SkeletonContent::ComposeCompleteAnimationSetFilter(AnimationSetFilter* outF
 }
 
 }
-

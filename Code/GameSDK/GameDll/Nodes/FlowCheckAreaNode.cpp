@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -118,7 +118,7 @@ public:
 			break;
 
 		default:
-			CRY_ASSERT_MESSAGE(false, "CFlowNode_IsInArea::OnEntityEvent Received unhandled event");
+			CRY_ASSERT(false, "CFlowNode_IsInArea::OnEntityEvent Received unhandled event");
 			break;
 		}
 	}

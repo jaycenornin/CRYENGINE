@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "LibRegistry.h"
@@ -129,7 +129,7 @@ namespace Schematyc2
 			TLibMap::iterator	iLib = m_libs.find(libName);
 			if(iLib != m_libs.end())
 			{
-				if(iLib->second.unique())
+				if(iLib->second.use_count() == 1) // Not Thread-Safe check!
 				{
 					ReleaseLib(iLib);
 				}

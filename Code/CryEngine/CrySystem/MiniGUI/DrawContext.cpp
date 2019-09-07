@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   DrawContext.cpp
@@ -10,6 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include <StdAfx.h>
+#include <CryMath/Cry_Math.h>
 #include "DrawContext.h"
 #include <CrySystem/ISystem.h>
 #include <CryRenderer/IRenderer.h>
@@ -96,8 +97,6 @@ void CDrawContext::StopDrawing()
 	// Restore old flags that where set before our draw context.
 	m_pAuxRender->SetRenderFlags(m_prevRenderFlags);
 
-	int width  = gEnv->pRenderer->GetOverlayWidth();
-	int height = gEnv->pRenderer->GetOverlayHeight();
 	gEnv->pRenderer->GetIRenderAuxGeom()->SetOrthographicProjection(false);
 }
 

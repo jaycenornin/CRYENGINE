@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -18,7 +18,7 @@
 
 #include "MathHelpers.h"
 
-#include <CryCore/Platform/CryWindows.h>   // HMODULE, LoadLibraryA()
+#include <CryCore/Platform/CryLibrary.h>
 
 
 class CPhysWorldLoader
@@ -34,7 +34,7 @@ public:
 
 		RCLog("Loading %s...", pName);
 
-		m_hPhysics = ::LoadLibraryA(pName);
+		m_hPhysics = CryLoadLibrary(pName);
 
 		if (!m_hPhysics)
 		{
@@ -57,7 +57,7 @@ public:
 		RCLog("  Loaded %s", pName);
 
 		IPhysicalWorld *(*pfnCreatePhysicalWorld)(void *pSystem) =
-			(IPhysicalWorld*(*)(void*))::GetProcAddress(m_hPhysics, "CreatePhysicalWorld");
+		    (IPhysicalWorld*(*)(void*))CryGetProcAddress(m_hPhysics, "CreatePhysicalWorld");
 
 		if (!pfnCreatePhysicalWorld)
 		{
@@ -88,9 +88,7 @@ public:
 			const char* const pName = GetLibName();
 
 			RCLog("Unloading %s...", pName);
-
-			::FreeLibrary(m_hPhysics);
-
+			CryFreeLibrary(m_hPhysics);
 			RCLog("  Unloaded %s", pName);
 		}
 	}
@@ -103,7 +101,7 @@ public:
 private:
 	static const char* GetLibName()
 	{
-		return "CryPhysicsRC.dll";
+		return CryLibraryDefName("CryPhysicsRC");
 	}
 
 private:

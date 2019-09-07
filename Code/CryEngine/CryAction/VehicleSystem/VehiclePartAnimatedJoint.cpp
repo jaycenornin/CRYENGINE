@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -394,7 +394,7 @@ void CVehiclePartAnimatedJoint::SerMatrix(TSerialize ser, Matrix34& mat)
 //------------------------------------------------------------------------
 void CVehiclePartAnimatedJoint::Serialize(TSerialize ser, EEntityAspects aspects)
 {
-	MEMSTAT_CONTEXT(EMemStatContextTypes::MSC_Other, 0, "Vehicle part animated joint serialization");
+	MEMSTAT_CONTEXT(EMemStatContextType::Other, "Vehicle part animated joint serialization");
 
 	CVehiclePartBase::Serialize(ser, aspects);
 

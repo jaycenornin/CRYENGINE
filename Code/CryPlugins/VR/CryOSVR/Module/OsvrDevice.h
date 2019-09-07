@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -60,7 +60,7 @@ public:
 	//IOsvrDevice
 	virtual bool InitializeRenderer(void* d3dDevice, void* d3dContext);
 	virtual bool RegisterTextureSwapSet(TextureSwapSet* swapSet);
-	virtual bool PresentTextureSet(int textureSetIndex);
+	virtual bool PresentTextureSet(uint64 frameId, int textureSetIndex);
 	virtual void ShutdownRenderer();
 
 	//ISystemEventListener

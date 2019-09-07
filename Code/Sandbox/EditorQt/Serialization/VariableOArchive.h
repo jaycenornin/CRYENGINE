@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "Util/Variable.h"
 #include "Serialization.h"
+#include <CryEntitySystem/IEntityBasicTypes.h>
 
 namespace Serialization
 {
@@ -78,4 +79,3 @@ private:
 	EntityId            m_animationEntityId;
 };
 }
-

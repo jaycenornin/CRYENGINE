@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AssetImporter.h"
@@ -6,7 +6,8 @@
 #include "Asset.h"
 #include "AssetImportContext.h"
 #include "AssetType.h"
-#include "FilePathUtil.h"
+#include "PathUtils.h"
+
 #include <CryString/CryPath.h>
 
 #include <ThreadingUtils.h>
@@ -63,4 +64,3 @@ void CAssetImporter::ReimportAsset(CAsset* pAsset)
 	// If we cannot assume this anymore, CAssetManager::MergeAssets() should be called at the end
 	// of this method.
 }
-

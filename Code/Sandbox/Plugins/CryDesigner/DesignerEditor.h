@@ -1,26 +1,16 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "Core/Model.h"
-#include "Core/ModelCompiler.h"
-#include "Objects/DesignerObject.h"
 #include "Tools/ToolCommon.h"
-#include "ToolFactory.h"
-#include "IDataBaseManager.h"
-#include "Core/PolygonMesh.h"
-#include "DesignerSession.h"
-#include "Gizmos/ITransformManipulator.h"
 
-struct IDataBaseItem;
-enum EDataBaseItemEvent;
+#include <Gizmos/ITransformManipulator.h>
 
 namespace Designer
 {
-class ElementSet;
 class BaseTool;
-class Model;
-class ExcludedEdgeManager;
+class ElementSet;
+
 
 //! DesignerEditor class plays a role of managing the global resources(CBaseObject, Designer::Element , main panels and designer tools etc),
 //! and dispatching and receiving windows, editor and designer tool messages or vice versa.
@@ -41,17 +31,12 @@ public:
 	  uint32 nRepCnt,
 	  uint32 nFlags) override;
 
-	void Display(DisplayContext& dc) override;
+	void Display(SDisplayContext& dc) override;
 	bool MouseCallback(
 	  CViewport* view,
 	  EMouseEvent event,
 	  CPoint& point, int flags) override;
-	void OnManipulatorDrag(
-	  IDisplayViewport* view,
-	  ITransformManipulator* pManipulator,
-	  const Vec2i& p0,
-	  const Vec3& value,
-	  int nFlags);
+	void OnManipulatorDrag(IDisplayViewport* view, ITransformManipulator* pManipulator, const SDragData& dragData);
 	void OnManipulatorBegin(
 	  IDisplayViewport* view,
 	  ITransformManipulator* pManipulator,
@@ -63,8 +48,6 @@ public:
 
 	bool      IsDisplayGrid() override;
 	bool      IsNeedMoveTool() override  { return true; }
-	bool      IsAllowTabKey() override   { return true; }
-	bool      IsExclusiveMode() override { return gDesignerSettings.bExclusiveMode; }
 	void      OnEditorNotifyEvent(EEditorNotifyEvent event);
 
 	void      SelectAllElements();
@@ -108,14 +91,14 @@ public:
 	BrushRay GetRay() const;
 
 	// ITransformManipulatorOwner
-	virtual bool GetManipulatorMatrix(RefCoordSys coordSys, Matrix34& tm);
+	virtual bool GetManipulatorMatrix(Matrix34& tm);
 	virtual void GetManipulatorPosition(Vec3& position);
 	virtual bool IsManipulatorVisible();
 
 protected:
 	virtual ~DesignerEditor();
 	// Delete itself.
-	void DeleteThis() { delete this; };
+	void DeleteThis() { delete this; }
 
 	bool SetSelectionDesignerMode(EDesignerTool tool, bool bAllowMultipleMode = true);
 
@@ -155,4 +138,3 @@ public:
 };
 
 }
-

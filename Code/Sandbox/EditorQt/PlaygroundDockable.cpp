@@ -1,8 +1,6 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 #include "PlaygroundDockable.h"
-
-#include "QtViewPane.h"
 
 #include <QLabel>
 
@@ -18,9 +16,3 @@ CPlaygroundDockable::CPlaygroundDockable()
 	someTestWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SetContent(someTestWidget);
 }
-
-CPlaygroundDockable::~CPlaygroundDockable()
-{
-
-}
-

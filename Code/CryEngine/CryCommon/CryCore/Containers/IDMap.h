@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-#ifndef __IDMap_h__
-#define __IDMap_h__
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -420,5 +417,3 @@ id_map<IDType, ValueType, IndexType, CounterType >::operator[](id_type id)
 {
 	return get(id);
 }
-
-#endif

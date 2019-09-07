@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -29,7 +29,7 @@ namespace GameSerialization
 
 	public:
 
-		void Serialize(Serialization::IArchive& archive) {}; // Do nothing
+		void Serialize(Serialization::IArchive& archive) {} // Do nothing
 
 		const char* szValue;
 		const char* szType;

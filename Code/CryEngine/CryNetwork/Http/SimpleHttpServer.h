@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __SIMPLEHTTPSERVER_H__
 #define __SIMPLEHTTPSERVER_H__
@@ -221,7 +221,7 @@ private:
 #if defined(HTTP_WEBSOCKETS)
 	static const int    HEAP_RESERVE_SIZE = 2048;
 	static const int    HEAP_MAX_SIZE = 4 * 1024 * 1024;
-	IGeneralMemoryHeap* m_pWsAllocHeap;
+	_smart_ptr<IGeneralMemoryHeap> m_pWsAllocHeap;
 #endif
 
 	static CSimpleHttpServer s_singleton;

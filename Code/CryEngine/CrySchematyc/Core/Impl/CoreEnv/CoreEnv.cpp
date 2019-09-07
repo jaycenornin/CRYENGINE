@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CoreEnv.h"
@@ -6,6 +6,7 @@
 #include <CrySchematyc/Env/IEnvRegistrar.h>
 
 #include <CrySchematyc/Env/Elements/EnvModule.h>
+#include <CryCore/StaticInstanceList.h>
 
 #include "CoreEnvSignals.h"
 

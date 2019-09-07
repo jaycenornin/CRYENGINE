@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "PathHelpers.h"
 
-class ICryXML;
+struct ICryXML;
 
 inline void UnifyPath(string& str)
 {
@@ -74,8 +74,6 @@ public:
 	bool m_bAdditiveAnimation;
 
 	bool m_bNewFormat;
-
-	string m_skeletonName;
 
 	union 
 	{
@@ -156,9 +154,9 @@ struct SAnimationDefinition
 	}
 
 	bool FindIdentical(const string& name, bool checkLen = false );
-	const string& GetAnimationPath() const { return m_AnimationPath; };
-	const string& GetAnimationPathWithoutSlash() const { return m_AnimationPathWithoutSlash; };
-	const string& GetUnifiedAnimationPath() const { return m_UnifiedAnimationPath; };
+	const string& GetAnimationPath() const { return m_AnimationPath; }
+	const string& GetAnimationPathWithoutSlash() const { return m_AnimationPathWithoutSlash; }
+	const string& GetUnifiedAnimationPath() const { return m_UnifiedAnimationPath; }
 
 
 	static void SetOverrideAnimationSettingsFilename(const string& animationSettingsFilename);

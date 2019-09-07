@@ -1,7 +1,7 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
-#include "EditTool.h"
+#include "LevelEditor/Tools/EditTool.h"
 
 #include <CrySandbox/CrySignal.h>
 #include "Qt/Widgets/QEditToolButton.h"
@@ -22,11 +22,11 @@ public:
 	CVegetationSelectTool();
 
 	virtual string GetDisplayName() const override { return "Select Vegetation"; }
-	virtual void   Display(DisplayContext& dc);
+	virtual void   Display(SDisplayContext& dc);
 
-	// Overides from CEditTool
+	// Overrides from CEditTool
 	virtual bool MouseCallback(CViewport* pView, EMouseEvent event, CPoint& point, int flags);
-	virtual void OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const Vec2i& point0, const Vec3& value, int nFlags);
+	virtual void OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData);
 
 	// Key down.
 	virtual bool                             OnKeyDown(CViewport* pView, uint32 key, uint32 repCnt, uint32 flags);
@@ -40,7 +40,7 @@ public:
 	int                                      GetCountSelectedInstances() const         { return m_selectedThings.size(); }
 	QVector<CVegetationInstance*>            GetSelectedInstances() const;
 
-	void                                     GetManipulatorPosition(Vec3& position) override {};
+	void                                     GetManipulatorPosition(Vec3& position) override {}
 	bool                                     IsManipulatorVisible() override;
 
 	static QEditToolButtonPanel::SButtonInfo CreateSelectToolButtonInfo();
@@ -98,4 +98,3 @@ private:
 	CVegetationMap*            m_pVegetationMap;
 	ITransformManipulator*     m_pManipulator;
 };
-

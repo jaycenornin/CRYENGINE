@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 using System;
 using System.Globalization;
@@ -44,6 +44,7 @@ namespace CryEngine
 		}
 
 		public Vector3(Vector2 v) : this(v.x, v.y, 0.0f) { }
+		public Vector3(Vector2 v, float z) : this(v.x, v.y, z) { }
 		public Vector3(Vector4 v) : this(v.x, v.y, v.z) { }
 
 		#region Overrides

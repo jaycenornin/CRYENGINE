@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SelectConnectedTool.h"
@@ -35,4 +35,3 @@ void SelectConnectedTool::SelectConnectedPolygons(MainContext& mc)
 
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Connected, eToolGroup_Selection, "Connected", SelectConnectedTool,
                                    connectedselection, "runs connected selection tool", "designer.connectedselection")
-

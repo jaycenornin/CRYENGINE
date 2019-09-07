@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -15,9 +15,11 @@ namespace UQS
 			// nothing
 		}
 
-		void CQuery_Fallbacks::HandleChildQueryFinishedWithSuccess(const CQueryID& childQueryID, QueryResultSetUniquePtr&& pResultSet)
+		void CQuery_Fallbacks::HandleChildQueryFinishedWithSuccess(CQueryBase& childQuery)
 		{
-			assert(pResultSet != nullptr);
+			QueryResultSetUniquePtr pResultSet = childQuery.ClaimResultSet();
+
+			CRY_ASSERT(pResultSet != nullptr);
 
 			if (pResultSet->GetResultCount() == 0 && HasMoreChildrenLeftToInstantiate())
 			{
@@ -32,9 +34,7 @@ namespace UQS
 				m_pResultSet = std::move(pResultSet);
 
 				// transfer all item-monitors from the child to ourself to keep monitoring until a higher-level query decides differently
-				CQueryBase* pChildQuery = g_pHub->GetQueryManager().FindQueryByQueryID(childQueryID);
-				assert(pChildQuery);
-				pChildQuery->TransferAllItemMonitorsToOtherQuery(*this);
+				childQuery.TransferAllItemMonitorsToOtherQuery(*this);
 			}
 		}
 

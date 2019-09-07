@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -46,6 +46,7 @@ class CAssetNodeBase : public CryGraphEditor::CAbstractNodeItem
 {
 public:
 	CAssetNodeBase(CryGraphEditor::CNodeGraphViewModel& viewModel, CAsset* pAsset, const CAssetType* pAssetType, const string& m_path);
+	virtual ~CAssetNodeBase();
 
 	bool                                    CanBeEdited() const;
 	void                                    EditAsset() const;
@@ -66,5 +67,7 @@ protected:
 	CAsset* const           m_pAsset;
 	const CAssetType* const m_pAssetType;
 	string                  m_path;
-};
 
+private:
+	CryGraphEditor::CNodeEditorData* m_pData;
+};

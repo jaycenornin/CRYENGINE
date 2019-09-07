@@ -1,20 +1,17 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PlaneTranslateGizmo.h"
-#include "IDisplayViewport.h"
-#include "Grid.h"
+
+#include "Preferences/SnappingPreferences.h"
 #include "Gizmos/AxisHelper.h"
+#include "IDisplayViewport.h"
 
 CPlaneTranslateGizmo::CPlaneTranslateGizmo()
 	: m_color(1.0f, 1.0f, 0.0f)
 	, m_scale(1.0f)
 	, m_xOffset(0.0f)
 	, m_yOffset(0.0f)
-{
-}
-
-CPlaneTranslateGizmo::~CPlaneTranslateGizmo()
 {
 }
 
@@ -55,7 +52,7 @@ void CPlaneTranslateGizmo::SetYOffset(float offset)
 	m_yOffset = offset;
 }
 
-void CPlaneTranslateGizmo::DrawPlane(DisplayContext& dc, Vec3 position)
+void CPlaneTranslateGizmo::DrawPlane(SDisplayContext& dc, Vec3 position)
 {
 	IDisplayViewport* view = dc.view;
 
@@ -91,7 +88,7 @@ void CPlaneTranslateGizmo::DrawPlane(DisplayContext& dc, Vec3 position)
 	dc.SetState(prevflags);
 }
 
-void CPlaneTranslateGizmo::Display(DisplayContext& dc)
+void CPlaneTranslateGizmo::Display(SDisplayContext& dc)
 {
 	if (GetFlag(EGIZMO_INTERACTING))
 	{
@@ -126,6 +123,7 @@ bool CPlaneTranslateGizmo::MouseCallback(IDisplayViewport* view, EMouseEvent eve
 		{
 		case eMouseMove:
 			{
+				const Vec3 prevOffset = m_interactionOffset;
 				Vec3 raySrc, rayDir;
 				view->ViewToWorldRay(point, raySrc, rayDir);
 
@@ -137,11 +135,11 @@ bool CPlaneTranslateGizmo::MouseCallback(IDisplayViewport* view, EMouseEvent eve
 
 				// find the world space vector on the plane
 				m_interactionOffset = raySrc + fac * rayDir - m_initOffset;
-				if (gSnappingPreferences.gridSnappingEnabled())
-				{
-					m_interactionOffset = gSnappingPreferences.Snap(m_interactionOffset);
-				}
-				signalDragging(view, this, m_interactionOffset, point, nFlags);
+				m_interactionOffset = gSnappingPreferences.SnapPlane(m_interactionOffset, m_xVector, m_yVector);
+
+				const Vec3 deltaOffset = m_interactionOffset - prevOffset;
+
+				signalDragging(view, this, m_interactionOffset, deltaOffset, point, nFlags);
 				break;
 			}
 
@@ -228,4 +226,3 @@ bool CPlaneTranslateGizmo::HitTest(HitContext& hc)
 
 	return false;
 }
-

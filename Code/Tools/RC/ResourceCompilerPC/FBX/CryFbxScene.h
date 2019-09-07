@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -33,6 +33,8 @@ public:
 	virtual int GetAnimationStackCount() const override;
 	virtual const Scene::SAnimation* GetAnimationStack(int idx) const override;
 	virtual bool SetCurrentAnimationStack(int idx) override;
+
+	virtual float EvaluateMorphTargetWeight(int meshIdx, const char* szMorphTarget, int animationFrameIndex) override;
 	// -----------------------------------------------------------------------
 
 	void Reset();

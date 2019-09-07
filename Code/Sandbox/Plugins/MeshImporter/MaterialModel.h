@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "QtCommon.h"
@@ -51,12 +51,7 @@ public:
 
 	void                   OnDataSerialized(CMaterialElement* pElement, bool bChanged);
 
-	int                    GetSortColumn()
-	{
-		return eColumnType_Name;
-	}
-
-	CMaterialElement* FindElement(const QString& name);
+	CMaterialElement*      FindElement(const QString& name);
 
 	typedef std::vector<std::pair<int, QString>> TKnownMaterials;
 
@@ -102,11 +97,6 @@ public:
 		setSortCaseSensitivity(Qt::CaseInsensitive);
 		setSourceModel(m_pModel);
 		setSortRole(CMaterialModel::eItemDataRole_Comparison);
-
-		connect(m_pModel, &QAbstractItemModel::dataChanged, [this](const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles)
-		{
-			sort(m_pModel->GetSortColumn());
-		});
 	}
 
 	~CSortedMaterialModel()
@@ -150,4 +140,3 @@ protected:
 private:
 	CMaterialModel* const m_pModel;
 };
-

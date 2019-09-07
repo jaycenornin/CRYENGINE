@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -141,7 +141,7 @@ class CShader : public CDeviceObject
 {
 public:
 	// Create new shader using DX11 reflection interface
-	static CShader* CreateFromD3D11(CDevice* device, const D3D12_SHADER_BYTECODE& byteCode);
+	static CShader* Create(CDevice* device, const D3D12_SHADER_BYTECODE& byteCode);
 
 	CShader(CDevice* device);
 

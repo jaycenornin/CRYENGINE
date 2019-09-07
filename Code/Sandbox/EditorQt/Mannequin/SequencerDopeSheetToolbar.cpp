@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SequencerDopeSheetToolbar.h"
@@ -51,4 +51,3 @@ void CSequencerDopeSheetToolbar::SetTime(float fTime, float fFps)
 	sText.Format("%02d:%02d:%02d (%02d)", nMins, nSecs, nMillis, nFrames);
 	m_timeWindow.SetWindowText(sText);
 }
-

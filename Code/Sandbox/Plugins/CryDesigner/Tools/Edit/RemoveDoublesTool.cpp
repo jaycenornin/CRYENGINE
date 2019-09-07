@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "RemoveDoublesTool.h"
@@ -99,4 +99,3 @@ bool RemoveDoublesTool::HasVertexInList(const std::vector<BrushVec3>& vList, con
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_RemoveDoubles, eToolGroup_Edit, "Remove Doubles", RemoveDoublesTool,
                                                            removedoubles, "runs remove doubles tool", "designer.removedoubles")
-

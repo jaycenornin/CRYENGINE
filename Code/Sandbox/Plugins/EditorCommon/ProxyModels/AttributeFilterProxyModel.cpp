@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AttributeFilterProxyModel.h"
 #include "ProxyModels/ItemModelAttribute.h"
 #include <CrySandbox/CrySignal.h>
+#include <CryCore/StlUtils.h>
 
 QAttributeFilterProxyModel::QAttributeFilterProxyModel(BehaviorFlags behavior /*= AcceptIfChildMatches*/, QObject* pParent /*= nullptr*/, int role /*= Attributes::s_defaultRole*/)
 	: m_role(role)
@@ -87,7 +88,7 @@ bool QAttributeFilterProxyModel::rowMatchesFilter(int sourceRow, const QModelInd
 				QModelIndex index = sourceModel()->index(sourceRow, m_attributes.at(filter->GetAttribute()), sourceParent);
 				if (index.isValid())
 				{
-					const int role = filter->GetAttribute()->GetType() == eAttributeType_Boolean ? Qt::CheckStateRole : Qt::DisplayRole;
+					const int role = filter->GetAttribute()->GetFilterRole();
 					QVariant val = sourceModel()->data(index, role);
 					if (!filter->Match(val))
 					{
@@ -135,4 +136,3 @@ void QAttributeFilterProxyModel::OnColumnsMoved(const QModelIndex& parent, int s
 {
 	ResetAttributes();
 }
-

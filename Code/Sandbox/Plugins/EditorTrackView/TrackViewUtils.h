@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-// CryEngine Header File.
-// Copyright (C), Crytek, 1999-2015.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -46,4 +43,3 @@ struct SSequenceData
 	SCurveEditorContent                m_curveEditorContent;
 	std::map<CryGUID, STimelineTrack*> m_uIdToTimelineTrackMap;
 };
-

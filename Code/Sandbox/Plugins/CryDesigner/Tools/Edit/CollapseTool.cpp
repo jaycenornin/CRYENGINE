@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CollapseTool.h"
@@ -98,4 +98,3 @@ void CollapseTool::Enter()
 
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Collapse, eToolGroup_Edit, "Collapse", CollapseTool,
                                    collapse, "runs collapse tool", "designer.collapse");
-

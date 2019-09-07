@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -26,4 +26,3 @@ private:
 // Returns true if window should be closed (Yes/No). False for Cancel.
 // selectedFiles contains list of files that should be saved (empty in No case).
 bool EDITOR_COMMON_API UnsavedChangesDialog(QWidget* parent, DynArray<string>* selectedFiles, const DynArray<string>& files);
-

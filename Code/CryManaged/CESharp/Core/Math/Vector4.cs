@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 using System;
 using System.Globalization;
@@ -36,6 +36,9 @@ namespace CryEngine
 			_z = zCoord;
 			_w = wCoord;
 		}
+
+		public Vector4(Vector2 v, float z, float w) : this(v.x, v.y, z, w) { }
+		public Vector4(Vector3 v, float w) : this(v.x, v.y, v.z, w) { }
 
 		#region Overrides
 		public override int GetHashCode()

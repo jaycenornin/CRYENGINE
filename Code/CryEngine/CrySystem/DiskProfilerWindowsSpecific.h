@@ -1,8 +1,6 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
-
-#include "StdAfx.h"
 
 #include "Log.h"
 
@@ -10,6 +8,7 @@
 
 #if CRY_PLATFORM_WINDOWS
 
+#include <CryCore/Platform/CryWindows.h>
 #include <winioctl.h>
 
 class CDiskProfilerWindowsSpecific

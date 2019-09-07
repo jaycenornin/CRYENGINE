@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*
    quadtree class implementations for node and leaf
@@ -284,4 +284,3 @@ inline void CQuadTree<TLeafContent, TMaxCellElems, TPosType, TIndexType, TUseRad
 //	return ((leafIndex & ~IS_LEAF_INDEX) != 0 && (leafIndex & IS_LEAF_INDEX) == 0);//return true if index is not 0 and leaf bit is not set
 //}
 };//NQT
-

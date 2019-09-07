@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -62,7 +62,7 @@ public:
 
 	inline const char* GetName(uint32 optionIdx) const
 	{
-		return optionIdx < (uint32)m_names.size() ? m_names[optionIdx] : "";
+		return optionIdx < (uint32)m_names.size() ? m_names[optionIdx].c_str() : "";
 	}
 
 protected:

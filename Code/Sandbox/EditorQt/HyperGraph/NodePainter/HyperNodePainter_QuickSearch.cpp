@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HyperNodePainter_QuickSearch.h"
@@ -108,4 +108,3 @@ void CHyperNodePainter_QuickSearch::Paint(CHyperNode* pNode, CDisplayList* pList
 	end.Y = 14.0f;
 	pList->AddLine(start, end, &pAssets->penBorder);
 }
-

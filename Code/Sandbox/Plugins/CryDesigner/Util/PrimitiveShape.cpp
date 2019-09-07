@@ -1,11 +1,7 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PrimitiveShape.h"
-#include "SurfaceInfoPicker.h"
-#include "ViewManager.h"
-#include "Core/Helper.h"
-#include "Core/PolygonDecomposer.h"
 
 namespace Designer
 {
@@ -365,4 +361,3 @@ void PrimitiveShape::CreateCircle(const BrushVec3& mins, const BrushVec3& maxs, 
 	}
 }
 }
-

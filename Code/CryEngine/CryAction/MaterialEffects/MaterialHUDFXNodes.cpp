@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   MaterialHUDFXNodes.cpp
@@ -449,7 +449,7 @@ public:
 		{
 			if (IsPortActive(pActInfo, EIP_Enable))
 			{
-				bool bResult = SetFSCommandHandler(pActInfo->pEntity, true);
+				SetFSCommandHandler(pActInfo->pEntity, true);
 				m_actInfo = *pActInfo;
 				m_bActive = true;
 			}

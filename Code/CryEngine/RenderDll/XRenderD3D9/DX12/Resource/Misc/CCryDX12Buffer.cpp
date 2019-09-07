@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CCryDX12Buffer.hpp"
@@ -23,7 +23,7 @@ CCryDX12Buffer* CCryDX12Buffer::Create(CCryDX12Device* pDevice)
 
 CCryDX12Buffer* CCryDX12Buffer::Create(CCryDX12Device* pDevice, ID3D12Resource* pResource, D3D12_RESOURCE_STATES initialState)
 {
-	DX12_ASSERT(pResource);
+	DX12_ASSERT(pResource, "CreateBuffer() called without resource!");
 
 	D3D12_RESOURCE_DESC desc12 = pResource->GetDesc();
 
@@ -190,7 +190,7 @@ CCryDX12Buffer* CCryDX12Buffer::Create(CCryDX12Device* pDevice, const D3D11_BUFF
 
 	if ((hresult != S_OK) || !resource)
 	{
-		DX12_ASSERT(0, "Could not create buffer resource!");
+		DX12_ERROR("Could not create buffer resource!");
 		return NULL;
 	}
 

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   FlowHUDNodes.cpp
@@ -15,6 +15,7 @@
 #include "FlowFrameworkBaseNode.h"
 
 #include <CryString/StringUtils.h>
+#include <CryRenderer/IRenderAuxGeom.h>
 #include "FlowSystem/FlowSystemCVars.h"
 
 // display a debug message in the HUD

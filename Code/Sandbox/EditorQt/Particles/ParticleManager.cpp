@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ParticleManager.h"
@@ -174,8 +174,7 @@ void CParticleManager::DeleteItem(IDataBaseItem* pItem)
 }
 
 #ifndef _LIB
-#include <CryCore/Common_TypeInfo.h>
+	#include <CryCore/Common_TypeInfo.h>
 // Manually instantiate templates as needed here.
-STRUCT_INFO_T_INSTANTIATE(Color_tpl, <float>)
+STRUCT_INFO_T_INSTANTIATE(Color_tpl, <float> )
 #endif
-

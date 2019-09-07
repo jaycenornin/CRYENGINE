@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "IResCompiler.h"
@@ -35,21 +35,21 @@ namespace
 {
 	ICryXML* LoadICryXML()
 	{
-		HMODULE hXMLLibrary = LoadLibraryA("CryXML.dll");
+		HMODULE hXMLLibrary = CryLoadLibraryDefName("CryXML");
 		if (NULL == hXMLLibrary)
 		{
 			char szCurrentDirectory[512];
 			GetCurrentDirectory(sizeof(szCurrentDirectory),szCurrentDirectory);
 
-			RCLogError("Unable to load xml library (CryXML.dll)");
-			RCLogError("  Current Directory: %s",szCurrentDirectory);		// useful to track down errors
+			RCLogError("Unable to load xml library (CryXML" CrySharedLibraryExtension ")");
+			RCLogError("  Current Directory: %s", szCurrentDirectory);		// useful to track down errors
 			return 0;
 		}
 
-		FnGetICryXML pfnGetICryXML = (FnGetICryXML)GetProcAddress(hXMLLibrary, "GetICryXML");
+		FnGetICryXML pfnGetICryXML = (FnGetICryXML)CryGetProcAddress(hXMLLibrary, "GetICryXML");
 		if (pfnGetICryXML == 0)
 		{
-			RCLogError("Unable to load xml library (CryXML.dll) - cannot find exported function GetICryXML().");
+			RCLogError("Unable to load xml library (CryXML" CrySharedLibraryExtension ") - cannot find exported function GetICryXML().");
 			return 0;
 		}
 

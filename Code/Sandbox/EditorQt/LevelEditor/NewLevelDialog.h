@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "Controls/EditorDialog.h"
@@ -14,10 +14,9 @@ public:
 	explicit CNewLevelDialog();
 	~CNewLevelDialog();
 
-	CLevelType::SCreateParams GetResult() const;
+	CLevelType::SLevelCreateParams GetResult() const;
 
 private:
 	struct Implementation;
 	std::unique_ptr<Implementation> p;
 };
-

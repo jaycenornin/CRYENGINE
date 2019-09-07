@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "QScrollableBox.h"
@@ -80,4 +80,3 @@ int QScrollableBox::indexOf(QWidget* w)
 {
 	return m_layout->indexOf(w);
 }
-

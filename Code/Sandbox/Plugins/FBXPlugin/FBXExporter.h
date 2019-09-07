@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 #include <IExportManager.h>
@@ -45,4 +45,3 @@ private:
 	std::map<std::string, FbxSurfaceMaterial*> m_materials;
 	std::map<const SExportMesh*, int>          m_meshMaterialIndices;
 };
-

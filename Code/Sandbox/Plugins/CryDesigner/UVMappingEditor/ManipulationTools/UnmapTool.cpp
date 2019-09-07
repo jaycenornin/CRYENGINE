@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "UnmapTool.h"
@@ -76,4 +76,3 @@ void UnmapTool::UnmapSelectedElements()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_Unmap, eUVMappingToolGroup_Manipulation, "Unmap", UnmapTool,
                                     unmap, "runs unmap tool", "uvmapping.unmap")
-

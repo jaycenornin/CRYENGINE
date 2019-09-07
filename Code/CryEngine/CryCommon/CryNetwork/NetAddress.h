@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -6,7 +6,7 @@
 #include <CryNetwork/CrySocks.h>
 #include <CryLobby/CommonICryLobby.h>
 
-#if !CRY_PLATFORM_APPLE && !CRY_PLATFORM_ORBIS && defined(__GNUC__)
+#if !CRY_PLATFORM_APPLE && !CRY_PLATFORM_ORBIS && (defined(CRY_COMPILER_GCC) || defined(CRY_COMPILER_CLANG))
 	#define _SS_MAXSIZE 256
 #endif
 

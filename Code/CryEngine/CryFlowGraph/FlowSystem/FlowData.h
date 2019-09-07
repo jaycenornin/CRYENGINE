@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __FLOWDATA_H__
 #define __FLOWDATA_H__
@@ -185,7 +185,7 @@ ILINE void CFlowData::CompleteActivationInfo(IFlowNode::SActivationInfo* pActInf
 
 ILINE void CFlowData::Activated(IFlowNode::SActivationInfo* pActInfo, IFlowNode::EFlowEvent event)
 {
-	//	CRY_PROFILE_REGION(PROFILE_ACTION, m_type.c_str());
+	//	CRY_PROFILE_SECTION(PROFILE_ACTION, m_type.c_str());
 	if (m_hasEntity && (m_getFlowgraphForwardingEntity || m_failedGettingFlowgraphForwardingEntity))
 	{
 		if (ForwardingActivated(pActInfo, event))
@@ -207,7 +207,7 @@ ILINE void CFlowData::Activated(IFlowNode::SActivationInfo* pActInfo, IFlowNode:
 
 ILINE void CFlowData::Update(IFlowNode::SActivationInfo* pActInfo)
 {
-	//	CRY_PROFILE_REGION(PROFILE_ACTION, m_type.c_str());
+	//	CRY_PROFILE_SECTION(PROFILE_ACTION, m_type.c_str());
 	CompleteActivationInfo(pActInfo);
 	if (m_hasEntity && (m_getFlowgraphForwardingEntity || m_failedGettingFlowgraphForwardingEntity))
 		if (ForwardingActivated(pActInfo, IFlowNode::eFE_Update))

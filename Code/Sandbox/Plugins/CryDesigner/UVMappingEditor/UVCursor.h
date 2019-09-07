@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -14,7 +14,7 @@ public:
 	const Vec3& GetPos() const           { return m_Pos; }
 	void        SetPos(const Vec3& pos)  { m_Pos = pos;  }
 	void        SetRadius(float fRadius) { m_Radius = fRadius; }
-	void        Draw(DisplayContext& dc);
+	void        Draw(SDisplayContext& dc);
 	bool        IsPicked(const Ray& ray);
 	void        Transform(const Matrix33& tm);
 
@@ -27,4 +27,3 @@ typedef _smart_ptr<UVCursor> UVCursorPtr;
 
 }
 }
-

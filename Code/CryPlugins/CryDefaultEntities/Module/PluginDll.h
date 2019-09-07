@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 #include "IDefaultComponentsPlugin.h"
@@ -10,7 +10,8 @@ class CPlugin_CryDefaultEntities final : public IPlugin_CryDefaultEntities
 	CRYINTERFACE_ADD(Cry::IEnginePlugin)
 	CRYINTERFACE_END()
 
-	CRYGENERATE_SINGLETONCLASS_GUID(CPlugin_CryDefaultEntities, "Plugin_CryDefaultEntities", "{CB9E7C85-3289-41B6-983A-6A076ABA6351}"_cry_guid)
+	CRYGENERATE_SINGLETONCLASS_GUID(CPlugin_CryDefaultEntities, "Plugin_CryDefaultEntities", "{55641353-7542-4392-9614-351C88A1DAC3}"_cry_guid)
+
 
 	PLUGIN_FLOWNODE_REGISTER
 	PLUGIN_FLOWNODE_UNREGISTER

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "TimeSlider.h"
@@ -42,4 +42,3 @@ void DrawTimeSlider(QPainter& painter, const STimeSliderOptions& options)
 	painter.drawPolygon(points, 3);
 }
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
  -------------------------------------------------------------------------
@@ -14,6 +14,8 @@
 
 #ifndef __HUD_TACTICALOVERRIDE_ENTITY_H__
 #define __HUD_TACTICALOVERRIDE_ENTITY_H__
+
+#include <IGameObject.h>
 
 // CTacticalOverrideEntity
 

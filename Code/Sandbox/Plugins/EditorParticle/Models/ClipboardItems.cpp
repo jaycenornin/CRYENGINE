@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ClipboardItems.h"
@@ -177,15 +177,16 @@ void CClipboardItemCollection::Serialize(Serialization::IArchive& archive)
 			if (CryGraphEditor::CNodeGraphViewGraphicsWidget* pViewWidget = GetViewWidget())
 			{
 				CryGraphEditor::CNodeWidget* pNodeWidget = pViewWidget->Cast<CryGraphEditor::CNodeWidget>();
+				int index = -1;
 				if (pNodeWidget == nullptr)
 				{
 					if (CFeatureWidget* pFeatureWidget = pViewWidget->Cast<CFeatureWidget>())
 					{
+						index = pFeatureWidget->GetItem().GetIndex();
 						if (featureSer.size() == 1)
 						{
 							SFeature& f = *featureSer.begin();
 
-							const int32 index = pFeatureWidget->GetItem().GetIndex();
 							CNodeItem& nodeItem = pFeatureWidget->GetItem().GetNodeItem();
 							CFeatureItem* pFeatureItem = nodeItem.GetFeatureItems().at(index);
 
@@ -194,12 +195,10 @@ void CClipboardItemCollection::Serialize(Serialization::IArchive& archive)
 							if (f.groupName == params.m_groupName && f.featureName == params.m_featureName)
 							{
 								Serialization::LoadJsonBuffer(feature, f.dataBuffer.data(), f.dataBuffer.size());
+								return;
 							}
 						}
-						else
-						{
-							pNodeWidget = &pFeatureWidget->GetNodeWidget();
-						}
+						pNodeWidget = &pFeatureWidget->GetNodeWidget();
 					}
 					else
 					{
@@ -214,7 +213,8 @@ void CClipboardItemCollection::Serialize(Serialization::IArchive& archive)
 				{
 					if (CNodeItem* pNodeItem = pNodeWidget->GetItem().Cast<CNodeItem>())
 					{
-						const int32 index = pNodeItem->GetNumFeatures();
+						if (index < 0)
+							index = pNodeItem->GetNumFeatures();
 						for (SFeature& f : featureSer)
 						{
 							for (uint i = 0; i < GetParticleSystem()->GetNumFeatureParams(); ++i)
@@ -227,6 +227,7 @@ void CClipboardItemCollection::Serialize(Serialization::IArchive& archive)
 									pfx2::IParticleFeature& feature = pFeatureItem->GetFeatureInterface();
 
 									Serialization::LoadJsonBuffer(feature, f.dataBuffer.data(), f.dataBuffer.size());
+									index++;
 								}
 							}
 						}
@@ -238,4 +239,3 @@ void CClipboardItemCollection::Serialize(Serialization::IArchive& archive)
 }
 
 }
-

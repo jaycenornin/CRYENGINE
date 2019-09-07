@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "BaseEnv/BaseEnv_Prerequisites.h"
 
-#include <Cry3DEngine/I3DEngine.h> // Must be included before CREOcclusionQuery.h.
+#include <Cry3DEngine/I3DEngine.h>
 #include <CryRenderer/RenderElements/CREOcclusionQuery.h> // Must be included before IEntityRenderState.h.
 
 namespace SchematycBaseEnv

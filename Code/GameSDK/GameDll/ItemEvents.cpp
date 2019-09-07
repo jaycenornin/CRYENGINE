@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 -------------------------------------------------------------------------
@@ -140,7 +140,7 @@ void CItem::OnReset()
 	const int numAccessories = m_accessories.size();
 	for (int i = 0; i < numAccessories; i++)
 	{
-		if (CItem* pItem = static_cast<CItem*>(m_pGameFramework->GetIItemSystem()->GetItem(m_accessories[i].accessoryId)))
+		if (m_pGameFramework->GetIItemSystem()->GetItem(m_accessories[i].accessoryId) != nullptr)
 		{
 			const SAccessoryParams* params = GetAccessoryParams( m_accessories[i].pClass );
 

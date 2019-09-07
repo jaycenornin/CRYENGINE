@@ -1,15 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "Tools/BaseTool.h"
-#include "Core/Model.h"
 #include "Tools/Select/SelectTool.h"
 
 namespace Designer
 {
 class MovePipeline;
-class Model;
 
 class MoveTool : public SelectTool
 {
@@ -21,7 +18,7 @@ public:
 	bool        OnLButtonDown(CViewport* pView, UINT nFlags, CPoint point) override;
 	bool        OnLButtonUp(CViewport* pView, UINT nFlags, CPoint point) override;
 	bool        OnMouseMove(CViewport* pView, UINT nFlags, CPoint point) override;
-	void        OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& p0, BrushVec3 value, int flags) override;
+	void        OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData) override;
 	void        OnManipulatorBegin(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& point, int flags) override;
 	void        OnManipulatorEnd(IDisplayViewport* pView, ITransformManipulator* pManipulator) override;
 
@@ -52,4 +49,3 @@ GENERATE_MOVETOOL_CLASS(VertexPolygon, EDesignerTool)
 GENERATE_MOVETOOL_CLASS(EdgePolygon, EDesignerTool)
 GENERATE_MOVETOOL_CLASS(VertexEdgePolygon, EDesignerTool)
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -91,7 +91,6 @@ class CFeatureSlotWidget : public QGraphicsWidget
 public:
 	CFeatureSlotWidget();
 	CFeatureSlotWidget(const CFeatureSlotWidget& other);
-	~CFeatureSlotWidget();
 
 	void            InitFromFeature(CFeatureWidget& featureWidget);
 	CFeatureWidget* GetFeature() const                         { return m_pFeatureWidget; }
@@ -152,4 +151,3 @@ private:
 };
 
 }
-

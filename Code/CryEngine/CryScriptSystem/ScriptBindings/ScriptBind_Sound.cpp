@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ScriptBind_Sound.h"
@@ -85,7 +85,7 @@ int CScriptBind_Sound::GetAudioEnvironmentID(IFunctionHandler* pH, char const* c
 //////////////////////////////////////////////////////////////////////////
 int CScriptBind_Sound::SetAudioRtpcValue(IFunctionHandler* pH, ScriptHandle const hParameterId, float const value)
 {
-	gEnv->pAudioSystem->SetParameter(HandleToInt<CryAudio::ControlId>(hParameterId), value);
+	gEnv->pAudioSystem->SetParameterGlobally(HandleToInt<CryAudio::ControlId>(hParameterId), value);
 	return pH->EndFunction();
 }
 

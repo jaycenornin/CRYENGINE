@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include <assert.h>                         // assert()
 
+#include "ResourceCompiler.h"
 #include "IRCLog.h"                         // IRCLog
 #include "IConfig.h"                        // IConfig
 #include "IAssetManager.h"
@@ -90,8 +91,6 @@ static string AutoselectPreset(const ConvertContext& CC, const uint32 width, con
 	const char* const defaultNormalmap  = "Normals";
 	const char* const defaultNormalmapGloss  = "NormalsWithSmoothness";
 	const char* const defaultReflectance = "Reflectance";
-	const char* const defaultCubemap    = "EnvironmentProbeHDR";
-	const char* const defaultHDRCubemap = "EnvironmentProbeHDR";
 	const char* const defaultPow2       = "Albedo";
 	const char* const defaultPow2Alpha  = "AlbedoWithGenericAlpha";
 	const char* const defaultNonpow2    = "ReferenceImage";

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SaveRcObject.h"
@@ -7,7 +7,7 @@
 #include "DialogCommon.h"
 #include "ImporterUtil.h"
 
-#include <FilePathUtil.h>
+#include <PathUtils.h>
 #include <ThreadingUtils.h>
 
 #include <QDir>
@@ -76,4 +76,3 @@ void SaveRcObjectAsync(const SRcObjectSaveState& saveState, const string& target
 		}
 	});
 }
-

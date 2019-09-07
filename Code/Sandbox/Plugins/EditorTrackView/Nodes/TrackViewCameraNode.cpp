@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-// CryEngine Source File.
-// Copyright (C), Crytek, 1999-2014.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "TrackViewCameraNode.h"
@@ -177,4 +174,3 @@ template<class T> void CTrackViewCameraNode::GetParameter(SAnimTime time, EAnimP
 {
 	param = stl::get<T>(m_pAnimCameraNode->GetParameter(time, paramType));
 }
-

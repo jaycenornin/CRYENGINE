@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -14,6 +14,7 @@
 #include "StdAfx.h"
 #include "GameQueryListener.h"
 #include "CryAction.h"
+#include <CrySystem/CryVersion.h>
 
 CGameQueryListener::CGameQueryListener()
 	: m_pNetListener(nullptr)

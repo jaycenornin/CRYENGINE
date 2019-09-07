@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 //
 //  Crytek Engine Source File.
 //  Copyright (C), Crytek Studios, 2013.
@@ -226,12 +226,7 @@ FilterWeights<signed short int> *calculateFilterWeights<signed short int>(unsign
 			fWeight = fWeight * nrmWeights;
 			iWeight = roundToInt(fWeight);
 
-			/* find first nonzero */
-			if (stillzero && (iWeight == 0))
-			{
-				i0++;
-			}
-			else
+			if (!stillzero || iWeight)
 			{
 				assert((-fWeight >= -32768.5) && (-fWeight <= 32767.5));
 
@@ -241,7 +236,7 @@ FilterWeights<signed short int> *calculateFilterWeights<signed short int>(unsign
 				}
 				else
 				{
-					sumiWeights  = maximum(sumiWeights, iWeight);
+					sumiWeights = maximum(sumiWeights, iWeight);
 				}
 
 #define sgnextend(n, iWeight)   (((n) & 1) ? ((iWeight) < 0 ? -1 : 0) : (iWeight))
@@ -256,9 +251,9 @@ FilterWeights<signed short int> *calculateFilterWeights<signed short int>(unsign
 				else
 				{
 					/* add weight to table */
-					for (n = 0; n <  numRepetitions; n++)
+					for (n = 0; n < numRepetitions; n++)
 					{
-						*weightsPtr++ =              -iWeight;
+						*weightsPtr++ = -iWeight;
 					}
 				}
 
@@ -282,6 +277,10 @@ FilterWeights<signed short int> *calculateFilterWeights<signed short int>(unsign
 					highest = i;
 					hWeight = iWeight;
 				}
+			}
+			else if (i0 + 1 < i1) /* find first nonzero */
+			{
+				i0++;
 			}
 		}
 

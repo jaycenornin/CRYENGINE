@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -16,6 +16,7 @@
 #include <CryEntitySystem/IEntitySystem.h>
 #include <CrySystem/ITextModeConsole.h>
 #include <CryRenderer/IRenderAuxGeom.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 #if ENABLE_NETINPUTCHAINDEBUG
 	#include <CryCore/BoostHelpers.h>

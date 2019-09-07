@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -30,6 +30,7 @@ namespace Schematyc2
 
 		// IScriptGraphNode
 		virtual SGUID GetTypeGUID() const override;
+		virtual EScriptGraphNodeType GetType() const override;
 		virtual EScriptGraphColor GetColor() const override;
 		virtual void Refresh(const SScriptRefreshParams& params) override;
 		virtual void Serialize(Serialization::IArchive& archive) override;

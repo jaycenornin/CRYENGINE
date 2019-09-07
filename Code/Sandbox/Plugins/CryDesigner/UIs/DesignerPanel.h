@@ -1,24 +1,20 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "UICommon.h"
-#include "DesignerEditor.h"
-
-class QTabWidget;
-class QGridLayout;
-class QToolButton;
-class QPropertyTree;
-class QTabWidget;
+#include "Tools/ToolCommon.h"
+#include "UIs/UICommon.h"
 
 class QCollapsibleFrame;
+class QGridLayout;
+class QMaterialComboBox;
+class QTabWidget;
+class QToolButton;
 
 namespace Designer
 {
 
-struct ToolchangeEvent;
-class QMaterialComboBox;
-class IBasePanel;
+struct IBasePanel;
 
 struct MenuButton
 {
@@ -103,9 +99,6 @@ private:
 	void         OnClickedButton(EDesignerTool tool, bool ensureDesigner = false);
 	void         ShowTab(EDesignerTool tool);
 
-	void         UpdateBackFaceFlag(MainContext& mc);
-	void         UpdateBackFaceCheckBoxFromContext();
-
 	int          ArrangeButtons(Designer::WidgetContext& wc, Designer::EToolGroup toolGroup, int stride, int offset, bool enforce = false);
 
 	IBasePanel*      m_pToolPanel;
@@ -113,4 +106,3 @@ private:
 	static const int s_stride = 3;
 };
 }
-

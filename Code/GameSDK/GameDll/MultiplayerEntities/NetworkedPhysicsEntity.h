@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
  -------------------------------------------------------------------------
@@ -15,6 +15,11 @@
 
 #ifndef __NETWORKEDPHYSICSENTITY_H__
 #define __NETWORKEDPHYSICSENTITY_H__
+
+#include <CryEntitySystem/IEntity.h>
+#include "IGameObject.h"
+
+struct SGameObjectEvent;
 
 class CNetworkedPhysicsEntity :	public CGameObjectExtensionHelper<CNetworkedPhysicsEntity, IGameObjectExtension, 2>,
 																public IGameObjectProfileManager

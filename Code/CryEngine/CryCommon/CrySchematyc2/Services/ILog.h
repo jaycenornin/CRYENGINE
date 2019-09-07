@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // #SchematycTODO : Add support for indentation/blocks.
 // #SchematycTODO : Move ILogRecorder to separate header?
@@ -427,6 +427,7 @@ struct ILog
 	virtual void                 FatalError(const LogStreamId& streamId, CLogMessageMetaInfo metaInfo, const char* szFormat, ...) = 0;
 	virtual void                 Update() = 0;
 	virtual SLogSignals&         Signals() = 0;
+	virtual bool                 IsLoggingEnabled() const = 0;
 };
 
 struct ILogRecorder

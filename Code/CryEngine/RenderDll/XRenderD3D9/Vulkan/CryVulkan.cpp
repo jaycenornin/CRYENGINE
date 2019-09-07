@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "CryVulkan.hpp"
 #include "API/VKInstance.hpp"
@@ -6,6 +6,11 @@
 #if VK_USE_DXGI
 	#include "CryVulkanWrappers/GI/DXGI/CCryVKGIFactory_DXGI.hpp"
 #endif
+
+#if USE_SDL2 && (CRY_PLATFORM_ANDROID || CRY_PLATFORM_IOS || CRY_PLATFORM_LINUX)
+	#include <SDL_syswm.h>
+#endif
+
 
 
 HRESULT WINAPI D3DCreateBlob(SIZE_T NumBytes, ID3DBlob** ppBuffer)

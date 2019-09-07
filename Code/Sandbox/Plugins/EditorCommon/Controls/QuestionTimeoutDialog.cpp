@@ -1,7 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "QuestionTimeoutDialog.h"
+#include <QLabel>
+#include <QEvent>
 
 CQuestionTimeoutDialog::CQuestionTimeoutDialog()
 	: m_infoLabelText()
@@ -61,4 +63,3 @@ void CQuestionTimeoutDialog::UpdateText()
 	const QString infoLabelText = m_infoLabelText.isEmpty() ? countdownText : tr("%1\n%2").arg(m_infoLabelText, countdownText);
 	m_infoLabel->setText(infoLabelText);
 }
-

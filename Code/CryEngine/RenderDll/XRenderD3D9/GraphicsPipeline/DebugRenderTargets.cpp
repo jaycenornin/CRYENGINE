@@ -1,8 +1,7 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "DebugRenderTargets.h"
-#include "DriverD3D.h"
 #include <Common/RenderDisplayContext.h>
 
 struct SDebugRenderTargetConstants
@@ -37,9 +36,11 @@ const char* CDebugRenderTargetsStage::showRenderTargetHelp =
 	"r_ShowRenderTarget -m:2 scene : shows mip map level 2 of 'scene' render targets"
 	"r_ShowRenderTarget -s:3 scene : shows array slice 3 of 'scene' render targets";
 
-void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs)
+void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(SDebugRenderTargetInfo& debugInfo)
 {
-	int argCount = pArgs->GetArgCount();
+	debugInfo.wasTriggered = false;
+
+	int argCount = debugInfo.args.size();
 
 	ResetRenderTargetList();
 
@@ -59,7 +60,7 @@ void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs)
 	// Check for '-l'.
 	for (int i = 1; i < argCount; ++i)
 	{
-		if (strcmp(pArgs->GetArg(i), "-l") == 0)
+		if (strcmp(debugInfo.args.at(i).c_str(), "-l") == 0)
 		{
 			m_bShowList = true;
 			break;
@@ -69,9 +70,9 @@ void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs)
 	// Check for '-c:*'.
 	for (int i = 1; i < argCount; ++i)
 	{
-		if (strlen(pArgs->GetArg(i)) > 3 && strncmp(pArgs->GetArg(i), "-c:", 3) == 0)
+		if (strlen(debugInfo.args.at(i).c_str()) > 3 && strncmp(debugInfo.args.at(i).c_str(), "-c:", 3) == 0)
 		{
-			int col = atoi(pArgs->GetArg(i) + 3);
+			int col = atoi(debugInfo.args.at(i).c_str() + 3);
 			m_columnCount = col > 0 ? col : 2;
 		}
 	}
@@ -103,7 +104,7 @@ void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs)
 
 	for (int i = 1; i < argCount; ++i)
 	{
-		const char* pCurArg = pArgs->GetArg(i);
+		const char* pCurArg = debugInfo.args.at(i).c_str();
 
 		bool bColOption = strlen(pCurArg) > 3 && strncmp(pCurArg, "-c:", 3) == 0;
 		if (strcmp(pCurArg, "-l") == 0 || bColOption)
@@ -195,7 +196,7 @@ void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs)
 					rtInfo.bFiltered = bFiltered;
 					rtInfo.bRGBKEncoded = bRGBKEncoded;
 					rtInfo.bAliased = bAliased;
-					rtInfo.pTexture = allRTs[k];
+					rtInfo.textureName = allRTs[k]->GetNameCRC();
 					rtInfo.channelWeight = channelWeight;
 					rtInfo.mip = mip;
 					rtInfo.slice = slice;
@@ -230,7 +231,7 @@ void CDebugRenderTargetsStage::OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs)
 		for (size_t k = 0; k < allRTs.size(); ++k)
 		{
 			SRenderTargetInfo rtInfo;
-			rtInfo.pTexture = allRTs[k];
+			rtInfo.textureName = allRTs[k]->GetNameCRC();
 			m_renderTargetList.push_back(rtInfo);
 		}
 	}
@@ -243,7 +244,7 @@ void CDebugRenderTargetsStage::Execute()
 		ResetRenderTargetList();
 
 		SRenderTargetInfo rtInfo;
-		rtInfo.pTexture = CRendererResources::s_ptexSceneDiffuseTmp;
+		rtInfo.textureName = m_graphicsPipelineResources.m_pTexSceneDiffuseTmp->GetName();
 		m_renderTargetList.push_back(rtInfo);
 		m_columnCount = 1;
 
@@ -262,7 +263,7 @@ void CDebugRenderTargetsStage::Execute()
 			{ "Subsurface Scattering",          "" },
 			{ "Specular Validation"             "blue: too low -- orange: too high and not yet metal -- pink: just valid for oxidized metal/rust" }
 		};
-		
+
 		auto& curText = helpText[clamp_tpl(CRendererCVars::CV_r_DeferredShadingDebugGBuffer - 1, 0, 8)];
 		IRenderAuxText::WriteXY(10, 10, 1.0f,  1.0f,  0, 1, 0, 1, "%s", curText.name);
 		IRenderAuxText::WriteXY(10, 30, 0.85f, 0.85f, 0, 1, 0, 1, "%s", curText.desc);
@@ -275,7 +276,7 @@ void CDebugRenderTargetsStage::Execute()
 		iLog->Log("RenderTargets:\n");
 		for (size_t i = 0; i < m_renderTargetList.size(); ++i)
 		{
-			CTexture* pTex = m_renderTargetList[i].pTexture;
+			CTexture* pTex = CTexture::GetByNameCRC(m_renderTargetList[i].textureName);
 			if (pTex)
 				iLog->Log("\t%" PRISIZE_T "  %s\t--------------%s  %d x %d\n", i, pTex->GetName(), pTex->GetFormatName(), pTex->GetWidth(), pTex->GetHeight());
 			else
@@ -328,17 +329,18 @@ void CDebugRenderTargetsStage::ExecuteShowTargets()
 		for (size_t i = 0; i < tileCount; ++i)
 		{
 			SRenderTargetInfo& rtInfo = m_renderTargetList[i];
-			if (!CTexture::IsTextureExist(rtInfo.pTexture))
+			CTexture* pTexture = CTexture::GetByNameCRC(rtInfo.textureName);
+			if (!CTexture::IsTextureExist(pTexture))
 				continue;
 
 			float curX = (i % m_columnCount) * (tileW + tileGapW);
 			float curY = (i / m_columnCount) * (tileH + tileGapH);
 
 			ResourceViewHandle textureView = EDefaultResourceViews::Default;
-			
+
 			if (rtInfo.mip != -1 || rtInfo.slice != -1)
 			{
-				STextureLayout texLayout = rtInfo.pTexture->GetDevTexture()->GetLayout();
+				STextureLayout texLayout = pTexture->GetDevTexture()->GetLayout();
 
 				int firstSlice = clamp_tpl(rtInfo.slice, 0, texLayout.m_nArraySize - 1);
 				int sliceCount = clamp_tpl(rtInfo.slice < 0 ? texLayout.m_nArraySize : 1, 1, int(texLayout.m_nArraySize));
@@ -347,14 +349,14 @@ void CDebugRenderTargetsStage::ExecuteShowTargets()
 				int mipCount = clamp_tpl(rtInfo.mip < 0 ? texLayout.m_nMips : 1, 1, int(texLayout.m_nMips));
 
 				SResourceView srv = SResourceView::ShaderResourceView(DeviceFormats::ConvertFromTexFormat(texLayout.m_eDstFormat), firstSlice, sliceCount, firstMip, mipCount);
-				textureView = rtInfo.pTexture->GetDevTexture()->GetOrCreateResourceViewHandle(srv);
+				textureView = pTexture->GetDevTexture()->GetOrCreateResourceViewHandle(srv);
 			}
 
 			CRenderPrimitive& prim = m_debugPrimitives[m_primitiveCount++];
 			prim.SetTechnique(CShaderMan::s_ShaderDebug, "Debug_RenderTarget", 0);
 			prim.SetPrimitiveType(CRenderPrimitive::ePrim_FullscreenQuad);
 			prim.SetCullMode(eCULL_None);
-			prim.SetTexture(0, rtInfo.pTexture, textureView, EShaderStage_Pixel);
+			prim.SetTexture(0, pTexture, textureView, EShaderStage_Pixel);
 			prim.SetSampler(0, rtInfo.bFiltered ? EDefaultSamplerStates::LinearClamp : EDefaultSamplerStates::PointClamp);
 
 			if (prim.Compile(m_debugPass) == CRenderPrimitive::eDirty_None)
@@ -377,8 +379,8 @@ void CDebugRenderTargetsStage::ExecuteShowTargets()
 
 				m_debugPass.AddPrimitive(&prim);
 
-				IRenderAuxText::WriteXY((int)(curX * 800 + 2), (int)((curY + tileH) * 600 - 15), 1, 1, 1, 1, 1, 1, "Fmt: %s, Type: %s", rtInfo.pTexture->GetFormatName(), CTexture::NameForTextureType(rtInfo.pTexture->GetTextureType()));
-				IRenderAuxText::WriteXY((int)(curX * 800 + 2), (int)((curY + tileH) * 600 + 1),  1, 1, 1, 1, 1, 1, "%s   %d x %d",      rtInfo.pTexture->GetName(),       rtInfo.pTexture->GetWidth(), rtInfo.pTexture->GetHeight());
+				IRenderAuxText::WriteXY((int)(curX * 800 + 2), (int)((curY + tileH) * 600 - 15), 1, 1, 1, 1, 1, 1, "Fmt: %s, Type: %s", pTexture->GetFormatName(), CTexture::NameForTextureType(pTexture->GetTextureType()));
+				IRenderAuxText::WriteXY((int)(curX * 800 + 2), (int)((curY + tileH) * 600 + 1),  1, 1, 1, 1, 1, 1, "%s   %d x %d",      pTexture->GetName(),       pTexture->GetWidth(), pTexture->GetHeight());
 			}
 		}
 

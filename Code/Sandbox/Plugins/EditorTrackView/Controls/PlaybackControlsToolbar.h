@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -16,6 +16,10 @@ class QTimer;
 class CTrackViewPlaybackControlsToolbar : public QToolBar, public CTrackViewCoreComponent
 {
 	Q_OBJECT
+
+	//TODO: avoid friend class
+	friend class CTrackViewWindow;
+	//~TODO:
 
 public:
 	CTrackViewPlaybackControlsToolbar(CTrackViewCore* pTrackViewCore);
@@ -67,4 +71,3 @@ private:
 	SAnimTime               m_lastTime;
 	SAnimTime::EDisplayMode m_displayMode;
 };
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -24,12 +24,7 @@ public:
 	bool OnLButtonUp(CViewport* view, UINT nFlags, CPoint point) override;
 	bool OnMouseMove(CViewport* view, UINT nFlags, CPoint point) override;
 
-	void OnManipulatorDrag(
-	  IDisplayViewport* pView,
-	  ITransformManipulator* pManipulator,
-	  CPoint& p0,
-	  BrushVec3 value,
-	  int nFlags) override;
+	void OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData) override;
 
 	void OnManipulatorBegin(
 	  IDisplayViewport* pView,
@@ -56,4 +51,3 @@ private:
 	bool m_bHitGizmo;
 };
 }
-

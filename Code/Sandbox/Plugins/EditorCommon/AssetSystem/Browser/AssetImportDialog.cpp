@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AssetImportDialog.h"
@@ -44,7 +44,7 @@ CAssetImportDialog::CAssetImportDialog(
 	QGridLayout* const pMainLayout = new QGridLayout();
 
 	QDialogButtonBox* const pButtons = new QDialogButtonBox();
-	QPushButton* const pImportButton = pButtons->addButton("Import", QDialogButtonBox::YesRole);
+	pButtons->addButton("Import", QDialogButtonBox::YesRole);
 
 	if (allFilePaths.size() > 1)
 	{

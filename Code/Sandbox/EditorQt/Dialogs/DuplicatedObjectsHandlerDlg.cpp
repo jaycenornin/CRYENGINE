@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "DuplicatedObjectsHandlerDlg.h"
@@ -6,6 +6,7 @@
 IMPLEMENT_DYNAMIC(CDuplicatedObjectsHandlerDlg, CDialogEx)
 CDuplicatedObjectsHandlerDlg::CDuplicatedObjectsHandlerDlg(const char* msg, CWnd* pParent)
 	: CDialogEx(CDuplicatedObjectsHandlerDlg::IDD, pParent)
+	, m_result(eResult_None)
 {
 	m_msg = msg;
 }
@@ -46,4 +47,3 @@ void CDuplicatedObjectsHandlerDlg::OnBnClickedCreateCopiesBtn()
 	m_result = eResult_CreateCopies;
 	OnOK();
 }
-

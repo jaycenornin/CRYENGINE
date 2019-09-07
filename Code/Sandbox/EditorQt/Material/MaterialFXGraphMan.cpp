@@ -1,11 +1,13 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MaterialFXGraphMan.h"
 
+#include "IEditorImpl.h"
 #include "HyperGraph/FlowGraph.h"
 #include "HyperGraph/FlowGraphManager.h"
 #include "HyperGraph/Controls/HyperGraphEditorWnd.h"
+#include <Util/FileUtil.h>
 
 #include <CryAction/IMaterialEffects.h>
 
@@ -175,4 +177,3 @@ void CMaterialFXGraphMan::ClearEditorGraphs()
 
 	m_matFxGraphs.clear();
 }
-

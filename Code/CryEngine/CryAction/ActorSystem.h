@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -134,7 +134,7 @@ private:
 		{
 			if (--m_nRefs <= 0)
 			{
-				assert(std::find(m_pAS->m_iteratorPool.begin(),
+				CRY_ASSERT(std::find(m_pAS->m_iteratorPool.begin(),
 				                 m_pAS->m_iteratorPool.end(), this) == m_pAS->m_iteratorPool.end());
 				// Call my own destructor before I push to the pool - avoids tripping up the STLP debugging {2008/12/09})
 				this->~CActorIterator();

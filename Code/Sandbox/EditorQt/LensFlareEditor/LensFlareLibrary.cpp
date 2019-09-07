@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "LensFlareManager.h"
 #include "LensFlareLibrary.h"
 #include "LensFlareItem.h"
+#include <Util/EditorUtils.h>
 #include <CryRenderer/IFlares.h>
 
 bool CLensFlareLibrary::Save()
@@ -71,4 +72,3 @@ IOpticsElementBasePtr CLensFlareLibrary::GetOpticsOfItem(const char* szflareName
 
 	return pOptics;
 }
-

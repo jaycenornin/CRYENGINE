@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -26,11 +26,8 @@ class CConsoleBatchFile
 {
 public:
 	static void Init();
-	static bool ExecuteConfigFile(const char* filename);
-
 private:
 	static void ExecuteFileCmdFunc(IConsoleCmdArgs* args);
-	static IConsole* m_pConsole;
 };
 
 #endif

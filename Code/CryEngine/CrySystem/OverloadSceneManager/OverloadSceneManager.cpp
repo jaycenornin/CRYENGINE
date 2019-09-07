@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // Includes
 #include "StdAfx.h"
@@ -7,6 +7,8 @@
 #include <CryGame/IGameFramework.h>
 #include <CrySystem/Profilers/IStatoscope.h>
 #include <CryRenderer/IRenderAuxGeom.h>
+#include <CryMath/Random.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 #if ENABLE_STATOSCOPE
 class COverloadDG : public IStatoscopeDataGroup

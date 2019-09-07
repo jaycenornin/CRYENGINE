@@ -1,11 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // ResourceCompilerImage.cpp : Defines the entry point for the DLL application.
 //
 
 #include "stdafx.h"
 
-#include <CryCore/Assert/CryAssert_impl.h>
+//#include <CryCore/Assert/CryAssert_impl.h>
 #pragma comment(lib, "comctl32.lib")
 #pragma comment(lib, "comdlg32.lib")
 

@@ -1,10 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MannequinDebug.h"
 #include "ActionController.h"
 
 #include <CryAISystem/IAIObject.h>
+#include <CryRenderer/IRenderAuxGeom.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 //////////////////////////////////////////////////////////////////////////
 static void MN_ReloadAll(IConsoleCmdArgs* pArgs)

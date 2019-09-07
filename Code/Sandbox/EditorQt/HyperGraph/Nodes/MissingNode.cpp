@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MissingNode.h"
@@ -83,4 +83,3 @@ const char* CMissingNode::GetInfoAsString() const
 	sNodeInfo.Format("!!Missing Node!!\nClass:  %s", m_sMissingClassName);
 	return sNodeInfo.c_str();
 }
-

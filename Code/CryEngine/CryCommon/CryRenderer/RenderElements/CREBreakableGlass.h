@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -11,6 +11,7 @@
 
 // Includes
 #include "CREBreakableGlassHelpers.h"
+#include "RendElement.h"
 
 // Forward decls
 struct IRenderAuxGeom;

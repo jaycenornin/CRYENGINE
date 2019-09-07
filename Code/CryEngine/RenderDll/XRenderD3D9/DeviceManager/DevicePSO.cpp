@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 
@@ -66,6 +66,7 @@ void CDeviceGraphicsPSODesc::InitWithDefaults()
 	m_PrimitiveType = eptTriangleList;
 	m_bDepthClip = true;
 	m_bDepthBoundsTest = false;
+	m_bRelaxedRasterizationOrder = false;
 	m_bDynamicDepthBias = false;
 }
 
@@ -159,8 +160,8 @@ void CDeviceGraphicsPSODesc::FillDescs(D3D11_RASTERIZER_DESC& rasterizerDesc, D3
 			{ D3D11_BLEND_SRC_ALPHA_SAT,  D3D11_BLEND_SRC_ALPHA_SAT,		true },        // GS_BLSRC_ALPHASATURATE
 			{ D3D11_BLEND_SRC_ALPHA,      D3D11_BLEND_ZERO,					true },        // GS_BLSRC_SRCALPHA_A_ZERO
 			{ D3D11_BLEND_SRC1_ALPHA,     D3D11_BLEND_SRC1_ALPHA,			false },       // GS_BLSRC_SRC1ALPHA
-			{ D3D11_BLEND_SRC_ALPHA,	  D3D11_BLEND_INV_SRC_ALPHA,		true },
-			{ D3D11_BLEND_ONE,			  D3D11_BLEND_INV_DEST_ALPHA,		true }
+			{ D3D11_BLEND_SRC1_ALPHA,     D3D11_BLEND_ONE,					false },       // GS_BLSRC_SRC1ALPHA_A_ONE
+			{ D3D11_BLEND_SRC_ALPHA,      D3D11_BLEND_ONE,					true },        // GS_BLSRC_SRCALPHA_A_ONE
 		};
 
 		static BlendFactors DstBlendFactors[GS_BLDST_MASK >> GS_BLDST_SHIFT] =
@@ -176,8 +177,7 @@ void CDeviceGraphicsPSODesc::FillDescs(D3D11_RASTERIZER_DESC& rasterizerDesc, D3
 			{ D3D11_BLEND_INV_DEST_ALPHA, D3D11_BLEND_INV_DEST_ALPHA,		true },        // GS_BLDST_ONEMINUSDSTALPHA
 			{ D3D11_BLEND_ONE,            D3D11_BLEND_ZERO,					true },        // GS_BLDST_ONE_A_ZERO
 			{ D3D11_BLEND_INV_SRC1_ALPHA, D3D11_BLEND_INV_SRC1_ALPHA,		false },       // GS_BLDST_ONEMINUSSRC1ALPHA
-			{ D3D11_BLEND_INV_SRC_ALPHA,  D3D11_BLEND_ZERO,					true },
-			{ D3D11_BLEND_INV_SRC_ALPHA,  D3D11_BLEND_ONE,					true }
+			{ D3D11_BLEND_INV_SRC1_ALPHA, D3D11_BLEND_ZERO,					false },       // GS_BLDST_ONEMINUSSRC1ALPHA_A_ZERO
 		};
 
 		static D3D11_BLEND_OP BlendOp[GS_BLEND_OP_MASK >> GS_BLEND_OP_SHIFT] =
@@ -274,17 +274,17 @@ void CDeviceGraphicsPSODesc::FillDescs(D3D11_RASTERIZER_DESC& rasterizerDesc, D3
 	// *INDENT-ON*
 }
 
-uint32 CDeviceGraphicsPSODesc::CombineVertexStreamMasks(uint32 fromShader, uint32 fromObject) const
+EStreamMasks CDeviceGraphicsPSODesc::CombineVertexStreamMasks(EStreamMasks fromShader, EStreamMasks fromObject) const
 {
-	uint32 result = fromShader;
+	EStreamMasks result = fromShader;
 
 	if (fromObject & VSM_NORMALS)
 		result |= VSM_NORMALS;
 
-	if (fromObject & BIT(VSF_QTANGENTS))
+	if (fromObject & VSM_QTANGENTS)
 	{
 		result &= ~VSM_TANGENTS;
-		result |= BIT(VSF_QTANGENTS);
+		result |= VSM_QTANGENTS;
 	}
 
 	if (fromObject & VSM_INSTANCED)
@@ -295,7 +295,7 @@ uint32 CDeviceGraphicsPSODesc::CombineVertexStreamMasks(uint32 fromShader, uint3
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CDeviceComputePSODesc::CDeviceComputePSODesc(CDeviceResourceLayoutPtr pResourceLayout, ::CShader* pShader, const CCryNameTSCRC& technique, uint64 rtFlags, uint32 mdFlags, uint32 mdvFlags)
+CDeviceComputePSODesc::CDeviceComputePSODesc(CDeviceResourceLayoutPtr pResourceLayout, ::CShader* pShader, const CCryNameTSCRC& technique, uint64 rtFlags, uint32 mdFlags)
 {
 	InitWithDefaults();
 
@@ -304,7 +304,6 @@ CDeviceComputePSODesc::CDeviceComputePSODesc(CDeviceResourceLayoutPtr pResourceL
 	m_technique = technique;
 	m_ShaderFlags_RT = rtFlags;
 	m_ShaderFlags_MD = mdFlags;
-	m_ShaderFlags_MDV = mdvFlags;
 }
 
 void CDeviceComputePSODesc::InitWithDefaults()

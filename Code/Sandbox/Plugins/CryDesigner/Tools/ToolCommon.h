@@ -1,12 +1,13 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "ToolFactory.h"
 
 struct IDataBaseItem;
-enum EDataBaseItemEvent;
 struct ITransformManipulator;
+
+enum EDataBaseItemEvent;
 
 namespace Designer
 {
@@ -101,4 +102,3 @@ typedef void* TDesignerNotifyParam;
   if (ar.openBlock("Message", msg)) \
     ar.closeBlock();
 }
-

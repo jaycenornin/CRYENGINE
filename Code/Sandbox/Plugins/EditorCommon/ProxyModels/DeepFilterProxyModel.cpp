@@ -1,11 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "DeepFilterProxyModel.h"
-
-#include <QPersistentModelIndex>
-#include <QHash>
 #include "EditorStyleHelper.h"
+
+#include <QHash>
+#include <QPersistentModelIndex>
 
 struct QDeepFilterProxyModel::Implementation
 {
@@ -354,7 +354,7 @@ struct QDeepFilterProxyModel::Implementation
 		}
 		if (m_sourceRootIndex == sourceParent)
 		{
-			return true; // teminator
+			return true; // terminator
 		}
 		if (!sourceParent.isValid())
 		{
@@ -572,10 +572,12 @@ bool QDeepFilterProxyModel::rowMatchesFilter(int sourceRow, const QModelIndex& s
 			{
 				QModelIndex sourceIndex = model->index(sourceRow, column, sourceParent);
 				QString data = sourceIndex.data(filterRole()).toString();
-				if (!p->MatchTokenSearch(data))
-					return false;
+				if (p->MatchTokenSearch(data))
+				{
+					return true;
+				}
 			}
-			return true;
+			return false;
 		}
 		else
 		{
@@ -589,4 +591,3 @@ bool QDeepFilterProxyModel::rowMatchesFilter(int sourceRow, const QModelIndex& s
 		return QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);
 	}
 }
-

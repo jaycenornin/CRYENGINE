@@ -1,17 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-// ------------------------------------------------------------------------
-//  File name:   GeomCacheManager.h
-//  Created:     20/7/2012 by Axel Gneiting
-//  Description: Manages geometry cache instances and streaming
-// -------------------------------------------------------------------------
-//
-////////////////////////////////////////////////////////////////////////////
-
-#ifndef _GEOMCACHE_MANAGER_
-#define _GEOMCACHE_MANAGER_
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
+
+// ------------------------------------------------------------------------
+//  Description: Manages geometry cache instances and streaming
+// -------------------------------------------------------------------------
 
 #if defined(USE_GEOM_CACHES)
 
@@ -237,9 +230,9 @@ private:
 	char*                                                GetFrameDecompressData(SGeomCacheStreamInfo* pStreamInfo, const uint frameIndex);
 	int*                                                 GetDependencyCounter(SGeomCacheStreamInfo* pStreamInfo, const uint frameIndex);
 
-	void*               m_pPoolBaseAddress;
-	IGeneralMemoryHeap* m_pPool;
-	size_t              m_poolSize;
+	void*                          m_pPoolBaseAddress;
+	_smart_ptr<IGeneralMemoryHeap> m_pPool;
+	size_t                         m_poolSize;
 
 	uint                m_lastRequestStream;
 
@@ -260,5 +253,4 @@ private:
 	CGeomCacheMeshManager m_meshManager;
 };
 
-#endif
 #endif

@@ -1,12 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ConfigurationManager.h"
-#include <CrySystem/IConsole.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 CConfigurationManager::CConfigurationManager()
+	: m_pPlatformsCvar{nullptr}
 {
-
 }
 
 void CConfigurationManager::Init()
@@ -31,4 +31,3 @@ void CConfigurationManager::Init()
 	// There has to be at least one target platform defined
 	CRY_ASSERT(!m_platformNames.empty());
 }
-

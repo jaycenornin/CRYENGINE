@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryFlowGraph/IFlowGraphDebugger.h> //IFlowGraphDebugListener
 #include "HyperGraph/IHyperGraph.h"          //IHyperGraphManagerListener
+#include <IEditor.h>
 
 class CFlowGraphDebuggerEditor : private IFlowGraphDebugListener, IHyperGraphManagerListener, IEditorNotifyListener
 {
@@ -53,5 +54,3 @@ private:
 	bool                  m_CursorVisible;
 	IFlowGraphDebuggerPtr m_pFlowGraphDebugger;
 };
-
-

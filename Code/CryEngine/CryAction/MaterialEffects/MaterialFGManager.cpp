@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   MaterialFGManager
@@ -66,7 +66,7 @@ void CMaterialFGManager::Serialize(TSerialize ser)
 //------------------------------------------------------------------------
 bool CMaterialFGManager::LoadLibs(const char* path)
 {
-	LOADING_TIME_PROFILE_SECTION;
+	CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 	if (gEnv->pFlowSystem == 0)
 		return false;
 

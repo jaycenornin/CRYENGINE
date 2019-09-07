@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -83,7 +83,7 @@ public:
 	virtual void         GetMemoryUsage(ICrySizer* pSizer) const override;
 	virtual void         TriggerMeshStreaming(uint32 nDesiredRenderLOD, const SRenderingPassInfo& passInfo);
 
-	void                 DrawAttachment(SRendParams& rParams, const SRenderingPassInfo& passInfo, const Matrix34& rWorldMat34, f32 fZoomFactor = 1);
+	void                 RenderAttachment(SRendParams& rParams, const SRenderingPassInfo& passInfo);
 	void                 RecreateDefaultSkeleton(CCharInstance* pInstanceSkel, uint32 nLoadingFlags);
 	void                 UpdateRemapTable();
 

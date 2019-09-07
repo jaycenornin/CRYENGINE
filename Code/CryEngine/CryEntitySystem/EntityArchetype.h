@@ -1,8 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryScriptSystem/IScriptSystem.h>
+#include <CryEntitySystem/IEntitySystem.h>
+#include <CryCore/smartptr.h>
 
 class CEntityClass;
 
@@ -22,7 +24,7 @@ public:
 	virtual void          LoadFromXML(XmlNodeRef& propertiesNode, XmlNodeRef& objectVarsNode) override;
 	//////////////////////////////////////////////////////////////////////////
 
-	void SetName(const string& sName) { m_name = sName; };
+	void SetName(const string& sName) { m_name = sName; }
 
 private:
 	string           m_name;

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef geometry_h
 #define geometry_h
@@ -324,7 +324,7 @@ public:
 	virtual Vec3 GetCenter() { return Vec3(ZERO); }
 	virtual void *GetForeignData(int iForeignData=0) { return iForeignData==m_iForeignData ? m_pForeignData:0; }
 	virtual int GetiForeignData() { return m_iForeignData; }
-	virtual void SetForeignData(void *pForeignData, int iForeignData) { m_pForeignData=pForeignData; m_iForeignData=iForeignData; }
+	virtual void SetForeignData(void *pForeignData, int iForeignData);
 
 	virtual float BuildOcclusionCubemap(geom_world_data *pgwd, int iMode, SOcclusionCubeMap* grid0, SOcclusionCubeMap* grid1, int nGrow);
 	virtual int DrawToOcclusionCubemap(const geom_world_data *pgwd, int iStartPrim,int nPrims, int iPass, SOcclusionCubeMap* cubeMap) { return 0; }

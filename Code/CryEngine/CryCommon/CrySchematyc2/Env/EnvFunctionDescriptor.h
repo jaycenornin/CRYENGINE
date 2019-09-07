@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // #SchematycTODO : Move EnvFunctionDescriptorUtils to separate header?
 // #SchematycTODO : Can we reduce code duplication (using pre-processor macros for example)?
@@ -1789,7 +1789,6 @@ namespace Schematyc2
 		{
 			return m_binding.pStub ? (*m_binding.pStub)(m_binding, context, pObject, inputs, outputs) : SEnvFunctionResult();
 		}
-
 		// ~IEnvFunctionDescriptor
 
 		inline void SetGUID(const SGUID& guid)

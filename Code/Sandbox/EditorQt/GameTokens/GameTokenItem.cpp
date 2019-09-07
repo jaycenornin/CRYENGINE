@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "GameTokenItem.h"
@@ -392,4 +392,3 @@ void CGameTokenItem::ApplyFlags()
 			pToken->SetFlags(pToken->GetFlags()&~EGAME_TOKEN_LOCALONLY);
 	}
 }
-

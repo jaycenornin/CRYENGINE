@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "3DConnexionDriver.h"
@@ -193,7 +193,7 @@ void C3DConnexionDriver::OnEditorNotifyEvent(EEditorNotifyEvent aEventId)
 {
 	switch (aEventId)
 	{
-	case eNotify_OnMainFrameCreated:
+	case eNotify_OnMainFrameInitialized:
 		InitDevice();
 		break;
 	}

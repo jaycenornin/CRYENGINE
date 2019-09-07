@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -37,15 +37,15 @@ protected:
 
 	CSmartVariableEnum<CString> CreateVariable(const char* name, EFlowDataTypes type);
 
-	CHyperFlowGraph*        m_pGraph;
-	CHyperGraphDialog*      m_pParent;
-	CXTPTaskPanel*          m_pTaskPanel;
-	CXTPTaskPanelGroup*     m_pGroup;
-	CXTPTaskPanelGroupItem* m_pPropItem;
+	CHyperFlowGraph*        m_pGraph{ nullptr };
+	CHyperGraphDialog*      m_pParent{ nullptr };
+	CXTPTaskPanel*          m_pTaskPanel{ nullptr };
+	CXTPTaskPanelGroup*     m_pGroup{ nullptr };
+	CXTPTaskPanelGroupItem* m_pPropItem{ nullptr };
 
 	CPropertyCtrl           m_graphProps;
 
-	bool                    m_bUpdate;
+	bool                    m_bUpdate{ false };
 };
 
 
@@ -136,4 +136,3 @@ protected:
 	STokenData* m_pTokenData;
 	TTokens     m_tokens;
 };
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -22,7 +22,7 @@ public:
 	void Enter() override;
 	void Leave() override;
 
-	void Display(DisplayContext& dc) override;
+	void Display(SDisplayContext& dc) override;
 
 	bool OnKeyDown(CViewport* view, uint32 nChar, uint32 nRepCnt, uint32 nFlags) override;
 	bool OnLButtonDown(CViewport* view, UINT nFlags, CPoint point) override;
@@ -30,7 +30,7 @@ public:
 
 	void SetSelectionType(EPivotSelectionType selectionType, bool bForce = false);
 
-	void OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& p0, BrushVec3 value, int flags) override;
+	void OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData) override;
 	void OnManipulatorBegin(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& point, int flags) override;
 
 	void Serialize(Serialization::IArchive& ar);
@@ -48,4 +48,3 @@ private:
 	EPivotSelectionType    m_PivotSelectionType;
 };
 }
-

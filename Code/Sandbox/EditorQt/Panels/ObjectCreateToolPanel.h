@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <EditorFramework/Editor.h>
@@ -12,6 +12,7 @@ class QStackedLayout;
 class QGridLayout;
 class QPreviewWidget;
 class QToolButton;
+class CObjectClassDesc;
 
 class CCreateObjectButtons : public QWidget
 {
@@ -57,4 +58,3 @@ private:
 	CCreateObjectButtons* m_pTypeButtonPanel;
 	std::vector<string>   m_typeToStackIndex;
 };
-

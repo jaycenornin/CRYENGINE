@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // CryAISystem.cpp : Defines the entry point for the DLL application.
 //
@@ -72,4 +72,3 @@ CRYREGISTER_SINGLETON_CLASS(CEngineModule_CryAISystem)
 #endif
 
 #include <CryCore/TypeInfo_impl.h>
-#include "AutoTypeStructs_info.h"

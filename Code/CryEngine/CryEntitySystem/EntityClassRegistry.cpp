@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "EntityClassRegistry.h"
@@ -454,7 +454,7 @@ public:
 		{
 			if (!pObject->SetSimulationMode(Schematyc::ESimulationMode::Preview, Schematyc::EObjectSimulationUpdatePolicy::Always))
 			{
-				CRY_ASSERT_MESSAGE(0, "Failed to reset Schematyc Preview.");
+				CRY_ASSERT(0, "Failed to reset Schematyc Preview.");
 				DestroyObject(m_objectId);
 			}
 		}
@@ -629,7 +629,6 @@ bool CEntityClassRegistry::OnClientConnectionReceived(int channelId, bool bIsRes
 			SEntitySpawnParams spawnParams;
 			spawnParams.pClass = classPair.second;
 			spawnParams.sName = "Client";
-			spawnParams.nFlags |= ENTITY_FLAG_NEVER_NETWORK_STATIC;
 
 			// Set local player details
 			if (channelId == 1 && !gEnv->IsDedicated() && g_pIEntitySystem->GetEntityFromID(LOCAL_PLAYER_ENTITY_ID) == nullptr)

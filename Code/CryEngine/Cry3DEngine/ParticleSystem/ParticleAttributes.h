@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-#ifndef PARTICLEATTRIBUTES_H
-#define PARTICLEATTRIBUTES_H
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -22,10 +19,10 @@ struct SAttributeDesc
 	CCryName                     m_name;
 	IParticleAttributes::TValue  m_defaultValue;
 
-	TValue<int, TDefaultMin<>>   m_minInt;
-	TValue<int, TDefaultMax<>>   m_maxInt;
-	TValue<float, TDefaultMin<>> m_minFloat;
-	TValue<float, TDefaultMax<>> m_maxFloat;
+	TValue<TDefaultMin<int>>   m_minInt;
+	TValue<TDefaultMax<int>>   m_maxInt;
+	TValue<TDefaultMin<float>> m_minFloat;
+	TValue<TDefaultMax<float>> m_maxFloat;
 
 	IParticleAttributes::EType	GetType() const { return m_defaultValue.Type(); }
 };
@@ -129,5 +126,3 @@ inline bool Serialize(Serialization::IArchive& ar, CAttributeReference& attr, cs
 
 
 }
-
-#endif

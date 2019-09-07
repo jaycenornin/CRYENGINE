@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -18,7 +18,7 @@ public:
 	{
 	}
 
-	virtual void Display(DisplayContext& dc) override;
+	virtual void Display(SDisplayContext& dc) override;
 
 	void         Enter() override;
 
@@ -33,7 +33,7 @@ public:
 
 	void         Serialize(Serialization::IArchive& ar);
 
-	void         OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& p0, BrushVec3 value, int nFlags) override;
+	void         OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData) override;
 	void         OnManipulatorBegin(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& point, int flags) override;
 	bool         IsManipulatorVisible() override { return true; }
 
@@ -60,8 +60,8 @@ protected:
 	void         GenerateLoop(const BrushPlane& slicePlane, TraverseLineList& outLineList) const;
 	BrushVec3    GetLoopPivotPoint() const;
 
-	void         DrawOutlines(DisplayContext& dc);
-	void         DrawOutline(DisplayContext& dc, TraverseLineList& lineList);
+	void         DrawOutlines(SDisplayContext& dc);
+	void         DrawOutline(SDisplayContext& dc, TraverseLineList& lineList);
 	virtual void UpdateGizmo();
 
 	TraverseLineList  m_MainTraverseLines;
@@ -72,4 +72,3 @@ protected:
 	BrushVec3         m_CursorPos;
 };
 }
-

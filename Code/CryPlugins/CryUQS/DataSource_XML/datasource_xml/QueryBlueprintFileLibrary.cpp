@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "QueryBlueprintFileLibrary.h"
@@ -121,7 +121,7 @@ namespace UQS
 
 		void CQueryBlueprintFileLibrary::GetQueryRecordNameFromFilePath(const CryPathString& fileName, stack_string& outName) const
 		{
-			outName = fileName;
+			outName = fileName.c_str();
 			outName.replace(m_config.rootPath.c_str(), "");
 			PathUtil::RemoveExtension(outName);
 		}

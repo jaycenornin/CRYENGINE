@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -11,7 +11,7 @@ typedef std::function<void (TSerialize, int32, uint8, int)> NetworkSerializeCall
 
 struct INetworkObject
 {
-	~INetworkObject() {}
+	virtual ~INetworkObject() {}
 
 	virtual bool   RegisterSerializeCallback(int32 aspects, const NetworkSerializeCallback& callback, CConnectionScope& connectionScope) = 0;
 	virtual void   MarkAspectsDirty(int32 aspects) = 0;

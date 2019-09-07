@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -16,7 +16,7 @@ public:
 	virtual bool SaveCryasset(const IConfig* const pConfig, const char* szSourceFilepath, size_t filesCount, const char** pFiles, const char* szOutputFolder) const override;
 
 private:
-	bool CollectMetadataDetails(XmlNodeRef& xml, const std::vector<string>& files) const;
+	bool CollectMetadataDetails(XmlNodeRef& xml, const string& file) const;
 private:
 	IResourceCompiler* m_pRc;
 

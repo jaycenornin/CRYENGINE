@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 
@@ -7,6 +7,7 @@
 #include <CryAnimation/ICryAnimation.h>
 #include <CryInput/IInput.h>
 #include <CryEntitySystem/IEntitySystem.h>
+#include <CryParticleSystem/IParticles.h>
 
 namespace CharacterTool {
 
@@ -153,4 +154,3 @@ void EffectPlayer::Render(SRendParams& params, const SRenderingPassInfo& passInf
 }
 
 }
-

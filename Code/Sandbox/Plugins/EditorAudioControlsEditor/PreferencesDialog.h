@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -12,14 +12,14 @@ class CPreferencesDialog final : public CEditorDialog
 
 public:
 
-	explicit CPreferencesDialog(QWidget* const pParent);
+	explicit CPreferencesDialog(QWidget* pParent);
 
 	CPreferencesDialog() = delete;
 
 signals:
 
-	void SignalImplementationSettingsAboutToChange();
-	void SignalImplementationSettingsChanged();
+	void SignalOnBeforeImplSettingsChange();
+	void SignalOnAfterImplSettingsChanged();
 	void SignalEnableSaveButton(bool);
 
 private:

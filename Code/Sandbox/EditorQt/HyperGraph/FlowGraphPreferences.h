@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <EditorFramework/Preferences.h>
@@ -72,4 +72,3 @@ extern SFlowGraphColorPreferences gFlowGraphColorPreferences;
 #define GET_TRANSPARENCY (gFlowGraphColorPreferences.opacity * 2.55f)
 #define GET_GDI_COLOR(x)                 (Gdiplus::Color(GET_TRANSPARENCY, GetRValue(x), GetGValue(x), GetBValue(x)))
 #define GET_GDI_COLOR_NO_TRANSPARENCY(x) (Gdiplus::Color(GetRValue(x), GetGValue(x), GetBValue(x)))
-

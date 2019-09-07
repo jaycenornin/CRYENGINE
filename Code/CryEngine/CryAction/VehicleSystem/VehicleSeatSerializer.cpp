@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -85,7 +85,7 @@ bool CVehicleSeatSerializer::ReloadExtension(IGameObject* pGameObject, const SEn
 {
 	ResetGameObject();
 
-	CRY_ASSERT_MESSAGE(false, "CVehicleSeatSerializer::ReloadExtension not implemented");
+	CRY_ASSERT(false, "CVehicleSeatSerializer::ReloadExtension not implemented");
 
 	return false;
 }

@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CryLinkCommands.h"
 
 #include "MainWindow.h"
+#include <CrySystem/ConsoleRegistration.h>
 
 namespace Schematyc
 {
@@ -74,4 +75,3 @@ CCryLinkCommands& CCryLinkCommands::GetInstance()
 
 CCryLinkCommands CCryLinkCommands::ms_instance;
 } // Schematyc
-

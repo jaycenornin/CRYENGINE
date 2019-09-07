@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "DeferredEvaluatorBlueprint.h"
@@ -24,7 +24,7 @@ namespace UQS
 
 		Client::IDeferredEvaluatorFactory& CDeferredEvaluatorBlueprint::GetFactory() const
 		{
-			assert(m_pDeferredEvaluatorFactory);
+			CRY_ASSERT(m_pDeferredEvaluatorFactory);
 			return *m_pDeferredEvaluatorFactory;
 		}
 
@@ -73,7 +73,7 @@ namespace UQS
 
 		const Client::IInputParameterRegistry& CDeferredEvaluatorBlueprint::GetInputParameterRegistry() const
 		{
-			assert(m_pDeferredEvaluatorFactory);
+			CRY_ASSERT(m_pDeferredEvaluatorFactory);
 			return m_pDeferredEvaluatorFactory->GetInputParameterRegistry();
 		}
 

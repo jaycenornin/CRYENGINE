@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-#ifndef AutoLogTime_h__
-#define AutoLogTime_h__
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -14,6 +11,3 @@ private:
 	const char* m_what;
 	int         m_t0, m_t1;
 };
-
-#endif // AutoLogTime_h__
-

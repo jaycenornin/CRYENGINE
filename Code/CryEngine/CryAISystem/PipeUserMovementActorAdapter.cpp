@@ -1,12 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PipeUserMovementActorAdapter.h"
 #include "PipeUser.h"
 
+#include "SmartObjects.h"
+#include "SmartObjectOffMeshNavigation.h"
+
 void PipeUserMovementActorAdapter::OnMovementPlanProduced()
 {
-	m_attachedPipeUser.SetSignal(AISIGNAL_DEFAULT, "MovementPlanProduced");
+	m_attachedPipeUser.SetSignal(GetAISystem()->GetSignalManager()->CreateSignal(AISIGNAL_DEFAULT, GetAISystem()->GetSignalManager()->GetBuiltInSignalDescriptions().GetOnMovementPlanProduced()));
 }
 
 bool PipeUserMovementActorAdapter::GetDesignedPath(SShape& pathShape) const

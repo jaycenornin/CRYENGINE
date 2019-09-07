@@ -1,17 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "FileTreeModel.h"
 
 #include "FileSystem/FileSystem_Enumerator.h"
 
-#include "CryIcon.h"
 #include "DragDrop.h"
 
-#include "CryIcon.h"
-#include <QLocale>
+#include <CryIcon.h>
 
-#include <cassert>
-#include <queue>
+#include <QLocale>
 
 struct CFileTreeModel::SImplementation
 {
@@ -1139,4 +1136,3 @@ QMimeData* CFileTreeModel::mimeData(const QModelIndexList& indexes) const
 	pDragDropData->SetCustomData("EngineFilePaths", byteArray);
 	return pDragDropData;
 }
-

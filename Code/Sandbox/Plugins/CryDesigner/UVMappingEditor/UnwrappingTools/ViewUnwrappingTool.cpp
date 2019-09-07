@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ViewUnwrappingTool.h"
@@ -45,4 +45,3 @@ void ViewUnwrappingTool::Enter()
 
 REGISTER_UVMAPPING_TOOL_AND_COMMAND(eUVMappingTool_View, eUVMappingToolGroup_Unwrapping, "View", ViewUnwrappingTool,
                                     view_unwrapping, "runs view unwrapping tool", "uvmapping.view_unwrapping")
-

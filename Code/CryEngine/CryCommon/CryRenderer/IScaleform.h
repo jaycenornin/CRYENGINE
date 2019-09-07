@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -12,7 +12,6 @@
 
 #include <vector>
 #include <CrySystem/Scaleform/GMemorySTLAlloc.h>
-#include <CryRenderer/IRenderer.h>
 
 struct IScaleformRecording;
 struct IScaleformPlayback;
@@ -22,6 +21,8 @@ class CScaleformPlayback;
 
 struct GRendererCommandBuffer;
 #endif
+
+#include <CryRenderer/IRenderer.h>
 
 class CCachedData;
 
@@ -540,7 +541,7 @@ public:
 	virtual void                   EnableMaskedRendering(bool enable) = 0;
 	virtual void                   ExtendCanvasToViewport(bool extend) = 0;
 
-	virtual void                   SetThreadIDs(uint32 mainThreadID, uint32 renderThreadID) = 0;
+	virtual void                   SetThreadIDs(threadID mainThreadID, threadID renderThreadID) = 0;
 	virtual bool                   IsMainThread() const = 0;
 	virtual bool                   IsRenderThread() const = 0;
 

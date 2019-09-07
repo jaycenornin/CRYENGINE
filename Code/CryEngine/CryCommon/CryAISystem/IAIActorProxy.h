@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __IAIActorProxy_h__
 #define __IAIActorProxy_h__
@@ -116,7 +116,7 @@ struct IAIActorProxy :
 
 	virtual void        UpdateMeAlways(bool doUpdateMeAlways) = 0;
 
-	virtual void        SetBehaviour(const char* szBehavior, const IAISignalExtraData* pData = 0) = 0;
+	virtual void        SetBehaviour(const char* szBehavior, const AISignals::IAISignalExtraData* pData = 0) = 0;
 
 	virtual void        OnActorRemoved() {}
 

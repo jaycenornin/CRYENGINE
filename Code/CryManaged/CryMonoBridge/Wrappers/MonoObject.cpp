@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MonoObject.h"
@@ -12,7 +12,7 @@ CMonoObject::CMonoObject(MonoInternals::MonoObject* pObject, std::shared_ptr<CMo
 	: m_pClass(pClass)
 	, m_pObject(pObject)
 {
-	CRY_ASSERT_MESSAGE(m_pClass.get() != nullptr, "SetWeakPointer must be called if no class is available!");
+	CRY_ASSERT(m_pClass.get() != nullptr, "SetWeakPointer must be called if no class is available!");
 
 	m_gcHandle = MonoInternals::mono_gchandle_new(m_pObject, true);
 }

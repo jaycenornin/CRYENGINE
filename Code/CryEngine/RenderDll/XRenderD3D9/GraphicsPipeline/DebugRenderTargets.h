@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -8,17 +8,20 @@
 class CDebugRenderTargetsStage : public CGraphicsPipelineStage
 {
 public:
-	static const char* showRenderTargetHelp;
+	static const EGraphicsPipelineStage StageID = eStage_DebugRenderTargets;
+	static const char*                  showRenderTargetHelp;
+
+	CDebugRenderTargetsStage(CGraphicsPipeline& graphicsPipeline) : CGraphicsPipelineStage(graphicsPipeline) {}
 
 	void Execute();
 
-	void OnShowRenderTargetsCmd(IConsoleCmdArgs* pArgs);
+	void OnShowRenderTargetsCmd(SDebugRenderTargetInfo& debugInfo);
 
 private:
 
 	struct SRenderTargetInfo
 	{
-		CTexture* pTexture      = nullptr;
+		CCryNameTSCRC textureName = "";
 		Vec4      channelWeight = Vec4(1.0f);
 		bool      bFiltered     = false;
 		bool      bRGBKEncoded  = false;
@@ -31,9 +34,9 @@ private:
 	void ExecuteShowTargets();
 
 private:
-	CPrimitiveRenderPass          m_debugPass;
-	std::vector<CRenderPrimitive> m_debugPrimitives;
-	int                           m_primitiveCount = 0;
+	CPrimitiveRenderPass           m_debugPass;
+	std::vector<CRenderPrimitive>  m_debugPrimitives;
+	int                            m_primitiveCount = 0;
 
 	std::vector<SRenderTargetInfo> m_renderTargetList;
 	bool                           m_bShowList;

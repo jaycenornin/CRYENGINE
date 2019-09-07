@@ -1,13 +1,13 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <memory>
 #include <QWidget>
 #include "DisplayParameters.h"
-#include "QPropertyTree/ContextList.h"
+#include "QPropertyTreeLegacy/ContextList.h"
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 
 namespace CharacterTool
 {
@@ -27,11 +27,10 @@ public slots:
 	void OnPropertyTreeChanged();
 
 private:
-	QPropertyTree*                  m_propertyTree;
+	QPropertyTreeLegacy*                  m_propertyTree;
 	bool                            m_changingDisplayOptions;
 	std::shared_ptr<DisplayOptions> m_displayOptions;
 	CharacterDocument*              m_document;
 };
 
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CoverUserComponent.h"
@@ -206,16 +206,16 @@ bool CEntityAICoverUserComponent::IsGameOrSimulation() const
 	return gEnv->IsGameOrSimulation();
 }
 
-uint64 CEntityAICoverUserComponent::GetEventMask() const 
+Cry::Entity::EventFlags CEntityAICoverUserComponent::GetEventMask() const
 { 
-	return ENTITY_EVENT_BIT(ENTITY_EVENT_LEVEL_LOADED) | ENTITY_EVENT_BIT(ENTITY_EVENT_RESET);
+	return ENTITY_EVENT_RESET | ENTITY_EVENT_START_GAME;
 }
 
 void CEntityAICoverUserComponent::ProcessEvent(const SEntityEvent& event)
 {
 	switch (event.event)
 	{
-		case ENTITY_EVENT_LEVEL_LOADED:
+		case ENTITY_EVENT_START_GAME:
 		{
 			if (IsGameOrSimulation())
 			{
@@ -258,7 +258,7 @@ void CEntityAICoverUserComponent::CancelMovementRequest()
 {
 	if (m_moveToCoverRequestId != MovementRequestID::Invalid())
 	{
-		gEnv->pAISystem->GetMovementSystem()->CancelRequest(m_moveToCoverRequestId);
+		gEnv->pAISystem->GetMovementSystem()->UnsuscribeFromRequestCallback(m_moveToCoverRequestId);
 		m_moveToCoverRequestId = MovementRequestID::Invalid();
 	}
 }
@@ -437,8 +437,6 @@ void CEntityAICoverUserComponent::CreatePlanEndBlocks(DynArray<Movement::BlockPt
 
 CoverID CEntityAICoverUserComponent::GetRandomCoverId(float radius) const
 {
-	const Vec3 entityPos = GetEntity()->GetWorldPos();
-	
 	std::vector<CoverID> covers;
 	covers.reserve(16);
 	gAIEnv.pCoverSystem->GetCover(GetEntity()->GetWorldPos(), radius, covers);

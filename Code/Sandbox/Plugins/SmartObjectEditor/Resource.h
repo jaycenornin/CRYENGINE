@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #define IDEDIT                                                                               3
 #define IDDELETE                                                                             4
@@ -46,5 +46,3 @@
 #define IDC_DESCRIPTIONTEXT                                                                  1953
 #define IDC_ITEMTEXT2                                                                        1954
 #define IDC_ITEMTEXT3                                                                        1957
-
-

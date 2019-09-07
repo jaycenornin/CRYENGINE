@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MaterialHelpers.h"
@@ -291,4 +291,3 @@ uint64 SetShaderGenParamsVars(IShader* pShader, CVarBlock* pBlock)
 	return nGenMask;
 }
 }
-

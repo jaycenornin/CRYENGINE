@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -9,5 +9,3 @@ class CHyperNodePainter_Comment : public IHyperNodePainter
 public:
 	virtual void Paint(CHyperNode* pNode, CDisplayList* pList);
 };
-
-

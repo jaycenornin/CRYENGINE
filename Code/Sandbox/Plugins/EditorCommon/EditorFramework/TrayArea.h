@@ -1,9 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
 #include "AutoRegister.h"
-#include "ICommandManager.h"
+#include "Commands/ICommandManager.h"
 
 #include <QWidget>
 
@@ -87,4 +87,3 @@ private:
 	QHBoxLayout*          m_pMainLayout;
 	QVector<CTrayObject*> m_trayObjects;
 };
-

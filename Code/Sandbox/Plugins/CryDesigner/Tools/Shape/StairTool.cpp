@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "StairTool.h"
@@ -342,4 +342,3 @@ void StairTool::RegisterShape(PolygonPtr pFloorPolygon)
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_Stair, eToolGroup_Shape, "Stair", StairTool,
                                                            stair, "runs stair tool", "designer.stair")
-

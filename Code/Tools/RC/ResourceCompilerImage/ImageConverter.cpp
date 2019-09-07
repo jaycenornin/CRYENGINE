@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -9,7 +9,7 @@
 #include "IAssetManager.h"
 #include "ImageDetails.h"
 
-#include "../../../SDKs/tiff-4.0.4/libtiff/tiffio.h"
+#include <tiffio.h>
 
 static void TiffWarningHandler(const char* module, const char* fmt, va_list args)
 {
@@ -91,6 +91,7 @@ CImageConverter::CImageConverter(IResourceCompiler* pRC)
 {
 	LoadPresetAliases(pRC->GetIniFile(), m_presetAliases);
 	pRC->GetAssetManager()->RegisterDetailProvider(AssetManager::CollectDDSImageDetails, "dds");
+	pRC->GetAssetManager()->RegisterDetailProvider(AssetManager::CollectTifImageDetails, "tif");
 }
 
 CImageConverter::~CImageConverter()

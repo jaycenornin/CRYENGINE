@@ -1,12 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-struct DisplayContext;
+struct SDisplayContext;
 
 struct IRenderListener
 {
-	virtual void Render(DisplayContext& rDisplayContext) = 0;
+	virtual void Render(SDisplayContext& rDisplayContext) = 0;
+	virtual ~IRenderListener() {}
 };
-
-

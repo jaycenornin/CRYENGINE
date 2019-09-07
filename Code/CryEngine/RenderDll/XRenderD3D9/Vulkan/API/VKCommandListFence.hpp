@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 
 #pragma once
@@ -69,6 +69,14 @@ ILINE UINT64 (&MaxFenceValues(UINT64 (&c)[CMDQUEUE_NUM], const FVAL64 (&a)[CMDQU
 	c[CMDQUEUE_COPY    ] = std::max(a[CMDQUEUE_COPY    ], b[CMDQUEUE_COPY    ]);
 
 	return c;
+}
+
+ILINE bool SmallerEqualFenceValues(UINT64 (&a)[CMDQUEUE_NUM], const FVAL64 (&b)[CMDQUEUE_NUM])
+{
+	return (
+		(a[CMDQUEUE_GRAPHICS] <= b[CMDQUEUE_GRAPHICS]) &
+		(a[CMDQUEUE_COMPUTE ] <= b[CMDQUEUE_COMPUTE ]) &
+		(a[CMDQUEUE_COPY    ] <= b[CMDQUEUE_COPY    ])) ? true : false;
 }
 // *INDENT-ON*
 

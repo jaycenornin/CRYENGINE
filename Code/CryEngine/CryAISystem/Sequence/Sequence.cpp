@@ -1,8 +1,7 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Sequence.h"
-#include "SequenceAgent.h"
 #include "SequenceFlowNodes.h"
 #include "AIBubblesSystem/AIBubblesSystem.h"
 
@@ -81,21 +80,8 @@ bool Sequence::TraverseAndValidateSequence()
 void Sequence::Start()
 {
 	assert(!m_active);
-	PrepareAgentSequenceBehavior();
 	m_active = true;
 	m_bookmarkNodeId = 0;
-}
-
-void Sequence::PrepareAgentSequenceBehavior()
-{
-	SequenceAgent agent(m_entityId);
-	agent.SetSequenceBehavior(m_sequenceProperties.interruptible);
-
-	if (agent.IsRunningSequenceBehavior(m_sequenceProperties.interruptible))
-	{
-		agent.ClearGoalPipe();
-		SequenceBehaviorReady();
-	}
 }
 
 void Sequence::SequenceBehaviorReady()
@@ -134,13 +120,11 @@ void Sequence::Cancel()
 {
 	Stop();
 	m_active = false;
-	SequenceAgent agent(m_entityId);
-	agent.ClearSequenceBehavior();
 }
 
 void Sequence::RequestActionStart(TFlowNodeId actionNodeId)
 {
-	CRY_ASSERT_MESSAGE(actionNodeId != InvalidFlowNodeId, "Sequence::RequestActionStart: clash between passed in actionNodeId and the magic value that specifies an invalid node");
+	CRY_ASSERT(actionNodeId != InvalidFlowNodeId, "Sequence::RequestActionStart: clash between passed in actionNodeId and the magic value that specifies an invalid node");
 
 	if (!m_active || actionNodeId == m_currentActionNodeId)
 		return;
@@ -158,10 +142,19 @@ void Sequence::RequestActionStart(TFlowNodeId actionNodeId)
 	}
 }
 
+void Sequence::RequestActionRestart()
+{
+	if (m_currentActionNodeId != InvalidFlowNodeId)
+	{
+		SendEventToNode(SequenceStopped, m_currentActionNodeId);
+		SendEventToNode(StartAction, m_currentActionNodeId);
+		return;
+	}
+	CRY_ASSERT_MESSAGE(m_currentActionNodeId != InvalidFlowNodeId, "Sequence can't be restarted because 'm_currentActionNodeId' is not valid.");
+}
+
 void Sequence::ActionComplete()
 {
-	SequenceAgent agent(m_entityId);
-	agent.ClearGoalPipe();
 	m_currentActionNodeId = InvalidFlowNodeId;
 }
 

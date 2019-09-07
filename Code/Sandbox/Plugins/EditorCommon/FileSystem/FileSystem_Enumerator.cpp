@@ -1,17 +1,16 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "FileSystem_Enumerator.h"
 
 #include "FileSystem/Internal/FileSystem_Internal_WorkerApi.h"
-
 #include "FileSystem/FileSystem_DirectoryFilter.h"
 #include "FileSystem/FileSystem_FileFilter.h"
+
+#include "PathUtils.h"
 
 #include <QSharedPointer>
 
 #include <atomic>
-
-#include "FilePathUtil.h"
 
 namespace FileSystem
 {
@@ -87,4 +86,3 @@ void CEnumerator::RegisterFileTypes(const QVector<const SFileType*>& fileTypes)
 }
 
 } // namespace FileSystem
-

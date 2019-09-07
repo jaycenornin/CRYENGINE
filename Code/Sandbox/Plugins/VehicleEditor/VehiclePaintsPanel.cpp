@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "VehiclePaintsPanel.h"
 
 #include "VehicleData.h"
-#include "FilePathUtil.h"
+#include "PathUtils.h"
 
 #include "CryRenderer/IRenderer.h"
 
@@ -424,4 +424,3 @@ void CVehiclePaintsPanel::UpdateAssignMaterialButtonState()
 
 	m_applyMaterialButton.EnableWindow(materialSelected);
 }
-

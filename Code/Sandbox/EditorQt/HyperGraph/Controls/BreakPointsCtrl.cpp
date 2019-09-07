@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "BreakPointsCtrl.h"
+#include "IEditorImpl.h"
 
 #include <CryFlowGraph/IFlowGraphModuleManager.h>
 
@@ -413,8 +414,6 @@ void CBreakpointsTreeCtrl::OnBreakpointInvalidated(const SBreakPoint& breakpoint
 
 			if (pPort)
 			{
-				CHyperFlowGraph* pFlowgraph = GetIEditorImpl()->GetFlowGraphManager()->FindGraph(pFlowGraph);
-				CFlowNode* pNode = pFlowgraph->FindFlowNode(breakpoint.addr.node);
 				SetItemText(hPortItem, pPort->GetHumanName());
 			}
 		}
@@ -594,4 +593,3 @@ void CBreakpointsTreeCtrl::EnableTracepoint(HTREEITEM hItem, bool enable)
 }
 
 #undef VALIDATE_DEBUGGER
-

@@ -1,9 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <vector>
 #include <deque>
+
+class XmlNodeRef;
 
 struct SEquipment
 {
@@ -100,4 +102,3 @@ protected:
 	TAmmoVec       m_ammoVec;
 	bool           m_bModified;
 };
-

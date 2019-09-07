@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "NULLRenderAuxGeom.h"
 #include <CryCore/Platform/CryLibrary.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 CNULLRenderAuxGeom* CNULLRenderAuxGeom::s_pThis = NULL;
 

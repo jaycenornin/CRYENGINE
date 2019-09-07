@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 namespace pfx2
 {
@@ -19,8 +19,8 @@ ILINE CTimeProfiler::CTimeProfiler(CParticleProfiler& profiler, const CParticleC
 	: m_profiler(profiler)
 	, m_runtime(runtime)
 #if !defined(_RELEASE)
-	, m_stat(stat)
 	, m_startTicks(CryGetTicks())
+	, m_stat(stat)
 #endif
 {
 }

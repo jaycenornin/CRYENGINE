@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -30,7 +30,7 @@ public:
 
 	virtual bool UpdateImpl(const CDeviceResourceSetDesc& desc, CDeviceResourceSetDesc::EDirtyFlags dirtyFlags);
 
-	VkDescriptorSetLayout GetVkDescriptorSetLayout() const { VK_ASSERT(m_descriptorSetLayout != VK_NULL_HANDLE && "Set not built"); return m_descriptorSetLayout; }
+	VkDescriptorSetLayout GetVkDescriptorSetLayout() const { VK_ASSERT(m_descriptorSetLayout != VK_NULL_HANDLE, "Set not built"); return m_descriptorSetLayout; }
 	VkDescriptorSet       GetVKDescriptorSet()       const { return m_descriptorSetHandle; }
 
 	static VkDescriptorSetLayout CreateLayout(const VectorMap<SResourceBindPoint, SResourceBinding>& resources);

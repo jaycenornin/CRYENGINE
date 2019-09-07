@@ -1,13 +1,13 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ModelProperties.h"
 
-#include <Serialization/QPropertyTree/QPropertyTree.h>
+#include <Serialization/QPropertyTreeLegacy/QPropertyTreeLegacy.h>
 
 #include <QAbstractItemView>
 
-CModelProperties::CModelProperties(QPropertyTree* pPropertyTree)
+CModelProperties::CModelProperties(QPropertyTreeLegacy* pPropertyTree)
 	: m_pInspectedModel(nullptr)
 	, m_pPropertyTree(pPropertyTree)
 {
@@ -102,4 +102,3 @@ void CModelProperties::ConnectViewToPropertyObject(QAbstractItemView* pView)
 		}
 	});
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ClusterDetector.h"
@@ -71,7 +71,7 @@ ClusterDetector::ClusterRequestID ClusterDetector::GenerateUniqueClusterRequestI
 	return ++m_nextUniqueRequestID;
 }
 
-void ClusterDetector::Update(float frameDeltaTime)
+void ClusterDetector::Update(const CTimeValue frameStartTime, const float frameDeltaTime)
 {
 	if (m_requests.empty())
 		return;

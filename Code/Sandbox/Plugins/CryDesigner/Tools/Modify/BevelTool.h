@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -20,7 +20,7 @@ public:
 	bool OnLButtonDown(CViewport* view, UINT nFlags, CPoint point) override;
 	bool OnMouseMove(CViewport* view, UINT nFlags, CPoint point) override;
 	bool OnKeyDown(CViewport* view, uint32 nKeycode, uint32 nRepCnt, uint32 nFlags) override;
-	void Display(DisplayContext& dc) override;
+	void Display(SDisplayContext& dc) override;
 
 	void Enter() override;
 	void Leave() override;
@@ -114,4 +114,3 @@ private:
 
 };
 }
-

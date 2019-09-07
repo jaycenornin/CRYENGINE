@@ -1,9 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
+
+#pragma once
 
 // Control D3D debug runtime output.
-
-#ifndef __D3DDEBUG__H__
-#define __D3DDEBUG__H__
 
 #if defined(DX11_ALLOW_D3D_DEBUG_RUNTIME)
 enum ESeverityCombination
@@ -53,4 +52,3 @@ private:
 
 #endif // #if defined(DX11_ALLOW_D3D_DEBUG_RUNTIME)
 
-#endif // __D3DDEBUG__H__

@@ -1,13 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "../EditorCommon/Serialization.h"
 
 #include <CrySerialization/Forward.h>
-
-struct SkeletonAlias;
-bool Serialize(Serialization::IArchive& ar, SkeletonAlias& value, const char* name, const char* label);
 
 #include <CrySerialization/Decorators/Resources.h>
 #include <CrySerialization/Decorators/ResourceFilePath.h>
@@ -40,4 +37,3 @@ using Serialization::SerializeToMemory;
 using Serialization::SerializeToMemory;
 using Serialization::SerializeFromMemory;
 using Serialization::SerializeFromMemory;
-

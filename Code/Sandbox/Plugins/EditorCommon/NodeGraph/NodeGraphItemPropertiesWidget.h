@@ -1,16 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "ICryGraphEditor.h"
-
 #include "EditorCommonAPI.h"
-
+#include "ICryGraphEditor.h"
 #include "QScrollableBox.h"
 
 #include <CrySerialization/IArchive.h>
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 
 namespace CryGraphEditor {
 
@@ -31,9 +29,8 @@ protected:
 	void SetupPropertyTree();
 
 protected:
-	QPropertyTree*          m_pPropertyTree;
+	QPropertyTreeLegacy*          m_pPropertyTree;
 	Serialization::SStructs m_structs;
 };
 
 }
-

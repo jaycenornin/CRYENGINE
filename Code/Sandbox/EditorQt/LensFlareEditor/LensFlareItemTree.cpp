@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "LensFlareItemTree.h"
@@ -17,14 +17,6 @@ ON_WM_LBUTTONUP()
 ON_WM_MOUSEMOVE()
 ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
-
-CLensFlareItemTree::CLensFlareItemTree()
-{
-}
-
-CLensFlareItemTree::~CLensFlareItemTree()
-{
-}
 
 void CLensFlareItemTree::OnLButtonDown(UINT nFlags, CPoint point)
 {
@@ -133,7 +125,7 @@ void CLensFlareItemTree::AssignLensFlareToLightEntity(XmlNodeRef xmlNode, const 
 
 	CPoint viewportPos(screenPos);
 	pViewport->ScreenToClient(&viewportPos);
-	HitContext hit;
+	HitContext hit(pViewport);
 	if (!pViewport->HitTest(viewportPos, hit))
 		return;
 
@@ -181,4 +173,3 @@ void CLensFlareItemTree::UpdateDraggingFromOtherWindow()
 	if (bChanged)
 		RedrawWindow();
 }
-

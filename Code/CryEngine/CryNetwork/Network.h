@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -57,6 +57,10 @@ class CNetworkInspector;
 class CServiceManager;
 #if ENABLE_DISTRIBUTED_LOGGER
 class CDistributedLogger;
+#endif
+
+#if CRY_PLATFORM_DURANGO
+class CDurangoAssociationTemplate;
 #endif
 
 #if defined(ENABLE_LW_PROFILERS)
@@ -418,7 +422,7 @@ private:
 	bool AllSuicidal();
 	void UpdateLoop(ENetworkGameSync sync);
 #if ENABLE_DISTRIBUTED_LOGGER
-	std::auto_ptr<CDistributedLogger> m_pLogger;
+	std::unique_ptr<CDistributedLogger> m_pLogger;
 #endif
 
 	typedef std::map<NRESULT, string>                                                  TErrorMap;
@@ -458,10 +462,10 @@ private:
 	int                            m_schedulerVersion;
 	int                            m_inSync[eNGS_NUM_ITEMS + 2]; // one extra for the continuous update loop, and the other for flushing the lazy queue
 
-	std::auto_ptr<CServiceManager> m_pServiceManager;
+	std::unique_ptr<CServiceManager> m_pServiceManager;
 
 	class CNetworkThread;
-	std::auto_ptr<CNetworkThread> m_pThread;
+	std::unique_ptr<CNetworkThread> m_pThread;
 	NetFastMutex                  m_mutex;
 	NetFastMutex                  m_commMutex;
 	NetFastMutex                  m_logMutex;
@@ -488,6 +492,10 @@ private:
 	bool                         m_bDelayedExternalWork;
 
 	SNetGameInfo                 m_gameInfo;
+
+#if CRY_PLATFORM_DURANGO
+	std::unique_ptr<CDurangoAssociationTemplate> m_pAssociationTemplate;
+#endif
 
 	bool UpdateTick(bool mt);
 

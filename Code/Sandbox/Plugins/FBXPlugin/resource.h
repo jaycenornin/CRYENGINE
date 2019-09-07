@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #define IDD_FBX_EXPORT_SETTINGS 103
 #define IDC_COPY_TEXTURES       1003
@@ -16,4 +16,3 @@
 		#define _APS_NEXT_SYMED_VALUE    101
 	#endif
 #endif
-

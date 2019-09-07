@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef SHADERALLOCATOR_H
 #define SHADERALLOCATOR_H
@@ -11,7 +11,7 @@
 typedef cry_crt_node_allocator ShaderBucketAllocator;
 
 extern ShaderBucketAllocator g_shaderBucketAllocator;
-extern IGeneralMemoryHeap* g_shaderGeneralHeap;
+extern _smart_ptr<IGeneralMemoryHeap> g_shaderGeneralHeap;
 
 template<class T>
 class STLShaderAllocator : public stl::SAllocatorConstruct
@@ -46,7 +46,7 @@ public:
 
 	pointer allocate(size_type n = 1, const void* hint = 0)
 	{
-		MEMREPLAY_SCOPE(EMemReplayAllocClass::C_UserPointer, EMemReplayUserPointerClass::C_STL);
+		MEMREPLAY_SCOPE(EMemReplayAllocClass::UserPointer, EMemReplayUserPointerClass::STL);
 
 		pointer ret = NULL;
 
@@ -68,7 +68,7 @@ public:
 
 	void deallocate(pointer p, size_type n = 1)
 	{
-		MEMREPLAY_SCOPE(EMemReplayAllocClass::C_UserPointer, EMemReplayUserPointerClass::C_STL);
+		MEMREPLAY_SCOPE(EMemReplayAllocClass::UserPointer, EMemReplayUserPointerClass::STL);
 
 		(void)n;
 		if (p)

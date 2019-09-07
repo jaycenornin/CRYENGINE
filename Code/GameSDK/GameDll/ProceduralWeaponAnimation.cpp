@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ProceduralWeaponAnimation.h"
@@ -156,7 +156,6 @@ namespace
 
 		SMovementState info;
 		pMC->GetMovementState(info);
-		Vec3 dir = info.fireDirection;
 
 		DrawGoldenRatio(currentAspectRatio, offsetX, widthMult);
 		DrawSights(currentAspectRatio, offsetX, widthMult);
@@ -167,9 +166,6 @@ namespace
 
 		gEnv->pRenderer->GetIRenderAuxGeom()->SetRenderFlags(currentFlags);
 	}
-
-
-
 }
 
 

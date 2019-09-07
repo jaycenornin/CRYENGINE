@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -157,4 +157,3 @@ typedef std::set<IndexPair>         EdgeSet;
 typedef std::set<int>               EdgeIndexSet;
 typedef std::map<int, EdgeIndexSet> EdgeMap;
 }
-

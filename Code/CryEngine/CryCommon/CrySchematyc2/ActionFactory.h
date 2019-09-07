@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -143,6 +143,10 @@ namespace Schematyc2
 			return SActionPropertiesFactory<PROPERTIES>::CreateProperties();
 		}
 
+		virtual Cry::Type::CTypeDesc GetTypeDesc() const final
+		{
+			return Cry::Type::DescOf<ACTION>();
+		}
 		// ~IActionFactory
 
 	private:

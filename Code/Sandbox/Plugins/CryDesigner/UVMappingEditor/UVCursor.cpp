@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "UVCursor.h"
@@ -7,7 +7,7 @@ namespace Designer {
 namespace UVMapping
 {
 
-void UVCursor::Draw(DisplayContext& dc)
+void UVCursor::Draw(SDisplayContext& dc)
 {
 	const float z = 0.01f;
 	Vec3 pos(GetPos().x, GetPos().y, z);
@@ -36,4 +36,3 @@ void UVCursor::Transform(const Matrix33& tm)
 
 }
 }
-

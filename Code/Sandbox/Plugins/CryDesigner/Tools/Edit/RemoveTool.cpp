@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "RemoveTool.h"
@@ -95,4 +95,3 @@ bool RemoveTool::RemoveSelectedElements()
 }
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Remove, eToolGroup_Edit, "Remove", RemoveTool,
                                    remove, "runs remove tool", "designer.remove")
-

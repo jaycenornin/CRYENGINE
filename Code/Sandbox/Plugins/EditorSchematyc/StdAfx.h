@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 // CryEngine headers.
@@ -37,13 +37,12 @@
 // Schematyc headers and declarations.
 
 #if defined(SCHEMATYC_PLUGIN_EXPORTS)
-	#define SCHEMATYC_PLUGIN_API __declspec(dllexport)
+	#define SCHEMATYC_PLUGIN_API DLL_EXPORT
 #else
-	#define SCHEMATYC_PLUGIN_API __declspec(dllimport)
+	#define SCHEMATYC_PLUGIN_API DLL_IMPORT
 #endif
 
 #include <CrySchematyc/CoreAPI.h>
 
 
 Q_DECLARE_METATYPE(CryGUID);
-

@@ -1,8 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
+#include "CGF/CryHeaders.h"
 #include <CryMath/Cry_Geo.h>
+#include <CryCore/Containers/CryArray.h>
+
+class CRndGen;
+struct SRendParams;
+struct SRenderingPassInfo;
 
 //////////////////////////////////////////////////////////////////////////
 // IMeshObj:

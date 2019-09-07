@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 #include "QControls.h"
 
@@ -233,3 +233,42 @@ void QLoading::paintEvent(QPaintEvent* pEvent)
 	}
 }
 
+CLabel::CLabel(QWidget* pParent)
+	: QLabel(pParent)
+	, m_textElideMode(Qt::ElideNone)
+{
+}
+
+void CLabel::resizeEvent(QResizeEvent* pEvent)
+{
+	QLabel::resizeEvent(pEvent);
+	UpdatePresentation();
+}
+
+void CLabel::SetTextElideMode(Qt::TextElideMode textElideMode)
+{
+	m_textElideMode = textElideMode;
+	if (m_textElideMode != Qt::ElideNone)
+	{
+		// Make sure to modify size policy when enabling elision
+		setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	}
+	UpdatePresentation();
+}
+
+void CLabel::SetText(const QString& text)
+{
+	m_text = text;
+	UpdatePresentation();
+}
+
+void CLabel::UpdatePresentation()
+{
+	QFontMetrics metrics(font());
+	setText(metrics.elidedText(m_text, m_textElideMode, width()));
+}
+
+void CLabel::setText(const QString& text)
+{
+	QLabel::setText(text);
+}

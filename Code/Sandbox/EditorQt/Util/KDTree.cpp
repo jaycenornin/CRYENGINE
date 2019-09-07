@@ -1,7 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "KDTree.h"
+#include <Util/Math.h>
+#include <Cry3DEngine/IIndexedMesh.h>
+#include <Cry3DEngine/IStatObj.h>
 
 class KDTreeNode
 {
@@ -478,4 +481,3 @@ void CKDTree::GetPenetratedBoxesRecursively(KDTreeNode* pNode, const Vec3& raySr
 	GetPenetratedBoxesRecursively(pNode->GetChild(0), raySrc, rayDir, outBoxes);
 	GetPenetratedBoxesRecursively(pNode->GetChild(1), raySrc, rayDir, outBoxes);
 }
-

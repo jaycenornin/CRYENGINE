@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CollisionFilteringProperties.h"
 #include "ObjectPhysicsManager.h"
 #include "GameEngine.h"
 
+#include <IObjectManager.h>
 #include <CrySandbox/IEditorGame.h>
 #include <CryGame/IGameFramework.h>
 
@@ -102,4 +103,3 @@ int CCollisionFilteringProperties::GetCollisionClassExportId()
 	// This should only be called during the export phase
 	return GetIEditorImpl()->GetObjectManager()->GetPhysicsManager()->RegisterCollisionClass(m_collisionClass);
 }
-

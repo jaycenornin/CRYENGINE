@@ -1,11 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "ToolFactory.h"
-#include "Core/UVIsland.h"
-#include <CrySerialization/Enum.h>
 #include "Core/Polygon.h"
+#include "Core/UVIsland.h"
+#include "ToolFactory.h"
 
 class QViewport;
 
@@ -44,6 +43,8 @@ enum EUVMappingTool
 	eUVMappingTool_FlipVert,
 	eUVMappingTool_Alignment
 };
+
+bool IsUvMappingToolStateless(EUVMappingTool tool);
 
 enum EPrincipleAxis
 {
@@ -241,4 +242,3 @@ typedef Designer::DesignerFactory<Designer::UVMapping::EUVMappingTool, Designer:
 	REGISTER_UVMAPPING_TOOL(_key, _group, _name, _class)                                                                      \
 	PYTHON_DESIGNER_UVMAPPING_COMMAND(_key, _class)                                                                           \
 	REGISTER_PYTHON_COMMAND_WITH_EXAMPLE(DesignerUVMappingCommand::Py ## _class, uvmapping, _cmd_functionName, _cmd_description, _cmd_example)
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 -------------------------------------------------------------------------
@@ -21,9 +21,10 @@ History:
 #include "AmmoParams.h"
 #include "Actor.h"
 #include "WeaponSystem.h"
+#include "GameCVars.h"
 #include <CryAnimation/ICryAnimation.h>
 #include <CryAISystem/IAIObject.h>
-
+#include <Cry3DEngine/ISurfaceType.h>
 #include <IPerceptionManager.h>
 
 struct SPhysicsRayWrapper

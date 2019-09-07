@@ -1,19 +1,21 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "PersonalizationManager.h"
-#include "QtUtil.h"
-#include "FilePathUtil.h"
 
-#include <CrySystem/ISystem.h>
+#include "PathUtils.h"
 
-#include <QSettings>
-#include <QJsonDocument>
+#include <QDir>
 #include <QFile>
-#include <QEvent>
+#include <QJsonDocument>
 
+namespace Private_Personalization
+{
+const char* szPersonalizationPath = "Personalization.json";
+}
 
 CPersonalizationManager::CPersonalizationManager()
+	: CUserData({ Private_Personalization::szPersonalizationPath })
 {
 	m_saveSharedStateTimer.setInterval(5000);
 	m_saveSharedStateTimer.setSingleShot(true);
@@ -22,6 +24,7 @@ CPersonalizationManager::CPersonalizationManager()
 	m_saveProjectStateTimer.setSingleShot(this);
 	m_saveProjectStateTimer.connect(&m_saveProjectStateTimer, &QTimer::timeout, [this]() { SaveProjectState(); });
 
+	LoadDefaultState();
 	LoadSharedState();
 	LoadProjectState();
 }
@@ -49,6 +52,11 @@ bool CPersonalizationManager::HasProperty(const QString& moduleName, const QStri
 {
 	const QVariantMap& moduleState = m_sharedState[moduleName];
 	return moduleState.contains(propName);
+}
+
+const QVariantMap& CPersonalizationManager::GetDefaultState(const QString& moduleName)
+{
+	return m_defaultState[moduleName];
 }
 
 void CPersonalizationManager::SetState(const QString& moduleName, const QVariantMap& state)
@@ -119,40 +127,21 @@ CPersonalizationManager::ModuleStateMap CPersonalizationManager::FromVariant(con
 	return map;
 }
 
+void CPersonalizationManager::LoadDefaultState()
+{
+	m_defaultState = FromVariant(UserDataUtil::Load(Private_Personalization::szPersonalizationPath, UserDataUtil::LoadType::EngineDefaults));
+}
+
 void CPersonalizationManager::SaveSharedState() const
 {
-	QString path = QtUtil::GetAppDataFolder();
-	QDir(path).mkpath(path);
-	path += "/Personalization.json";
-
-	QFile file(path);
-	if (!file.open(QIODevice::WriteOnly))
-	{
-		QString msg = "Failed to open path: " + path;
-		CryWarning(VALIDATOR_MODULE_EDITOR, VALIDATOR_ERROR, msg.toLocal8Bit());
-		return;
-	}
-
 	QJsonDocument doc(QJsonDocument::fromVariant(ToVariant(m_sharedState)));
-	file.write(doc.toJson());
+	UserDataUtil::Save(Private_Personalization::szPersonalizationPath, doc.toJson());
 }
 
 void CPersonalizationManager::LoadSharedState()
 {
-	QString path = QtUtil::GetAppDataFolder();
-	path += "/Personalization.json";
-
-	QFile file(path);
-	if (!file.open(QIODevice::ReadOnly))
-	{
-		QString msg = "Failed to open path: " + path;
-		CryWarning(VALIDATOR_MODULE_EDITOR, VALIDATOR_COMMENT, msg.toLocal8Bit());
-		return;
-	}
-
-	QJsonDocument doc(QJsonDocument::fromJson(file.readAll()));
-	QVariant variant = doc.toVariant();
-	m_sharedState = FromVariant(variant);
+	// Merge personalization from user and default directory
+	m_sharedState = FromVariant(UserDataUtil::Load(Private_Personalization::szPersonalizationPath, UserDataUtil::LoadType::MergeData));
 }
 
 void CPersonalizationManager::LoadProjectState()
@@ -164,7 +153,7 @@ void CPersonalizationManager::LoadProjectState()
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		QString msg = "Failed to open path: " + path;
-		CryWarning(VALIDATOR_MODULE_EDITOR, VALIDATOR_COMMENT, msg.toLocal8Bit());
+		CryWarning(VALIDATOR_MODULE_EDITOR, VALIDATOR_COMMENT, msg.toLocal8Bit().constData());
 		return;
 	}
 
@@ -183,11 +172,10 @@ void CPersonalizationManager::SaveProjectState() const
 	if (!file.open(QIODevice::WriteOnly))
 	{
 		QString msg = "Failed to open path: " + path;
-		CryWarning(VALIDATOR_MODULE_EDITOR, VALIDATOR_ERROR, msg.toLocal8Bit());
+		CryWarning(VALIDATOR_MODULE_EDITOR, VALIDATOR_ERROR, msg.toLocal8Bit().constData());
 		return;
 	}
 
 	QJsonDocument doc(QJsonDocument::fromVariant(ToVariant(m_projectState)));
 	file.write(doc.toJson());
 }
-

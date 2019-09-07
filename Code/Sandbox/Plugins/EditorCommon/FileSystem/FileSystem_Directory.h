@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "FileSystem_File.h"
@@ -54,4 +54,3 @@ inline uint qHash(const DirectoryPtr& directory, uint seed)
 }
 
 } // namespace FileSystem
-

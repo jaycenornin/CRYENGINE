@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -8,6 +8,7 @@
 #include <CryMath/Angle.h>
 
 #include <CrySchematyc/CoreAPI.h>
+#include <CryCore/StaticInstanceList.h>
 
 namespace Schematyc
 {

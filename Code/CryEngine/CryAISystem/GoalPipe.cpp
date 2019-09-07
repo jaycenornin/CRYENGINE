@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "GoalPipe.h"
@@ -704,7 +704,7 @@ void CGoalPipe::PushGoal(EGoalOperations op, bool bBlocking, EGroupType eGroupin
 		break;
 	case eGO_SIGNAL:
 		{
-			newgoal.pGoalOp = new COPSignal(params.nValueAux, params.str, static_cast<ESignalFilter>(params.nValue), (int)params.fValueAux);
+			newgoal.pGoalOp = new COPSignal(params.nValueAux, params.str, static_cast<AISignals::ESignalFilter>(params.nValue), (int)params.fValueAux);
 		}
 		break;
 	case eGO_SCRIPT:

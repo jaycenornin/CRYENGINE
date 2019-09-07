@@ -1,12 +1,13 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // #SchematycTODO : Should type descriptor also store namespace, file-name and author?
 
 #pragma once
 
 #include "CrySchematyc2/Prerequisites.h"
-
 #include "CrySchematyc2/TypeInfo.h"
+
+#include <CryType/Type.h>
 
 namespace Schematyc2
 {
@@ -44,6 +45,7 @@ namespace Schematyc2
 		virtual EEnvTypeCategory GetCategory() const = 0;
 		virtual EEnvTypeFlags GetFlags() const = 0;
 		virtual IAnyPtr Create() const = 0;
+		virtual Cry::Type::CTypeDesc GetTypeDesc() const = 0;
 	};
 
 	DECLARE_SHARED_POINTERS(IEnvTypeDesc)

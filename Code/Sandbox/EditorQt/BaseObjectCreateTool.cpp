@@ -1,7 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 #include "BaseObjectCreateTool.h"
 
+#include "IEditorImpl.h"
+#include "IUndoManager.h"
+#include <Objects/BaseObject.h>
 #include <QEvent>
 #include <QDragEnterEvent>
 #include <QDragLeaveEvent>
@@ -134,4 +137,3 @@ void CBaseObjectCreateTool::FinishCreation(bool restart, CViewport* pView, const
 		Abort();
 	}
 }
-

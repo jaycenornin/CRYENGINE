@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -59,10 +59,11 @@ typedef std::deque<MovementRequestID> MovementRequestQueue;
 // Retrieve information about an actor through this object.
 struct MovementActor : public IMovementActor
 {
-	MovementActor(const EntityId _entityID, IMovementActorAdapter* _pAdapter)
+	MovementActor(const EntityId _entityID, IMovementActorAdapter* _pAdapter, const MovementActorCallbacks& _callbacks)
 		: entityID(_entityID)
 		, requestIdCurrentlyInPlanner(0)
 		, pAdapter(_pAdapter)
+		, callbacks(_callbacks)
 	{
 		assert(pAdapter);
 	}
@@ -71,7 +72,7 @@ struct MovementActor : public IMovementActor
 
 	// IMovementActor
 	virtual IMovementActorAdapter&    GetAdapter() const override;
-	virtual void                      RequestPathTo(const Vec3& destination, float lengthToTrimFromThePathEnd, const SSnapToNavMeshRulesInfo& snappingRules, const MNMDangersFlags dangersFlags,
+	virtual void                      RequestPathTo(const Vec3& destination, float lengthToTrimFromThePathEnd, const MNM::SOrderedSnappingMetrics& snappingMetrics, const MNMDangersFlags dangersFlags,
 	                                                const bool considerActorsAsPathObstacles, const MNMCustomPathCostComputerSharedPtr& pCustomPathCostComputer) override;
 	virtual Movement::PathfinderState GetPathfinderState() const override;
 	virtual const char*               GetName() const override;

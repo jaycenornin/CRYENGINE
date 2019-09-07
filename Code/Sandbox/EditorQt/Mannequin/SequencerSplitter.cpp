@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "SequencerSplitter.h"
@@ -12,10 +12,6 @@ CSequencerSplitter::CSequencerSplitter()
 	m_cxBorderShare = m_cyBorderShare = 0;
 	m_cxSplitterGap = m_cySplitterGap = 3 + 1 + 1 - 1;
 	m_cxBorder = m_cyBorder = 0;
-}
-
-CSequencerSplitter::~CSequencerSplitter()
-{
 }
 
 BEGIN_MESSAGE_MAP(CSequencerSplitter, CClampedSplitterWnd)
@@ -55,4 +51,3 @@ void CSequencerSplitter::OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect&
 	// Draw border
 	pDC->Draw3dRect(rectArg, GetSysColor(COLOR_BTNSHADOW), GetSysColor(COLOR_BTNHIGHLIGHT));
 }
-

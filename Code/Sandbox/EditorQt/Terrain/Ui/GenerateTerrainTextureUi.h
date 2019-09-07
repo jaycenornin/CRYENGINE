@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <QObject>
@@ -38,9 +38,8 @@ private:
 	struct Ui
 	{
 		CTerrainTextureDimensionsUi* m_pTerrainTextureDimensionsUi;
-		QNumericBox*           m_pColorMultiplierSpinBox;
+		QNumericBox*                 m_pColorMultiplierSpinBox;
 		QCheckBox*                   m_pHighQualityCompressionCheckBox;
 	};
 	Ui m_ui;
 };
-

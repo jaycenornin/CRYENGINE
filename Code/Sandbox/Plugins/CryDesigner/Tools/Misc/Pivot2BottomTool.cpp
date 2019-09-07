@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Pivot2BottomTool.h"
@@ -34,4 +34,3 @@ void Pivot2BottomTool::Enter()
 }
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Pivot2Bottom, eToolGroup_Misc, "Pivot2Bottom", Pivot2BottomTool,
                                    pivot2bottom, "runs pivot2bottom tool", "designer.pivot2bottom")
-

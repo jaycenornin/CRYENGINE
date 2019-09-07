@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
+#include <CryRenderer/IRenderer.h> // required by ParticleParams.h
 #include <CryParticleSystem/ParticleParams.h>
 #include <IVehicleSystem.h>
 #include <IForceFeedbackSystem.h>

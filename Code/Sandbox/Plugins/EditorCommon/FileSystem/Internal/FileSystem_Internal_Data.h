@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "FileSystem_Internal_PathUtils.h"
@@ -90,4 +90,3 @@ struct SArchiveContentInternal
 } // namespace FileSystem
 
 Q_DECLARE_METATYPE(FileSystem::Internal::SScanResult)
-

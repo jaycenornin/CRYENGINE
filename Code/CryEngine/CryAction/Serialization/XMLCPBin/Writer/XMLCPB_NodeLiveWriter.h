@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 *************************************************************************/
@@ -187,7 +187,7 @@ private:
 template<class T>
 inline void CNodeLiveWriter::AddAttr(const char* pAttrName, const T& data)
 {
-	assert(!m_done && m_valid);
+	CRY_ASSERT(!m_done && m_valid);
 
 	CAttrWriter attr(m_Writer);
 	attr.Set(pAttrName, data);

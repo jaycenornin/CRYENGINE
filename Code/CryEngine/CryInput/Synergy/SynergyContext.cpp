@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -336,7 +336,6 @@ static bool ProcessPackets(CSynergyContext* pContext, Stream* s)
 		}
 		if (i == CRY_ARRAY_COUNT(s_packets))
 		{
-			char* data = s->GetData() + packetLen;
 			//CryLog("SYNERGY: Can't understand packet:%s Length:%d\n", s->GetData(), packetLen);
 			s->Eat(packetLen);
 		}

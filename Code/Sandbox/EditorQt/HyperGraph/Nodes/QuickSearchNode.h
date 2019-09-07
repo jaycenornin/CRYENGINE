@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -21,14 +21,13 @@ public:
 	virtual bool IsFlowNode() const override          { return false; }
 	// ~CHyperNode
 
-	void         SetSearchResultCount(int count)      { m_iSearchResultCount = count; };
-	int          GetSearchResultCount()               { return m_iSearchResultCount; };
+	void         SetSearchResultCount(int count)      { m_iSearchResultCount = count; }
+	int          GetSearchResultCount()               { return m_iSearchResultCount; }
 
-	void         SetIndex(int index)                  { m_iIndex = index; };
-	int          GetIndex()                           { return m_iIndex; };
+	void         SetIndex(int index)                  { m_iIndex = index; }
+	int          GetIndex()                           { return m_iIndex; }
 
 private:
 	int m_iSearchResultCount;
 	int m_iIndex;
 };
-

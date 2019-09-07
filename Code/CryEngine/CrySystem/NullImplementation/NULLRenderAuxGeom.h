@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef NULL_RENDER_AUX_GEOM_H
 #define NULL_RENDER_AUX_GEOM_H
 
 #include <CryRenderer/IRenderAuxGeom.h>
+#include <CryMath/Cry_Camera.h>
 
 class CNULLRenderer;
 class ICrySizer;

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -10,7 +10,17 @@ class CSystemFilterProxyModel final : public QAttributeFilterProxyModel
 {
 public:
 
-	CSystemFilterProxyModel(QObject* const pParent);
+	CSystemFilterProxyModel() = delete;
+	CSystemFilterProxyModel(CSystemFilterProxyModel const&) = delete;
+	CSystemFilterProxyModel(CSystemFilterProxyModel&&) = delete;
+	CSystemFilterProxyModel& operator=(CSystemFilterProxyModel const&) = delete;
+	CSystemFilterProxyModel& operator=(CSystemFilterProxyModel&&) = delete;
+
+	CSystemFilterProxyModel(QObject* pParent)
+		: QAttributeFilterProxyModel(QDeepFilterProxyModel::Behavior::AcceptIfChildMatches, pParent)
+	{}
+
+	virtual ~CSystemFilterProxyModel() override = default;
 
 protected:
 

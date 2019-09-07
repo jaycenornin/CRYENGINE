@@ -1,19 +1,20 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 
 #include "NotificationHistory.h"
 #include "Internal/Notifications_Internal.h"
 #include "Internal/NotificationModel_Internal.h"
 
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QToolButton>
-#include <QHeaderView>
-
 // EditorCommon
 #include "QAdvancedTreeView.h"
 #include "CryIcon.h"
 #include "EditorFramework/PersonalizationManager.h"
+
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QToolButton>
+#include <QHeaderView>
+#include <QMenu>
 
 CNotificationHistory::CNotificationHistory(QWidget* pParent /* = nullptr*/)
 	: QWidget(pParent)
@@ -192,4 +193,3 @@ void CNotificationHistory::SaveState()
 	SET_PERSONALIZATION_PROPERTY(CNotificationHistory, "ShowErrors", m_pShowErrors->isChecked());
 	SET_PERSONALIZATION_PROPERTY(CNotificationHistory, "TreeView", m_pTreeView->GetState());
 }
-

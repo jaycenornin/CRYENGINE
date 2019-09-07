@@ -1,21 +1,21 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <QFileInfo>
+#include <CryAudio/IAudioInterfacesCommonData.h>
 
 namespace ACE
 {
 struct SFileImportInfo final
 {
-	enum class EActionType
+	enum class EActionType : CryAudio::EnumFlagsType
 	{
 		None,
 		New,
 		Replace,
 		Ignore,
-		SameFile,
-	};
+		SameFile, };
 
 	explicit SFileImportInfo(QFileInfo const& sourceInfo_, bool const isTypeSupported_, QString const& parentFolderName_ = "")
 		: sourceInfo(sourceInfo_)

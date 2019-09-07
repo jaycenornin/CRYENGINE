@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __RECORDINGSYSTEM_H__
 #define __RECORDINGSYSTEM_H__
@@ -21,6 +21,7 @@
 #include "RecordingSystemClientSender.h"
 #include "RecordingSystemServerForwarder.h"
 #include "RecordingSystemDefines.h"
+#include "GameCVars.h"
 
 class CActor;
 class CBufferUtil;

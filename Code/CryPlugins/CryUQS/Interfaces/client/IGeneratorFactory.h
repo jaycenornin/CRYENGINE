@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -73,7 +73,7 @@ namespace UQS
 
 			inline void CGeneratorDeleter::operator()(IGenerator* pGeneratorToDelete)
 			{
-				assert(m_pFactory);
+				CRY_ASSERT(m_pFactory);
 				m_pFactory->DestroyGenerator(pGeneratorToDelete);
 			}
 

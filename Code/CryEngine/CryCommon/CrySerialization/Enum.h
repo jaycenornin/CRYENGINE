@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -64,7 +64,7 @@ public:
 			string str;
 			if (ar(str, name, label))
 			{
-				auto it = nameToValue_.find(str);
+				auto it = nameToValue_.find(str.c_str());
 				if (it != nameToValue_.end())
 				{
 					value = it->second;
@@ -88,7 +88,7 @@ public:
 
 private:
 
-	struct LessStrCmpi : std::binary_function<const char*, const char*, bool>
+	struct LessStrCmpi
 	{
 		bool operator()(const char* l, const char* r) const { return strcmpi(l, r) < 0; }
 	};

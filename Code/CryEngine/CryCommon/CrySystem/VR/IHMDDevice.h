@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -13,7 +13,8 @@ enum EHmdClass
 {
 	eHmdClass_Oculus,
 	eHmdClass_OpenVR,
-	eHmdClass_Osvr
+	eHmdClass_Osvr,
+	eHmdClass_Emulator
 };
 
 enum EHmdStatus
@@ -225,15 +226,15 @@ struct IHmdController
 {
 	typedef uint32 TLightColor;
 
-	enum ECaps
+	enum ECaps : uint32
 	{
-		eCaps_Buttons       = BIT(0),
-		eCaps_Tracking      = BIT(1),
-		eCaps_Sticks        = BIT(2),
-		eCaps_Capacitors    = BIT(3),
-		eCaps_Gestures      = BIT(4),
-		eCaps_ForceFeedback = BIT(5),
-		eCaps_Color         = BIT(6),
+		eCaps_Buttons       = BIT32(0),
+		eCaps_Tracking      = BIT32(1),
+		eCaps_Sticks        = BIT32(2),
+		eCaps_Capacitors    = BIT32(3),
+		eCaps_Gestures      = BIT32(4),
+		eCaps_ForceFeedback = BIT32(5),
+		eCaps_Color         = BIT32(6),
 	};
 
 	virtual bool IsConnected(EHmdController id) const = 0;
@@ -275,10 +276,14 @@ protected:
 struct IHmdDevice
 {
 private:
-	stl::optional<std::pair<Quat, Vec3>> m_orientationForLateCameraInjection;
+	std::map<uint64, std::pair<Quat, Vec3>> m_orientationForLateCameraInjection;
 
 protected:
-	void OnEndFrame() { m_orientationForLateCameraInjection = stl::nullopt; }
+	void OnEndFrame(uint64 frameId) 
+	{ 
+		if(m_orientationForLateCameraInjection.find(frameId) != m_orientationForLateCameraInjection.end())
+			m_orientationForLateCameraInjection.erase(frameId);
+	}
 
 public:
 	enum EInternalUpdate
@@ -319,8 +324,12 @@ public:
 	virtual void DisableHMDTracking(bool disable) = 0;
 
 	//! Enables a late camera injection to the render thread based on updated HMD tracking feedback, must be called from main thread.
-	void EnableLateCameraInjectionForCurrentFrame(const std::pair<Quat, Vec3> &currentOrientation) { m_orientationForLateCameraInjection = (stl::optional<std::pair<Quat, Vec3>>) currentOrientation; }
-	const stl::optional<std::pair<Quat, Vec3>>& GetOrientationForLateCameraInjection() const { return m_orientationForLateCameraInjection; }
+	void EnableLateCameraInjectionForCurrentFrame(uint64 frameId, const std::pair<Quat, Vec3> &currentOrientation) { m_orientationForLateCameraInjection[frameId] = currentOrientation; }
+	stl::optional<std::pair<Quat, Vec3>> GetOrientationForLateCameraInjection(uint64 frameId) const
+	{ 
+		auto retOrientation = m_orientationForLateCameraInjection.find(frameId);
+		return retOrientation != m_orientationForLateCameraInjection.end() ? stl::optional<std::pair<Quat, Vec3>>(retOrientation->second) : stl::nullopt;
+	}
 
 	//! Can be called from any thread to retrieve most up to date camera transformation
 	virtual stl::optional<Matrix34> RequestAsyncCameraUpdate(uint64_t frameId, const Quat& q, const Vec3 &p) = 0;

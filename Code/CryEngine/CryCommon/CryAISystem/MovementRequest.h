@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -111,7 +111,7 @@ struct MovementRequest
 	bool            considerActorsAsPathObstacles;
 	float           lengthToTrimFromThePathEnd;
 	MNMCustomPathCostComputerSharedPtr pCustomPathCostComputer;
-	SSnapToNavMeshRulesInfo snappingRules;
+	MNM::SOrderedSnappingMetrics snappingMetrics;
 };
 
 //! Contains information about the status of a request.

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -329,7 +329,6 @@ bool SAnimationDefinition::GetDescFromAnimationSettingsFile(SAnimationDesc* desc
 	}
 
 	desc->m_bAdditiveAnimation = animSettings.build.additive;
-	desc->m_skeletonName = animSettings.build.skeletonAlias;
 
 
 	if (animSettings.build.compression.m_useNewFormatWithDefaultSettings)

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __FLOWSYSTEM_H__
 #define __FLOWSYSTEM_H__
@@ -8,6 +8,7 @@
 #include <CryFlowGraph/IFlowSystem.h>
 #include "FlowSystemCVars.h"
 #include <CryCore/Containers/CryListenerSet.h>
+#include <queue>
 
 class CFlowGraphBase;
 class CFlowGraphModuleManager;

@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-#if !defined __EDITOR_AUTOLEVELLOAD_TEST_H__
-#define __EDITOR_AUTOLEVELLOAD_TEST_H__
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -15,6 +12,3 @@ private:
 
 	virtual void OnEditorNotifyEvent(EEditorNotifyEvent event);
 };
-
-#endif //__EDITOR_AUTOLEVELLOAD_TEST_H__
-

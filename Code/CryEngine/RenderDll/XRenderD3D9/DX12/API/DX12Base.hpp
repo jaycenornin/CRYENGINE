@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -24,7 +24,7 @@ extern int g_nPrintDX12;
 	#define DX12_FUNC_LOG do {} while (0);
 #endif
 
-#if CRY_PLATFORM_64BIT && CRY_PLATFORM_DESKTOP
+#if CRY_PLATFORM_DESKTOP
 	#define DX12_LINKEDADAPTER            true
 	#define DX12_LINKEDADAPTER_SIMULATION 0
 #endif
@@ -44,7 +44,6 @@ extern int g_nPrintDX12;
 #define DX12_CONCURRENCY_ANALYZER      false
 #define DX12_FENCE_ANALYZER            false
 #define DX12_BARRIER_ANALYZER          false
-
 
 // Extract lowest set isolated bit "intrinsic" -> _blsi_u32 (Jaguar == PS4|XO, PileDriver+, Haswell+)
 #define blsi(field) (field & (-static_cast<INT>(field)))

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -149,6 +149,7 @@ protected:
 
 	// For material syncing with 3dsMax.
 	void PickPreviewMaterial(HWND hWndCaller);
+	void InitMaterial(CMaterial* pMtl);
 	void InitMatSender();
 
 	void OnDebugFlagsChanged();
@@ -181,4 +182,3 @@ protected:
 	bool				   m_bShadersEnumerated;
 	std::vector<string>	   m_shaderList;
 };
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -15,9 +15,17 @@ struct DiscParameter
 	{
 	}
 
-	void Serialize(Serialization::IArchive& ar)
+	void Serialize(Serialization::IArchive& ar, bool sphere)
 	{
-		ar(SUBDIVISION_RANGE(m_NumOfSubdivision), "SubdivisionCount", "Subdivision Count");
+		if (sphere)
+		{
+			ar(SUBDIVISION_SPHERE_RANGE(m_NumOfSubdivision), "SubdivisionCount", "Subdivision Count");
+		}
+		else
+		{
+			ar(SUBDIVISION_RANGE(m_NumOfSubdivision), "SubdivisionCount", "Subdivision Count");
+		}
+
 		if (ar.isEdit())
 			ar(LENGTH_RANGE(m_Radius), "Radius", "Radius");
 		ar(m_b90DegreeSnap, "90 Degrees Snap", "90 Degrees Snap");
@@ -54,7 +62,7 @@ public:
 	virtual bool OnMouseMove(CViewport* view, UINT nFlags, CPoint point) override;
 	bool         OnKeyDown(CViewport* view, uint32 nChar, uint32 nRepCnt, uint32 nFlags) override;
 	void         OnEditorNotifyEvent(EEditorNotifyEvent event) override;
-	virtual void Display(DisplayContext& dc) override;
+	virtual void Display(SDisplayContext& dc) override;
 	virtual void OnChangeParameter(bool continuous) override;
 	bool         IsPhaseFirstStepOnPrimitiveCreation() const override;
 
@@ -75,4 +83,3 @@ protected:
 	DiscParameter  m_DiscParameter;
 };
 }
-

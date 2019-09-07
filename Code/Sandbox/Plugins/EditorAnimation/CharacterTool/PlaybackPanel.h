@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -17,6 +17,7 @@ class CTimeline;
 
 class QMenuComboBox;
 struct STimelineContent;
+struct STimelineTrack;
 
 namespace Explorer
 {
@@ -61,6 +62,8 @@ protected slots:
 	void      OnTimelineHotkey(int number);
 	void      OnTimelineUndo();
 	void      OnTimelineRedo();
+	void      OnTimelineCopy(SAnimTime time, STimelineTrack* pTrack);
+	void      OnTimelinePaste(SAnimTime time, STimelineTrack* pTrack);
 	void      OnPlaybackTimeChanged();
 	void      OnPlaybackStateChanged();
 	void      OnPlaybackOptionsChanged();
@@ -127,4 +130,3 @@ private:
 };
 
 }
-

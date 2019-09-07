@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -15,7 +15,6 @@ public:
 	FlipTool(EUVMappingTool tool) : BaseTool(tool) {}
 
 protected:
-	void Flip(UVIslandPtr pUVIsland, const Vec2& pivot, const Vec2& normal);
 	void Flip(const Vec2& normal);
 };
 
@@ -35,4 +34,3 @@ public:
 
 }
 }
-

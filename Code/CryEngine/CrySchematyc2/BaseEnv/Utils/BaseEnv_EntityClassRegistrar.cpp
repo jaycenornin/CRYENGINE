@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "BaseEnv/Utils/BaseEnv_EntityClassRegistrar.h"
@@ -155,6 +155,7 @@ namespace SchematycBaseEnv
 			pEntityFoundation->SetProperties(Schematyc2::Properties::MakeShared<SEntityFoundationProperties>());
 			pEntityFoundation->UseNamespace("Base");
 			pEntityFoundation->UseNamespace("Utils");
+			pEntityFoundation->UseNamespace("Debug::UDR");
 			//pEntityFoundation->UseNamespace("Types");
 			// TODO: Workaround until recursion works.
 			pEntityFoundation->UseNamespace("Types::Bool");

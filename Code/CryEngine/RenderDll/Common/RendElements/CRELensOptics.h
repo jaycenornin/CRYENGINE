@@ -1,13 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 class CRELensOptics : public CRenderElement
 {
 public:
-	CRELensOptics(void);
-	~CRELensOptics(void) {}
+	CRELensOptics();
 
-	virtual void mfExport(struct SShaderSerializeContext& SC)                 {};
-	virtual void mfImport(struct SShaderSerializeContext& SC, uint32& offset) {};
+	virtual void mfExport(struct SShaderSerializeContext& SC)                 {}
+	virtual void mfImport(struct SShaderSerializeContext& SC, uint32& offset) {}
 };

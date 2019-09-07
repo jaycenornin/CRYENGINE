@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MonoException.h"
@@ -18,8 +18,6 @@ void CMonoException::Throw()
 
 string CMonoException::GetExceptionString()
 {
-	auto pInternalException = reinterpret_cast<InternalMonoException*>(m_pException);
-	
 	if (MonoInternals::MonoString* pString = MonoInternals::mono_object_to_string((MonoInternals::MonoObject*)m_pException, nullptr))
 	{
 		return MonoStringToUtf8String(pString);

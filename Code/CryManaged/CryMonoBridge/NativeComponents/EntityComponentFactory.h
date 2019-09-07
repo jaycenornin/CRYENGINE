@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -329,12 +329,13 @@ public:
 	CManagedComponentClassDescription                      m_classDescription;
 	std::shared_ptr<CMonoClass>                            m_pClass;
 
-	uint64                                                 m_eventMask;
+	Cry::Entity::EventFlags                                m_eventMask;
 
 	std::vector<std::unique_ptr<SPropertyTypeDescription>> m_properties;
 
 	std::weak_ptr<CMonoMethod>                             m_pConstructorMethod;
 	std::weak_ptr<CMonoMethod>                             m_pInternalSetEntityMethod;
+	std::weak_ptr<CMonoMethod>                             m_pInternalUpdateComponentHandleMethod;
 	std::weak_ptr<CMonoMethod>                             m_pInitializeMethod;
 
 	std::weak_ptr<CMonoMethod>                             m_pTransformChangedMethod;
@@ -345,6 +346,14 @@ public:
 	std::weak_ptr<CMonoMethod>                             m_pUnHideMethod;
 	std::weak_ptr<CMonoMethod>                             m_pCollisionMethod;
 	std::weak_ptr<CMonoMethod>                             m_pPrePhysicsUpdateMethod;
+	std::weak_ptr<CMonoMethod>                             m_pTimerMethod;
+	std::weak_ptr<CMonoMethod>                             m_pAnimationEventMethod;
+	std::weak_ptr<CMonoMethod>                             m_pMoveNearAreaMethod;
+	std::weak_ptr<CMonoMethod>                             m_pLeaveNearAreaMethod;
+	std::weak_ptr<CMonoMethod>                             m_pEnterNearAreaMethod;
+	std::weak_ptr<CMonoMethod>                             m_pMoveInsideAreaMethod;
+	std::weak_ptr<CMonoMethod>                             m_pLeaveAreaMethod;
+	std::weak_ptr<CMonoMethod>                             m_pEnterAreaMethod;
 
 	std::weak_ptr<CMonoMethod>                             m_pGameStartMethod;
 	std::weak_ptr<CMonoMethod>                             m_pRemoveMethod;

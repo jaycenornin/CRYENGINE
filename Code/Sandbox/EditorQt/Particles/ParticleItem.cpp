@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ParticleItem.h"
 
 #include "ParticleLibrary.h"
 #include "BaseLibraryManager.h"
+#include <UsedResources.h>
 
 #include <CryParticleSystem/ParticleParams.h>
 
@@ -262,5 +263,3 @@ void CParticleItem::GatherUsedResources(CUsedResources& resources)
 	if (m_pEffect->GetParticleParams().sStopTrigger.length())
 		resources.Add(m_pEffect->GetParticleParams().sStopTrigger.c_str());
 }
-
-

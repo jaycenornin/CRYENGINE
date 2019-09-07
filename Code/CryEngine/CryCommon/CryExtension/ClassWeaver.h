@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   ClassWeaver.h
@@ -19,6 +19,7 @@
 #include "RegFactoryNode.h"
 #include <CryExtension/ICryUnknown.h>
 #include <CryExtension/ICryFactory.h>
+#include <CryThreading/CryThread.h>
 
 namespace CW
 {

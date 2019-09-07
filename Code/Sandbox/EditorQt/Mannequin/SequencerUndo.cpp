@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SequencerUndo.h"
 #include "ISequencerSystem.h"
 #include "SequencerSequence.h"
+#include "IEditorImpl.h"
 
 //////////////////////////////////////////////////////////////////////////
 CUndoSequencerSequenceModifyObject::CUndoSequencerSequenceModifyObject(CSequencerTrack* track, CSequencerSequence* pSequence)
@@ -52,4 +53,3 @@ void CUndoSequencerSequenceModifyObject::Redo()
 	// Refresh stuff after undo.
 	GetIEditorImpl()->UpdateSequencer(true);
 }
-

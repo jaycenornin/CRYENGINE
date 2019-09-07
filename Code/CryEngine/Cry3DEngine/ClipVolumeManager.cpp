@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -100,12 +100,12 @@ void CClipVolumeManager::PrepareVolumesForRendering(const SRenderingPassInfo& pa
 
 void CClipVolumeManager::UpdateEntityClipVolume(const Vec3& pos, IRenderNode* pRenderNode)
 {
-	CRY_PROFILE_REGION(PROFILE_3DENGINE, "CClipVolumeManager::UpdateEntityClipVolume");
+	CRY_PROFILE_SECTION(PROFILE_3DENGINE, "CClipVolumeManager::UpdateEntityClipVolume");
 
 	if (!pRenderNode)
 		return;
 
-	const auto pTempData = pRenderNode->m_pTempData.load();
+	const auto pTempData = pRenderNode->m_pTempData;
 	if (!pTempData)
 		return;
 

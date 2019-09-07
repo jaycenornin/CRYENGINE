@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SelectAllNoneTool.h"
+
+#include "Core/Model.h"
 #include "DesignerEditor.h"
-#include "Tools/Select/SelectTool.h"
-#include "DesignerSession.h"
 
 namespace Designer
 {
@@ -108,4 +108,3 @@ void SelectAllNoneTool::DeselectAllFaces()
 
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_AllNone, eToolGroup_Selection, "AllNone", SelectAllNoneTool,
                                    allnoneselection, "runs All/None selection tool", "designer.allnoneselection")
-

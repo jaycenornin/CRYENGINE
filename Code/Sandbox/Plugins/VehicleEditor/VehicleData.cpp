@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "VehicleData.h"
 
 #include "VehicleXMLLoader.h"
+#include <CrySystem/IConsole.h>
 
 IVariable* CVehicleData::m_pDefaults(0);
 XmlNodeRef CVehicleData::m_xmlDef(0);
@@ -223,4 +224,3 @@ void DumpVariable(IVariable* pVar, int level /*=0*/)
 	for (int i = 0; i < pVar->GetNumVariables(); ++i)
 		DumpVariable(pVar->GetVariable(0), level++);
 }
-

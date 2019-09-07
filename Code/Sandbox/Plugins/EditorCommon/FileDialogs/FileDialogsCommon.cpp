@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "FileDialogsCommon.h"
 #include <CrySystem/File/ICryPak.h>
@@ -56,7 +56,6 @@ void FilesTreeView::OnContextMenu(const QPoint& point)
 
 			connect(pAction, &QAction::toggled, [=](bool bChecked)
 				{
-					int column = pAction->data().toInt();
 					if (bChecked)
 						header()->showSection(i);
 					else
@@ -68,4 +67,3 @@ void FilesTreeView::OnContextMenu(const QPoint& point)
 }
 
 }
-

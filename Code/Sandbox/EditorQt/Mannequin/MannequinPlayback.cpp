@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MannequinPlayback.h"
@@ -402,4 +402,3 @@ void CFragmentSequencePlayback::UpdateDebugParams()
 {
 	m_actionController.SetParam("CameraLocation", QuatT(Quat(ZERO), Vec3(0.f, 0.f, 1.5f)));
 }
-

@@ -1,7 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-// CryEngine Source File.
-// Copyright (C), Crytek, 1999-2014.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "TrackViewUndo.h"
@@ -13,12 +10,17 @@
 #include "Objects/SequenceObject.h"
 #include "Objects/EntityObject.h"
 
+#include <CryMovie/IMovieSystem.h>
+
 CUndoSequenceSettings::CUndoSequenceSettings(CTrackViewSequence* pSequence)
 	: m_pSequence(pSequence)
 	, m_oldTimeRange(pSequence->GetTimeRange())
 	, m_oldPlaybackRange(pSequence->GetPlaybackRange())
 	, m_oldFlags(pSequence->GetFlags())
 {
+	IAnimSequence* pAnimationSequence = pSequence->GetIAnimSequence();
+	if (pAnimationSequence)
+		m_oldSequenceAudioTrigger = pAnimationSequence->GetAudioTrigger();
 }
 
 void CUndoSequenceSettings::Undo(bool bUndo)
@@ -30,6 +32,13 @@ void CUndoSequenceSettings::Undo(bool bUndo)
 	m_pSequence->SetTimeRange(m_oldTimeRange);
 	m_pSequence->SetPlaybackRange(m_oldPlaybackRange);
 	m_pSequence->SetFlags(m_oldFlags);
+
+	IAnimSequence* pAnimationSequence = m_pSequence->GetIAnimSequence();
+	if (pAnimationSequence)
+	{
+		m_newSequenceAudioTrigger = pAnimationSequence->GetAudioTrigger();
+		pAnimationSequence->SetAudioTrigger(m_oldSequenceAudioTrigger);
+	}
 }
 
 void CUndoSequenceSettings::Redo()
@@ -37,6 +46,12 @@ void CUndoSequenceSettings::Redo()
 	m_pSequence->SetTimeRange(m_newTimeRange);
 	m_pSequence->SetPlaybackRange(m_newPlaybackRange);
 	m_pSequence->SetFlags(m_newFlags);
+
+	IAnimSequence* pAnimationSequence = m_pSequence->GetIAnimSequence();
+	if (pAnimationSequence)
+	{
+		pAnimationSequence->SetAudioTrigger(m_newSequenceAudioTrigger);
+	}
 }
 
 CUndoAnimKeySelection::CUndoAnimKeySelection(CTrackViewSequence* pSequence)
@@ -98,7 +113,7 @@ std::vector<bool> CUndoAnimKeySelection::SaveKeyStates(CTrackViewSequence* pSequ
 	return selectionState;
 }
 
-void CUndoAnimKeySelection::RestoreKeyStates(CTrackViewSequence* pSequence, const std::vector<bool> keyStates)
+void CUndoAnimKeySelection::RestoreKeyStates(CTrackViewSequence* pSequence, const std::vector<bool>& keyStates)
 {
 	CTrackViewKeyBundle keys = pSequence->GetAllKeys();
 	const unsigned int numkeys = keys.GetKeyCount();
@@ -297,7 +312,7 @@ void CAbstractUndoAnimNodeTransaction::AddNode()
 	m_pParentNode->m_pAnimSequence->AddNode(m_pNode->m_pAnimNode);
 
 	// Release ownership and add node back to parent node
-	CTrackViewNode* pNode = m_pStoredTrackViewNode.release();
+	m_pStoredTrackViewNode.release();
 	m_pParentNode->AddNode(m_pNode);
 
 	m_pNode->BindToEditorObjects();
@@ -464,8 +479,7 @@ void CUndoTrackRemove::Redo()
 CUndoAnimNodeReparent::CUndoAnimNodeReparent(CTrackViewAnimNode* pAnimNode, CTrackViewAnimNode* pNewParent)
 	: CAbstractUndoAnimNodeTransaction(pAnimNode), m_pNewParent(pNewParent), m_pOldParent(m_pParentNode)
 {
-	CTrackViewSequence* pSequence = pAnimNode->GetSequence();
-	assert(pSequence == m_pNewParent->GetSequence() && pSequence == m_pOldParent->GetSequence());
+	CRY_ASSERT(pAnimNode->GetSequence() == m_pNewParent->GetSequence() && pAnimNode->GetSequence() == m_pOldParent->GetSequence());
 
 	Reparent(pNewParent);
 }
@@ -541,4 +555,3 @@ void CUndoTrackNodeDisable::Redo()
 {
 	m_pNode->SetDisabled(m_newState);
 }
-

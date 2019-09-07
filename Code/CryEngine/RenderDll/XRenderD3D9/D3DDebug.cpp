@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "D3DDebug.h"
@@ -200,4 +200,4 @@ string CD3DDebug::GetLastMessage()
 	return res;
 }
 
-#endif //!CAFE && !CRY_USE_OPENGL
+#endif //!CAFE

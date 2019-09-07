@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -41,4 +41,3 @@ class EDITOR_COMMON_API CCustomDockWidget : public QDockWidget
 public:
 	CCustomDockWidget(const char* title, QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
 };
-

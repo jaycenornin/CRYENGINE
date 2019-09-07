@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -15,6 +15,7 @@
 #include "VKCommandScheduler.hpp"
 
 #include "VKOcclusionQueryManager.hpp"
+#include <CryThreading/CryThread.h>
 
 namespace NCryVulkan
 {
@@ -27,7 +28,26 @@ namespace NCryVulkan
 class CInstance;
 struct SPhysicalDeviceInfo;
 
-class CDevice : public CRefCounted
+class CDeviceHolder
+{
+protected:
+	VkAllocationCallbacks m_Allocator;
+	VkDevice m_device;
+
+public:
+
+	CDeviceHolder(VkDevice device, VkAllocationCallbacks* hostAllocator) : m_Allocator(*hostAllocator), m_device(device) {}
+
+	~CDeviceHolder()
+	{
+		if (m_device != VK_NULL_HANDLE)
+		{
+			vkDestroyDevice(m_device, &m_Allocator);
+		}
+	}
+};
+
+class CDevice : public CDeviceHolder, public CRefCounted
 {
 
 protected:
@@ -93,10 +113,11 @@ public:
 	void FlushReleaseHeaps(const UINT64 (&completedFenceValues)[CMDQUEUE_NUM], const UINT64 (&pruneFenceValues)[CMDQUEUE_NUM]) threadsafe;
 	void FlushAndWaitForGPU();
 
+	bool IsTessellationShaderSupported() const;
+	bool IsGeometryShaderSupported()     const;
+
 private:
 	const SPhysicalDeviceInfo* m_pDeviceInfo;
-	VkAllocationCallbacks m_Allocator;
-	VkDevice m_device;
 	VkPipelineCache m_pipelineCache;
 	VkDescriptorPool m_descriptorPool;
 	CHeap m_heap;

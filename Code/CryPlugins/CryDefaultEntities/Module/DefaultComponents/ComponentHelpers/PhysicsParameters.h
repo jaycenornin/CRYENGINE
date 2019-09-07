@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -54,8 +54,8 @@ struct SPhysicsParameters
 		{
 		case EWeightType::Mass:
 			{
-				archive(m_mass, "Mass", "Mass");
-				archive.doc("Mass of the object in kg.");
+				archive(m_mass, "Mass", "Mass(pre-scale)");
+				archive.doc("Pre-scale mass of the object in kg.");
 			}
 			break;
 		case EWeightType::Density:

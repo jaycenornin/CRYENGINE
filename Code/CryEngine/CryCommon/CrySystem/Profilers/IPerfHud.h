@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
  
 //! \cond INTERNAL
 
@@ -108,6 +108,9 @@ struct ICryPerfHUD : public ICryUnknown
 DECLARE_SHARED_POINTERS(ICryPerfHUD);
 
 void        CryPerfHUDWarning(float duration, const char*, ...) PRINTF_PARAMS(2, 3);
+
+#include <CrySystem/ISystem.h>
+
 inline void CryPerfHUDWarning(float duration, const char* format, ...)
 {
 	if (gEnv && gEnv->pSystem)

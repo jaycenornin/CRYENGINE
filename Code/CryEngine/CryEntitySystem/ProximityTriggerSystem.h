@@ -1,10 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "RadixSort.h"
+#include <CryEntitySystem/IEntityBasicTypes.h>
+#include <CryMath/Cry_Geo.h>
+#include <CryMemory/PoolAllocator.h>
 
 class CEntityComponentTriggerBounds;
+struct SProximityElement;
 
 //////////////////////////////////////////////////////////////////////////
 struct SProximityElement

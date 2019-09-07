@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ProgressBar.h"
@@ -60,9 +60,6 @@ void RenderBar(const Vec2& normalizedCentrePosOffset, const float barwidth,  con
 	// TEST - draw a big X or text 
 	float nBarWidth    =  barwidth;
 	float nBarHeight   =  barHeight;
-
-	float x = normalizedCentrePosOffset.x; 
-	float y = normalizedCentrePosOffset.y; 
 
 	// Setup Tri indices
 	vtx_idx indTri[ 6 ] = 

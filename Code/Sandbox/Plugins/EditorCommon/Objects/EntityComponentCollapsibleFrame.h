@@ -1,6 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
+
+#include "EditorCommonAPI.h"
 
 #include <QCollapsibleFrame.h>
 
@@ -28,4 +30,3 @@ public:
 	CEntityComponentCollapsibleFrame(const QString& title, const CEntityComponentClassDesc& typeDesc, const size_t typeInstanceIndex, const bool isComponentUserAdded);
 	virtual ~CEntityComponentCollapsibleFrame() {}
 };
-

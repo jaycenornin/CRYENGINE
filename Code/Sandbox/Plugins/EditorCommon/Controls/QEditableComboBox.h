@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "EditorCommonAPI.h"
 
@@ -42,4 +42,3 @@ protected:
 	QMenuComboBox* m_pComboBox;
 	QLineEdit* m_pLineEdit;
 };
-

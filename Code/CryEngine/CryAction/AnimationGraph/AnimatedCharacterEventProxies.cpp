@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AnimatedCharacterEventProxies.h"
@@ -32,9 +32,9 @@ void CAnimatedCharacterComponent_Base::ProcessEvent(const SEntityEvent& event)
 	}
 }
 
-uint64 CAnimatedCharacterComponent_Base::GetEventMask() const
+Cry::Entity::EventFlags CAnimatedCharacterComponent_Base::GetEventMask() const
 {
-	return ENTITY_EVENT_BIT(ENTITY_EVENT_PREPHYSICSUPDATE);
+	return ENTITY_EVENT_PREPHYSICSUPDATE;
 }
 
 //////////////////////////////////////////////////////////////////////////

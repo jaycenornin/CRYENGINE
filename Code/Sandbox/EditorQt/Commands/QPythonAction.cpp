@@ -1,17 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-////////////////////////////////////////////////////////////////////////////
-//
-//  CryEngine Source File.
-//  Copyright (C), Crytek, 2014.
-// -------------------------------------------------------------------------
-//  File name: QPythonAction.h
-//  Created:   26/09/2014 by timur
-//  Description: Special Qt Action derived class to bind with python calls
-// -------------------------------------------------------------------------
-//  History:
-//
-////////////////////////////////////////////////////////////////////////////
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 
@@ -62,4 +49,3 @@ void QPythonAction::OnTriggered()
 
 	PyScript::Execute("%s", py_command.c_str());
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -137,10 +137,10 @@ protected:
 		m_BuiltInSnapSize = (BrushFloat)0.5;
 		m_bEnableMagnetic = true;
 	}
-	~SpotManager(){}
+	virtual ~SpotManager() {}
 
-	void DrawPolyline(DisplayContext& dc) const;
-	void DrawCurrentSpot(DisplayContext& dc, const BrushMatrix34& worldTM) const;
+	void DrawPolyline(SDisplayContext& dc) const;
+	void DrawCurrentSpot(SDisplayContext& dc, const BrushMatrix34& worldTM) const;
 	void ResetAllSpots()
 	{
 		m_SpotList.clear();
@@ -148,7 +148,7 @@ protected:
 		m_StartSpot.Reset();
 	}
 
-	virtual void       CreatePolygonFromSpots(bool bClosedPolygon, const SpotList& spotList) { assert(0); };
+	virtual void       CreatePolygonFromSpots(bool bClosedPolygon, const SpotList& spotList) { assert(0); }
 
 	static void        GenerateVertexListFromSpotList(const SpotList& spotList, std::vector<BrushVec3>& outVList);
 
@@ -225,4 +225,3 @@ private:
 	BrushFloat m_BuiltInSnapSize;
 };
 }
-

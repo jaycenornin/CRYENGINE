@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SequencerKeyPropertiesDlg.h"
 #include "SequencerSequence.h"
+#include "IEditorImpl.h"
 
 IMPLEMENT_DYNAMIC(CSequencerKeyUIControls, CObject)
 
@@ -428,4 +429,3 @@ void CSequencerTrackPropsDlg::SetCurrKey(int nkey)
 	}
 	GetIEditorImpl()->Notify(eNotify_OnUpdateSequencerKeySelection);
 }
-

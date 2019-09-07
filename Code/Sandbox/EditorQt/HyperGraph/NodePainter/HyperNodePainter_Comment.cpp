@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HyperNodePainter_Comment.h"
@@ -79,4 +79,3 @@ void CHyperNodePainter_Comment::Paint(CHyperNode* pNode, CDisplayList* pList)
 
 	pBackground->SetHitEvent(eSOID_Title);
 }
-

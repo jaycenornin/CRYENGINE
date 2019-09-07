@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 //
 //  Crytek Engine Source File.
 //  Copyright (C), Crytek Studios, 2002.
@@ -18,11 +18,11 @@
 // Use format similar to windows .ini files.
 //
 #include "StdAfx.h"
-#include "cfgfile.h"
+#include "CfgFile.h"
 #include "Config.h"
 #include "IRCLog.h"
 
-#include <CryString/UnicodeFunctions.h>
+#include <FileUtil.h>
 
 #define  Log while (false)
 
@@ -52,10 +52,7 @@ bool CfgFile::Load( const string &fileName )
 	m_fileName = fileName;
 	m_modified = false;
 
-	wstring widePath;
-	Unicode::Convert(widePath, fileName);
-
-	FILE *file = _wfopen(widePath.c_str(), L"rb");
+	FILE *file = FileUtil::CryOpenFile(fileName, "rb");
 	if (!file)
 	{
 		RCLog("Can't open \"%s\"", fileName.c_str());
@@ -81,11 +78,7 @@ bool CfgFile::Load( const string &fileName )
 // Save configuration file, with the stored name in m_fileName
 bool CfgFile::Save()
 {
-	wstring widePath;
-	Unicode::Convert(widePath, m_fileName.c_str());
-
-	FILE *file = _wfopen(widePath.c_str(), L"wb");
-
+	FILE *file = FileUtil::CryOpenFile(m_fileName, "wb");
 	if(!file)
 		return(false);
 

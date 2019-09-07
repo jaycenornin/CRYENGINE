@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -1226,22 +1226,6 @@ inline ETEX_Format GetFormatByDesc(const CImageExtensionHelper::DDS_PIXELFORMAT&
 			return eTF_B5G5R5A1;
 		case DXGI_FORMAT_B4G4R4A4_UNORM:
 			return eTF_B4G4R4A4;
-
-		#if (CRY_RENDERER_OPENGL >= 430)
-		// only available as hardware format under OpenGL
-		case DXGI_FORMAT_EAC_R11_UNORM:
-			return eTF_EAC_R11;
-		case DXGI_FORMAT_EAC_R11_SNORM:
-			return eTF_EAC_R11S;
-		case DXGI_FORMAT_EAC_RG11_UNORM:
-			return eTF_EAC_RG11;
-		case DXGI_FORMAT_EAC_RG11_SNORM:
-			return eTF_EAC_RG11S;
-		case DXGI_FORMAT_ETC2_UNORM:
-			return eTF_ETC2;
-		case DXGI_FORMAT_ETC2A_UNORM:
-			return eTF_ETC2A;
-		#endif
 
 		// only available as hardware format under DX9
 		case DXGI_FORMAT_B8G8R8A8_TYPELESS:

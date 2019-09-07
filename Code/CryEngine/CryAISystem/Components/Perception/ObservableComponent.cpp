@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ObservableComponent.h"
@@ -21,7 +21,7 @@ struct SObservableVisibilityChangeSignal
 };
 
 CEntityAIObservableComponent::CEntityAIObservableComponent()
-	: m_entityEventMask(ENTITY_EVENT_BIT(ENTITY_EVENT_RESET) | ENTITY_EVENT_BIT(ENTITY_EVENT_START_GAME))
+	: m_entityEventMask(ENTITY_EVENT_RESET | ENTITY_EVENT_START_GAME)
 {
 
 }
@@ -78,7 +78,7 @@ void CEntityAIObservableComponent::ProcessEvent(const SEntityEvent& event)
 		break;
 	case ENTITY_EVENT_START_GAME:
 	{
-		m_entityEventMask |= IsUsingBones() ? ENTITY_EVENT_BIT(ENTITY_EVENT_UPDATE) : ENTITY_EVENT_BIT(ENTITY_EVENT_XFORM);
+		m_entityEventMask |= IsUsingBones() ? ENTITY_EVENT_UPDATE : ENTITY_EVENT_XFORM;
 		GetEntity()->UpdateComponentEventMask(this);
 		break;
 	}
@@ -94,7 +94,7 @@ void CEntityAIObservableComponent::Reset(EEntitySimulationMode simulationMode)
 	else
 	{
 		UnregisterFromVisionMap();
-		m_entityEventMask = ENTITY_EVENT_BIT(ENTITY_EVENT_RESET) | ENTITY_EVENT_BIT(ENTITY_EVENT_START_GAME);
+		m_entityEventMask = ENTITY_EVENT_RESET | ENTITY_EVENT_START_GAME;
 	}
 }
 

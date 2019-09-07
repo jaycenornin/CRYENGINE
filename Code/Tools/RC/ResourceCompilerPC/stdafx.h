@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently, but
@@ -7,6 +7,7 @@
 
 #pragma once
 #include <CryCore/Platform/platform.h>
+#include <CryCore/Platform/CryLibrary.h>
 
 typedef string tstring;
 
@@ -39,5 +40,5 @@ typedef string tstring;
 
 #include <CryRenderer/VertexFormats.h>
 
-#include "..\ResourceCompiler\IRCLog.h"
-#include "..\ResourceCompiler\SwapEndianness.h"
+#include <IRCLog.h>
+#include <SwapEndianness.h>

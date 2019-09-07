@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -38,7 +38,7 @@ public:
 	virtual void UpdateCoverEyes() override;
 	virtual const DynArray<Vec3>& GetCoverEyes() const override { return m_eyes; }
 
-	void Update(float timeDelta);
+	void Update(const CTimeValue frameStartTime, const float timeDelta);
 
 	void          DebugDraw() const;
 

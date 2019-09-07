@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -17,6 +17,17 @@
 
 namespace Serialization
 {
+	template<typename T>
+	struct SSerializeRange
+	{
+		TRange<T>& value;
+		SSerializeRange(TRange<T>& v) : value(v) {}
+		void Serialize(Serialization::IArchive& ar)
+		{
+			ar(value.start, "start", "start");
+			ar(value.end, "end", "end");
+		}
+	};
 	template<typename T>
 	struct SSerializeVec2
 	{
@@ -83,6 +94,20 @@ namespace Serialization
 			ar(value.w, "w", "w");
 		}
 	};
+}
+
+template<typename T>
+bool Serialize(Serialization::IArchive& ar, TRange<T>& value, const char* name, const char* label)
+{
+	if (!ar.isEdit() && !ar.caps(Serialization::IArchive::XML_VERSION_1))
+	{
+		return ar(Serialization::SStruct(Serialization::SSerializeRange<T>(value)), name, label);
+	}
+	else
+	{
+		typedef T(&Array)[2];
+		return ar((Array)value, name, label);
+	}
 }
 
 template<typename T>

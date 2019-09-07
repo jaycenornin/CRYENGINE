@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -331,7 +331,7 @@ private:
 	TFlowGraphId               m_graphId;
 
 	IFlowGraph::EFlowGraphType m_Type;
-#if !defined(RELEASE)
+#if defined(ENABLE_PROFILING_CODE)
 	string                     m_debugName; // name used for more useful warnings, debugging and profiling
 #endif
 	typedef std::vector<IFlowGraph::SGraphToken> TGraphTokens;

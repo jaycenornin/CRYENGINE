@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MPPath.h"
@@ -57,7 +57,7 @@ void CMPPath::ProcessEvent( const SEntityEvent& details )
 	}
 }
 
-uint64 CMPPath::GetEventMask() const
+Cry::Entity::EventFlags CMPPath::GetEventMask() const
 {
-	return ENTITY_EVENT_BIT(ENTITY_EVENT_LEVEL_LOADED);
+	return ENTITY_EVENT_LEVEL_LOADED;
 }

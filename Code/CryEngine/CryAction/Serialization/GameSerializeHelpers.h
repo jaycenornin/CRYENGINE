@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __GAME_SERIALIZE_HELPERS_H__
 #define __GAME_SERIALIZE_HELPERS_H__
@@ -105,6 +105,8 @@ struct SBasicEntityData
 		}
 
 		ser.Value("id", id);
+		ser.Value("guidHipart", guid.hipart);
+		ser.Value("guidLopart", guid.lopart);
 		ser.Value("flags", flags);
 		ser.Value("flags2", flags2);
 
@@ -169,6 +171,7 @@ struct SBasicEntityData
 
 	IEntity*    pEntity;
 	EntityId    id;
+	CryGUID     guid;
 	string      name;
 	string      className;
 	string      archetype;

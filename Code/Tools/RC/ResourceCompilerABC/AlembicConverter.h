@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 //
 //  Crytek Engine Source File.
 //  Copyright (C), Crytek Studios, 2012.
@@ -12,7 +12,7 @@
 
 #include "IConverter.h"
 
-class ICryXML;
+struct ICryXML;
 
 class AlembicConverter : public IConverter
 {

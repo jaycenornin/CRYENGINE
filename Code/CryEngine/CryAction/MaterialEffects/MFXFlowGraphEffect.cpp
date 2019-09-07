@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   MFXFlowGraphEffect.cpp
@@ -25,7 +25,7 @@ CMaterialFGManager* GetFGManager()
 	if (pMFX == 0)
 		return 0;
 	CMaterialFGManager* pMFXFGMgr = pMFX->GetFGManager();
-	assert(pMFXFGMgr != 0);
+	CRY_ASSERT(pMFXFGMgr != 0);
 	return pMFXFGMgr;
 }
 };

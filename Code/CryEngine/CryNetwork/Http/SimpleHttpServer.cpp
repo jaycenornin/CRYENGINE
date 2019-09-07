@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Network.h"
@@ -36,11 +36,7 @@ CSimpleHttpServer::CSimpleHttpServer() : m_internal(this)
 }
 
 CSimpleHttpServer::~CSimpleHttpServer()
-{
-#if defined(HTTP_WEBSOCKETS)
-	SAFE_RELEASE(m_pWsAllocHeap);
-#endif
-}
+{}
 
 void CSimpleHttpServer::Start(uint16 port, const string& password, IHttpServerListener* pListener)
 {

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 #include "QObjectTreeWidget.h"
 
@@ -85,9 +85,19 @@ QObjectTreeWidget::QObjectTreeWidget(QWidget* pParent /*= nullptr*/, const char*
 	m_pSplitter->setOrientation(Qt::Vertical);
 	m_pSplitter->addWidget(m_pTreeView);
 
+	QWidget* pSearchBoxContainer = new QWidget();
+	pSearchBoxContainer->setObjectName("SearchBoxContainer");
+	QHBoxLayout* pSearchBoxLayout = new QHBoxLayout();
+	pSearchBoxLayout->setAlignment(Qt::AlignTop);
+	pSearchBoxLayout->setSpacing(0);
+	pSearchBoxLayout->setMargin(0);
+
 	QSearchBox* pSearchBox = new QSearchBox();
 	pSearchBox->SetModel(m_pProxy);
 	pSearchBox->EnableContinuousSearch(true);
+
+	pSearchBoxLayout->addWidget(pSearchBox);
+	pSearchBoxContainer->setLayout(pSearchBoxLayout);
 
 	auto searchFunction = [=](const QString& text)
 	{
@@ -102,9 +112,10 @@ QObjectTreeWidget::QObjectTreeWidget(QWidget* pParent /*= nullptr*/, const char*
 	pSearchBox->SetSearchFunction(std::function<void(const QString&)>(searchFunction));
 
 	m_pToolLayout = new QHBoxLayout();
-	m_pToolLayout->setSpacing(1);
+	m_pToolLayout->setSpacing(0);
+	m_pToolLayout->setMargin(0);
 	m_pToolLayout->setContentsMargins(0, 0, 0, 0);
-	m_pToolLayout->addWidget(pSearchBox);
+	m_pToolLayout->addWidget(pSearchBoxContainer);
 
 	connect(m_pTreeView, &QAbstractItemView::clicked, [=](const QModelIndex& index)
 	{
@@ -117,7 +128,7 @@ QObjectTreeWidget::QObjectTreeWidget(QWidget* pParent /*= nullptr*/, const char*
 		const auto nodeType = typeVariant.value<NodeType>();
 		if (nodeType == Entry)
 		{
-		  signalOnClickFile(index.data(QObjectTreeView::Id).toString().toLocal8Bit());
+		  signalOnClickFile(index.data(QObjectTreeView::Id).toString().toLocal8Bit().constData());
 		}
 	});
 
@@ -132,7 +143,7 @@ QObjectTreeWidget::QObjectTreeWidget(QWidget* pParent /*= nullptr*/, const char*
 		const auto nodeType = typeVariant.value<NodeType>();
 		if (nodeType == Entry)
 		{
-		  signalOnDoubleClickFile(index.data(QObjectTreeView::Id).toString().toLocal8Bit());
+		  signalOnDoubleClickFile(index.data(QObjectTreeView::Id).toString().toLocal8Bit().constData());
 		}
 	});
 
@@ -374,4 +385,3 @@ QStandardItem* QObjectTreeWidget::FindOrCreate(const QString& itemName, QStandar
 
 	return pResult;
 }
-

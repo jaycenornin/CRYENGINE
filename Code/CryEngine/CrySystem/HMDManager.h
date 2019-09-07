@@ -1,8 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CrySystem/VR/IHMDManager.h>
+#include <CryCore/smartptr.h>
+#include <CryCore/StlUtils.h>
+
+struct ICVar;
 
 class CHmdManager : public IHmdManager
 {

@@ -1,13 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AssetImportContext.h"
-#include "Loader/AssetLoaderHelpers.h"
-#include "FilePathUtil.h"
 
 #include "Controls/QuestionDialog.h"
-#include "ThreadingUtils.h"
+#include "FileUtils.h"
+#include "Loader/AssetLoaderHelpers.h"
+#include "PathUtils.h"
 #include "QtUtil.h"
+#include "ThreadingUtils.h"
 
 #include <CryString/CryPath.h>
 
@@ -134,7 +135,7 @@ CEditableAsset CAssetImportContext::CreateEditableAsset(CAsset& asset)
 
 bool CAssetImportContext::CanWrite(const string& filePath)
 {
-	const bool bFileExists = PathUtil::FileExists(filePath);
+	const bool bFileExists = FileUtils::FileExists(filePath);
 	bool bWrite = false;
 	if (m_existingFileOperation == EExistingFileOperation::Overwrite || !bFileExists)
 	{

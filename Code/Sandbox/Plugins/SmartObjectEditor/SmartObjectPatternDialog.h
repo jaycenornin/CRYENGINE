@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -17,7 +17,7 @@ public:
 	virtual ~CSmartObjectPatternDialog();
 
 	void    SetPattern(const CString& sPattern) { m_sPattern = sPattern; }
-	CString GetPattern()                        { return m_sPattern; };
+	CString GetPattern()                        { return m_sPattern; }
 
 	enum { IDD = IDD_AISTATEPATTERN };
 
@@ -36,4 +36,3 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 };
-

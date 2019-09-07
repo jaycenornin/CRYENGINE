@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 -------------------------------------------------------------------------
@@ -11,11 +11,14 @@ $DateTime$
 #include "StdAfx.h"
 #include <CryAnimation/ICryAnimation.h>
 #include "Game.h"
+#include "GameCVars.h"
 #include "AutoAimManager.h"
 #include "GameRules.h"
 #include <CryAISystem/IAIObject.h>
 #include "Actor.h"
 #include <CryAISystem/IFactionMap.h>
+#include <CryRenderer/IRenderAuxGeom.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 CAutoAimManager::CAutoAimManager()
 : m_closeCombatSnapTargetId(0)

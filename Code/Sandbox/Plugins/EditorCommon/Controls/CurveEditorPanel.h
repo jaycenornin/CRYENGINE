@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -51,8 +51,6 @@ protected:
 	void Disconnect();
 
 private:
-	QLabel*                     m_pTitle;
 	CCurveEditor*               m_pEditor;
 	QPointer<CBroadcastManager> m_broadcastManager;
 };
-

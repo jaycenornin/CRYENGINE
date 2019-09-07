@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -9,7 +9,6 @@
 namespace pfx2
 {
 
-class  CFeatureCollision;
 struct IFeatureMotion;
 
 struct ILocalEffector : public _i_reference_target_t
@@ -88,7 +87,8 @@ SERIALIZATION_DECLARE_ENUM(EPhysicsType,
 	)
 
 // Dynamic enum for surface types
-typedef DynamicEnum<struct ISurfaceType> ESurfaceType;
+struct ESurfaceType : DynamicEnum<struct ISurfaceType> {};
+bool Serialize(IArchive& ar, ESurfaceType& val, cstr name, cstr label);
 
 class CFeatureMotionCryPhysics : public CParticleFeature
 {
@@ -106,7 +106,7 @@ public:
 	virtual void DestroyParticles(CParticleComponentRuntime& runtime) override;
 
 private:
-	typedef TValue<float, ConvertScale<1000, 1, THardMin<0>>> UDensity;
+	typedef TValue<ConvertScale<THardMin<float, 0>, 1000, 1>> UDensity;
 
 	EPhysicsType m_physicsType;
 	ESurfaceType m_surfaceType;

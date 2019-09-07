@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
+#include "SandboxAPI.h"
 #include "Controls/EditorDialog.h"
 
 class QMenuComboBox;
@@ -46,4 +47,3 @@ private:
 	int               m_aspectNumerator;
 	int               m_aspectDenominator;
 };
-

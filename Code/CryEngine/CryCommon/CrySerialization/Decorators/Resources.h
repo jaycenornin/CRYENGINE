@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 #include "ResourceSelector.h"
@@ -18,6 +18,7 @@ ResourceSelector<T> MakeResourceSelector(T& s, const char* selectorType)
 // animation resources
 template<class T> ResourceSelector<T> AnimationAlias(T& s)                   { return ResourceSelector<T>(s, "AnimationAlias"); } // "name" from animation set
 template<class T> ResourceSelector<T> AnimationPath(T& s)                    { return ResourceSelector<T>(s, "Animation"); }
+template<class T> ResourceSelector<T> AnyAnimationPath(T& s)                 { return ResourceSelector<T>(s, "AnyAnimation"); }
 template<class T> ResourceSelector<T> AnimationOrBlendSpacePath(T& s)        { return ResourceSelector<T>(s, "AnimationOrBSpace"); }
 inline ResourceSelectorWithId         AnimationPathWithId(string& s, int id) { return ResourceSelectorWithId(s, "AnimationOrBSpace", id); }
 template<class T> ResourceSelector<T> CharacterPath(T& s)                    { return ResourceSelector<T>(s, "Character"); }
@@ -54,10 +55,6 @@ template<class T> ResourceSelector<T> ActionMapName(T& s)                 { retu
 template<class T> ResourceSelector<T> ActionMapActionName(T& s)           { return ResourceSelector<T>(s, "ActionMapActionName"); }
 template<class T> ResourceSelector<T> SurfaceTypeName(T& s)               { return ResourceSelector<T>(s, "SurfaceTypeName"); }
 template<class T> ResourceSelector<T> EntityClassName(T& s)               { return ResourceSelector<T>(s, "EntityClassName"); }
-// WORKAROUND: Can't register the same ResourceSelector (EntityClassName) for both Schematyc versions.
-// Remove this in favor of EntityClassName when we finally have just one Schematyc.
-template<class T> ResourceSelector<T> EntityClass(T& s)                  { return ResourceSelector<T>(s, "EntityClass"); }
-// ~WORKAROUND
 
 inline Serialization::ResourceFilePath ObjectIconPath(string& value)                    { return Serialization::ResourceFilePath(value, "Bitmap (bmp)|*.bmp"); }
 inline Serialization::ResourceFilePath MannequinAnimationDatabasePath(string& value)    { return Serialization::ResourceFilePath(value, "Animation Database (adb)|*.adb"); }

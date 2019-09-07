@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 
 #include "NotificationModel_Internal.h"
@@ -6,6 +6,7 @@
 
 // Qt
 #include <QClipboard>
+#include <QApplication>
 
 // EditorCommon
 #include "CryIcon.h"
@@ -263,4 +264,3 @@ Internal::CNotification* CNotificationModel::NotificationFromIndex(const QModelI
 
 	return pNotificationCenter->GetNotification(notificationIdx);
 }
-

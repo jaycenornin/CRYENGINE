@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // #SchematycTODO : Use scoped connections to automatically disconnect timers?
 // #SchematycTODO : Use combination of pools and seeds for more efficient look-up by id?
@@ -101,7 +101,7 @@ namespace Schematyc2
 	{
 		virtual ~ITimerSystem() {}
 
-		virtual TimerId CreateTimer(const STimerParams& params, const TimerCallback& callback) = 0;
+		virtual void CreateTimer(const STimerParams& params, const TimerCallback& callback, TimerId& outTimerId) = 0;
 		virtual void DestroyTimer(TimerId timerId) = 0;
 		virtual bool StartTimer(TimerId timerId) = 0;
 		virtual bool StopTimer(TimerId timerId) = 0;

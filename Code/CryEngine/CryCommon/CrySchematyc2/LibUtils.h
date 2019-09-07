@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -7,6 +7,7 @@
 #include "CrySchematyc2/ILib.h"
 #include "CrySchematyc2/Script/IScriptGraph.h"
 #include "CrySchematyc2/Script/IScriptRegistry.h"
+#include <stack>
 
 namespace Schematyc2
 {

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -37,7 +37,7 @@ struct IOsvrDevice : public IHmdDevice
 public:
 	virtual bool InitializeRenderer(void* pD3dDevice, void* pD3dContext) = 0;
 	virtual bool RegisterTextureSwapSet(TextureSwapSet* pSwapSet) = 0;
-	virtual bool PresentTextureSet(int textureSetIndex) = 0;
+	virtual bool PresentTextureSet(uint64 frameId, int textureSetIndex) = 0;
 
 	virtual void ShutdownRenderer() = 0;
 protected:

@@ -1,26 +1,29 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "Inspector.h"
 
-#include <QApplication>
-#include <QLayout>
-#include <QTabWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QSpacerItem>
-#include <QToolBar>
-#include <QToolButton>
-#include <QCloseEvent>
-#include "QScrollableBox.h"
-
 #include "CryIcon.h"
-#include "QtViewPane.h"
+#include "EditorFramework/BroadcastManager.h"
 #include "EditorFramework/Editor.h"
 #include "EditorFramework/Events.h"
-#include "EditorFramework/BroadcastManager.h"
+#include "QControls.h"
+#include "QScrollableBox.h"
+#include "QtViewPane.h"
+#include "Serialization\QPropertyTree\PropertyTree.h"
+
+#include <QApplication>
+#include <QCloseEvent>
+#include <QLabel>
+#include <QLayout>
+#include <QPushButton>
+#include <QSpacerItem>
+#include <QTabWidget>
+#include <QToolBar>
+#include <QToolButton>
 
 CInspector::CInspector(QWidget* pParent)
 	: CDockableWidget(pParent)
+	, m_pOwnedPropertyTree(nullptr)
 {
 	CRY_ASSERT(pParent);
 	Init();
@@ -28,6 +31,7 @@ CInspector::CInspector(QWidget* pParent)
 }
 
 CInspector::CInspector(CEditor* pParent)
+	: m_pOwnedPropertyTree(nullptr)
 {
 	CRY_ASSERT(pParent);
 	Init();
@@ -35,6 +39,7 @@ CInspector::CInspector(CEditor* pParent)
 }
 
 CInspector::CInspector(CBroadcastManager* pBroadcastManager)
+	: m_pOwnedPropertyTree(nullptr)
 {
 	Init();
 	Connect(pBroadcastManager);
@@ -43,27 +48,27 @@ CInspector::CInspector(CBroadcastManager* pBroadcastManager)
 void CInspector::Init()
 {
 	m_pLockButton = new QToolButton();
-	m_pTitleLabel = new QLabel();
-	auto font = m_pTitleLabel->font();
+	m_pTitleLabel = new CLabel();
+	QFont font = m_pTitleLabel->font();
 	font.setBold(true);
 	m_pTitleLabel->setFont(font);
-
-	const auto pSpacer = new QWidget();
-	pSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	m_pTitleLabel->SetTextElideMode(Qt::ElideLeft);
 
 	CInspectorHeaderWidget* pHeader = new CInspectorHeaderWidget();
-	auto toolbarLayout = new QHBoxLayout(pHeader);
-	toolbarLayout->addWidget(m_pTitleLabel);
-	toolbarLayout->addWidget(pSpacer);
-	toolbarLayout->addWidget(m_pLockButton);
+	QHBoxLayout* pToolbarLayout = new QHBoxLayout(pHeader);
+	pToolbarLayout->addWidget(m_pTitleLabel, Qt::AlignLeft);
+	pToolbarLayout->addSpacerItem(new QSpacerItem(QSizePolicy::Expanding, QSizePolicy::Fixed));
+	pToolbarLayout->addWidget(m_pLockButton);
 
-	QVBoxLayout* const pLayout = new QVBoxLayout();
+	QVBoxLayout* pLayout = new QVBoxLayout();
 	pLayout->setContentsMargins(1, 1, 1, 1);
 	pLayout->addWidget(pHeader);
 	setLayout(pLayout);
 
+	m_pWidgetLayout = new QVBoxLayout();
+	pLayout->addLayout(m_pWidgetLayout);
+
 	Unlock();
-	ClearAndFillSpace();
 
 	connect(m_pLockButton, &QPushButton::clicked, this, &CInspector::ToggleLock);
 }
@@ -78,8 +83,11 @@ void CInspector::SetLockable(bool bLockable)
 {
 	if (!bLockable)
 	{
-		if(IsLocked())
+		if (IsLocked())
+		{
 			Unlock();
+		}
+
 		m_pLockButton->setVisible(false);
 	}
 	else
@@ -98,39 +106,31 @@ void CInspector::OnPopulate(PopulateInspectorEvent& event)
 		return;
 	}
 
-	setUpdatesEnabled(false);
+	Clear();
 
-	if (m_pScrollableBox == nullptr)
-	{
-		m_pScrollableBox = new QScrollableBox();
-		connect(m_pScrollableBox, &QObject::destroyed, this, &CInspector::OnWidgetDeleted);
-	}
-	else
-	{
-		m_pScrollableBox->clearWidgets();
-	}
+	setUpdatesEnabled(false);
 
 	// Trigger creation of widgets handled by whoever invoked the populate event
 	event.GetCallback()(*this);
 
-	layout()->addWidget(m_pScrollableBox);
-
 	// Set the final title
-	m_pTitleLabel->setText(event.GetTitle());
+	m_pTitleLabel->SetText(event.GetTitle());
 
 	setUpdatesEnabled(true);
 }
 
-void CInspector::AddWidget(QWidget* pWidget)
+void CInspector::AddPropertyTree(QPropertyTree* pPropertyTree)
 {
 	CRY_PROFILE_FUNCTION(PROFILE_EDITOR);
-	m_pScrollableBox->addWidget(pWidget);
+	//this inspector supports only one widget at time, clear the previous widget if we add a new one
+	Clear();
+	m_pWidgetLayout->addWidget(pPropertyTree);
+	m_pOwnedPropertyTree = pPropertyTree;
 }
 
 void CInspector::closeEvent(QCloseEvent* event)
 {
 	Disconnect();
-
 	event->setAccepted(true);
 }
 
@@ -138,39 +138,14 @@ void CInspector::Clear()
 {
 	CRY_PROFILE_FUNCTION(PROFILE_EDITOR);
 
-	if (m_pScrollableBox != nullptr)
+	if (m_pOwnedPropertyTree)
 	{
-		// Remove everything but the toolbar added in Init
-		QVBoxLayout* const pLayout = static_cast<QVBoxLayout*>(layout());
-
-		disconnect(m_pScrollableBox, &QObject::destroyed, this, &CInspector::OnWidgetDeleted);
-		pLayout->removeWidget(m_pScrollableBox);
-		// Note: We hide the widget to avoid redrawing elements of it while it is waiting for deletion.
-		m_pScrollableBox->hide();
-		m_pScrollableBox->deleteLater();
-		m_pScrollableBox = nullptr;
+		m_pOwnedPropertyTree->deleteLater();
 	}
-}
 
-void CInspector::ClearAndFillSpace()
-{
-	CRY_PROFILE_FUNCTION(PROFILE_EDITOR);
+	m_pOwnedPropertyTree = nullptr;
 
-	Clear();
-
-	m_pScrollableBox = new QScrollableBox();
-	m_pScrollableBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	connect(m_pScrollableBox, &QObject::destroyed, this, &CInspector::OnWidgetDeleted);
-	layout()->addWidget(m_pScrollableBox);
-}
-
-void CInspector::OnWidgetDeleted(QObject* pObj)
-{
-	CRY_PROFILE_FUNCTION(PROFILE_EDITOR);
-
-	m_pScrollableBox = nullptr;
-	ClearAndFillSpace();
-	Unlock();
+	return;
 }
 
 void CInspector::Connect(CBroadcastManager* pBroadcastManager)
@@ -191,15 +166,14 @@ void CInspector::Disconnect()
 
 void CInspector::Lock()
 {
-	m_bLocked = true;
+	m_isLocked = true;
 	m_pLockButton->setToolTip("Unlock Inspector");
-	m_pLockButton->setIcon(CryIcon("icons:General/Lock_True.ico"));
+	m_pLockButton->setIcon(CryIcon("icons:general_lock_true.ico"));
 }
 
 void CInspector::Unlock()
 {
-	m_bLocked = false;
+	m_isLocked = false;
 	m_pLockButton->setToolTip("Lock Inspector");
-	m_pLockButton->setIcon(CryIcon("icons:General/Lock_False.ico"));
+	m_pLockButton->setIcon(CryIcon("icons:general_lock_false.ico"));
 }
-

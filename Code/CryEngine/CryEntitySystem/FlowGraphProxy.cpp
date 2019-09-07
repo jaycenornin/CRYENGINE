@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "FlowGraphProxy.h"
@@ -76,9 +76,9 @@ void CEntityComponentFlowGraph::ProcessEvent(const SEntityEvent& event)
 }
 
 //////////////////////////////////////////////////////////////////////////
-uint64 CEntityComponentFlowGraph::GetEventMask() const
+Cry::Entity::EventFlags CEntityComponentFlowGraph::GetEventMask() const
 {
-	return ENTITY_EVENT_BIT(ENTITY_EVENT_INIT) | ENTITY_EVENT_BIT(ENTITY_EVENT_DONE) | ENTITY_EVENT_BIT(ENTITY_EVENT_POST_SERIALIZE);
+	return ENTITY_EVENT_INIT | ENTITY_EVENT_DONE | ENTITY_EVENT_POST_SERIALIZE;
 }
 
 void CEntityComponentFlowGraph::LegacySerializeXML(XmlNodeRef& entityNode, XmlNodeRef& componentNode, bool bLoading)

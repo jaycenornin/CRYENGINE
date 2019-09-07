@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "ImageButton.h"
@@ -10,6 +10,7 @@ CImageButton::CImageButton()
 	: CButton()
 	, m_hasFocus(false)
 	, m_mouseOver(false)
+	, m_eAlignment(eIA_LEFT)
 	, m_iWidth(0)
 	, m_iHeight(0)
 	, m_imageType(eT_NONE)
@@ -256,4 +257,3 @@ LRESULT CImageButton::OnMouseLeave(WPARAM wParam, LPARAM lParam)
 	}
 	return 1;
 }
-

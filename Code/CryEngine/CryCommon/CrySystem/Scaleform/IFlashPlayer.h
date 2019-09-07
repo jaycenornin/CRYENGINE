@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -46,7 +46,7 @@ struct IFlashPlayer
 		DEFAULT_NO_MOUSE     = RENDER_EDGE_AA | INIT_FIRST_FRAME
 	};
 
-	enum ECategory
+	enum ECategory : uint32
 	{
 		eCat_RequestMeshCacheResetBit = 0x80000000,
 

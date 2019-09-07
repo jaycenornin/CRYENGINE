@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <QObject>
@@ -17,8 +17,8 @@ public:
 	struct Result
 	{
 		Result();
-		bool isTerrain;
-		int  resolution;
+		bool  isTerrain;
+		int   resolution;
 		float unitSize;
 	};
 	struct Config
@@ -37,13 +37,13 @@ signals:
 	void IsTerrainChanged(bool);
 
 private:
-	bool IsTerrain() const;
-	int  GetResolution() const;
+	bool  IsTerrain() const;
+	int   GetResolution() const;
 	float GetUnitSize() const;
 
-	void SetupResolution(int initialResolution);
-	void SetupUnitSize(float initialUnitSize);
-	void SetupTerrainSize();
+	void  SetupResolution(int initialResolution);
+	void  SetupUnitSize(float initialUnitSize);
+	void  SetupTerrainSize();
 
 private:
 	const bool m_isTerrainOptional;
@@ -56,4 +56,3 @@ private:
 	};
 	Ui m_ui;
 };
-

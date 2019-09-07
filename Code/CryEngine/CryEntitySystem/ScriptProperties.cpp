@@ -1,8 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "ScriptProperties.h"
 #include <CryScriptSystem/IScriptSystem.h>
+#include <CrySystem/XML/IXml.h>
 
 //////////////////////////////////////////////////////////////////////////
 bool CScriptProperties::SetProperties(XmlNodeRef& entityNode, IScriptTable* pEntityTable)

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   ParticleParamsTypeInfo.h
@@ -23,6 +23,7 @@
 #include "ParticleParams_info.h"
 #include <CryString/Name_TypeInfo.h>
 #include <CryCore/CryTypeInfo.h>
+#include <Cry3DEngine/ISurfaceType.h>
 
 ///////////////////////////////////////////////////////////////////////
 // Implementation of TCurve<> functions.

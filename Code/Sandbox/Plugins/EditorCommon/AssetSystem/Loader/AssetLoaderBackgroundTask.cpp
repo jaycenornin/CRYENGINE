@@ -1,13 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AssetLoaderBackgroundTask.h"
-#include "AssetLoader.h"
+
 #include "AssetCache.h"
+#include "AssetLoader.h"
 #include "AssetSystem/Asset.h"
 #include "IBackgroundTaskManager.h"
-#include "FilePathUtil.h"
-#include <CryString\CryPath.h>
+#include "PathUtils.h"
+#include <CryString/CryPath.h>
+#include <IEditor.h>
 #include <future>
 
 namespace AssetLoaderBackgroundTask_Private
@@ -111,4 +113,3 @@ void Run(const std::vector<string>& assetRootPaths, std::function<void(const std
 }
 
 };
-

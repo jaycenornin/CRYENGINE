@@ -1,19 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include "SceneModelCommon.h"
-
-namespace FbxTool {
-struct SNode;
-}
 
 //! Scene model that allows selection of a single node.
 class CSceneModelSingleSelection : public CSceneModelCommon
 {
 public:
 	typedef std::function<void (const FbxTool::SNode*)> SetNode;
-	typedef std::function<const FbxTool::SNode*(void)>  GetNode;
+	typedef std::function<const FbxTool::SNode*()>      GetNode;
 
 	void SetNodeAccessors(const SetNode& setNode, const GetNode& getNode)
 	{
@@ -31,4 +27,3 @@ private:
 	SetNode m_setNode;
 	GetNode m_getNode;
 };
-

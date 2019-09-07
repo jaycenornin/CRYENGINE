@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SphereTool.h"
@@ -66,4 +66,3 @@ void SphereTool::Register()
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_Sphere, eToolGroup_Shape, "Sphere", SphereTool,
                                                            sphere, "runs sphere tool", "designer.sphere")
-

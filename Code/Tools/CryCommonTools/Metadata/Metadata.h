@@ -1,8 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
-#include "CryExtension\CryGUID.h"
+#include "CryExtension/CryGUID.h"
 
 class IXmlNode;
 
@@ -32,6 +32,7 @@ bool WriteMetadata(const XmlNodeRef& asset, const SAssetMetadata& metadata);
 bool ReadMetadata(const XmlNodeRef& asset, SAssetMetadata& metadata);
 
 const XmlNodeRef GetMetadataNode(const XmlNodeRef& asset);
+void RemoveDetails(XmlNodeRef& xml);
 void AddDetails(XmlNodeRef& xml, const std::vector<std::pair<string, string>>& details);
 void AddDependencies(XmlNodeRef& xml, const std::vector<std::pair<string, int32>>& dependencies);
 

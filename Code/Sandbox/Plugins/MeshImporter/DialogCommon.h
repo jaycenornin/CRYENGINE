@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -344,4 +344,3 @@ std::vector<string> GetAssetTypesFromFileFormatFlags(int flags);
 } // namespace MeshImporter
 
 std::unique_ptr<QTemporaryDir> CreateTemporaryDirectory();
-

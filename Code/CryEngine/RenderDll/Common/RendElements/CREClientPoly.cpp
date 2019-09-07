@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*=============================================================================
    CREClientPoly.cpp : implementation of 3D Client polygons RE.
@@ -11,8 +11,6 @@
 #include "StdAfx.h"
 #include "CREClientPoly.h"
 #include "Common/RenderView.h"
-
-#include "DriverD3D.h"
 
 //////////////////////////////////////////////////////////////////////////
 void CRenderPolygonDataPool::Clear()

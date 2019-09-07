@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "FacialExpressionsDialog.h"
@@ -986,7 +986,6 @@ void CFacialExpressionsDialog::OnTreeRClick(NMHDR* pNMHDR, LRESULT* pResult)
 	CMenu menu;
 	menu.CreatePopupMenu();
 
-	IFacialEffCtrl* pSelectedCtrl = m_treeCtrl.GetSelectedCtrl();
 	IFacialEffector* pSelected = m_treeCtrl.GetSelectedEffector();
 
 	if (pSelected)
@@ -1150,4 +1149,3 @@ void CFacialExpressionsDialog::OnDestroy()
 	if (m_pDropTarget)
 		delete m_pDropTarget;
 }
-

@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "RenderLock.h"
-#include "CryThreading/CryAtomics.h"
-#include "CryCore/Assert/CryAssert.h"
+
+#include <CryCore/Assert/CryAssert.h>
+#include <CryThreading/CryAtomics.h>
 
 int CScopedRenderLock::s_renderLock = 0;
 
@@ -14,7 +15,6 @@ CScopedRenderLock::CScopedRenderLock()
 	m_bOwnsLock = (res == 1);
 }
 
-//////////////////////////////////////////////////////////////////////////
 CScopedRenderLock::~CScopedRenderLock()
 {
 	int res = CryInterlockedDecrement(alias_cast<volatile int*>(&s_renderLock));

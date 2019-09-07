@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HMDManager.h"
@@ -7,6 +7,8 @@
 #include <CryRenderer/IStereoRenderer.h>
 
 #include <CrySystem/ICryPluginManager.h>
+#include <CrySystem/ISystem.h>
+#include <CryRenderer/IRenderer.h>
 
 // Note:
 //  We support a single HMD device at a time.
@@ -51,7 +53,7 @@ void CHmdManager::OnVirtualRealityDeviceChanged(ICVar *pCVar)
 // ------------------------------------------------------------------------
 void CHmdManager::SetupAction(EHmdSetupAction cmd)
 {
-	LOADING_TIME_PROFILE_SECTION;
+	CRY_PROFILE_FUNCTION(PROFILE_LOADING_ONLY);
 	switch (cmd)
 	{
 	case EHmdSetupAction::eHmdSetupAction_CreateCvars:
@@ -94,7 +96,8 @@ void CHmdManager::SetupAction(EHmdSetupAction cmd)
 					{
 						const char* vrPluginPriorities[] = {
 							"Plugin_OculusVR",
-							"Plugin_OpenVR"
+							"Plugin_OpenVR",
+							"Plugin_EmulatorVR"
 						};
 
 						for (const auto *plug : vrPluginPriorities)
@@ -127,7 +130,7 @@ void CHmdManager::SetupAction(EHmdSetupAction cmd)
 						gEnv->pRenderer->GetIStereoRenderer()->OnHmdDeviceChanged(m_pHmdDevice);
 					}
 
-					gEnv->pSystem->LoadConfiguration("vr.cfg", 0, eLoadConfigGame);
+					
 				}
 				else if(m_pHmdDevice != nullptr)
 				{

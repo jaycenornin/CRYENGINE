@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -54,9 +54,8 @@
 #include "Serialization.h"
 #include "UndoStack.h"
 
-#include <Serialization/QPropertyTree/QPropertyTree.h>
+#include <Serialization/QPropertyTreeLegacy/QPropertyTreeLegacy.h>
 #include "IResourceSelectorHost.h"
 
 IEditor*               GetIEditor();
 pfx2::IParticleSystem* GetParticleSystem();
-

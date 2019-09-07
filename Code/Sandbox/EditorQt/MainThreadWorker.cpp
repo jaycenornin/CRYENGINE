@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MainThreadWorker.h"
+#include <CrySystem/ISystem.h>
 
 namespace Private_MainThreadWorker
 {
@@ -51,4 +52,3 @@ bool CMainThreadWorker::TryExecuteNextTask()
 }
 
 CMainThreadWorker* CMainThreadWorker::s_pTheInstance = nullptr;
-

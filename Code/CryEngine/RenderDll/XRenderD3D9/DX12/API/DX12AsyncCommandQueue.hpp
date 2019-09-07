@@ -1,14 +1,16 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryThreading/IThreadManager.h>
 #include <concqueue/concqueue.hpp>
 #include "DX12Base.hpp"
+#include <CryThreading/CryThread.h>
 
 namespace NCryDX12
 {
 
+class CCommandList;
 class CCommandListPool;
 
 class CAsyncCommandQueue : public IThread

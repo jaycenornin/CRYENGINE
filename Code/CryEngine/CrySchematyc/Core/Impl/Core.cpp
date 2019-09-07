@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Core.h"
@@ -125,9 +125,9 @@ bool CCore::Initialize(SSystemGlobalEnvironment& env, const SSystemInitParams& i
 		m_pLogFileOutput = m_pLog->CreateFileOutput(logFileName.c_str());
 		SCHEMATYC_CORE_ASSERT(m_pLogFileOutput);
 		RefreshLogFileStreams();
-		CVars::sc_LogFileStreams->SetOnChangeCallback(OnLogFileStreamsChange);
+		CVars::sc_LogFileStreams->AddOnChange(OnLogFileStreamsChange);
 		RefreshLogFileMessageTypes();
-		CVars::sc_LogFileMessageTypes->SetOnChangeCallback(OnLogFileMessageTypesChange);
+		CVars::sc_LogFileMessageTypes->AddOnChange(OnLogFileMessageTypesChange);
 	}
 
 	if (CVars::sc_RunUnitTests)
@@ -282,6 +282,7 @@ void CCore::BroadcastSignal(const SObjectSignal& signal)
 
 void CCore::PrePhysicsUpdate()
 {
+	MEMSTAT_FUNCTION_CONTEXT(EMemStatContextType::Other);
 	if (WantPrePhysicsUpdate())
 	{
 		m_pUpdateScheduler->BeginFrame(gEnv->pTimer->GetFrameTime());
@@ -291,6 +292,7 @@ void CCore::PrePhysicsUpdate()
 
 void CCore::Update()
 {
+	MEMSTAT_FUNCTION_CONTEXT(EMemStatContextType::Other);
 	if (WantUpdate())
 	{
 		if (!m_pUpdateScheduler->InFrame())

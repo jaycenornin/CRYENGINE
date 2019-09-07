@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Shake.h"
@@ -44,7 +44,7 @@ bool CShake::ReloadExtension( IGameObject * pGameObject, const SEntitySpawnParam
 {
 	ResetGameObject();
 
-	CRY_ASSERT_MESSAGE(false, "CShake::ReloadExtension not implemented");
+	CRY_ASSERT(false, "CShake::ReloadExtension not implemented");
 	
 	return false;
 }
@@ -52,7 +52,7 @@ bool CShake::ReloadExtension( IGameObject * pGameObject, const SEntitySpawnParam
 //------------------------------------------------------------------------
 bool CShake::GetEntityPoolSignature( TSerialize signature )
 {
-	CRY_ASSERT_MESSAGE(false, "CShake::GetEntityPoolSignature not implemented");
+	CRY_ASSERT(false, "CShake::GetEntityPoolSignature not implemented");
 	
 	return true;
 }

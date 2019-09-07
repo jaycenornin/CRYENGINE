@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CopyTool.h"
@@ -69,4 +69,3 @@ void CopyTool::Copy(MainContext& mc, ElementSet* pOutCopiedElements)
 
 REGISTER_DESIGNER_TOOL_AND_COMMAND(eDesigner_Copy, eToolGroup_Edit, "Copy", CopyTool,
                                    copy, "runs copy tool", "designer.copy")
-

@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "ClampedSplitterWnd.h"
+#include <Util/EditorUtils.h>
 
 IMPLEMENT_DYNAMIC(CClampedSplitterWnd, CXTSplitterWnd)
 
@@ -149,4 +150,3 @@ void CClampedSplitterWnd::ResizePanels(const int resizeAmount, CRowColInfo& make
 	makeBigger.nCurSize += resizeAmount;
 	makeBigger.nIdealSize = makeBigger.nCurSize;
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "RopeProxy.h"
@@ -7,9 +7,11 @@
 #include "EntitySystem.h"
 #include <CryNetwork/ISerialize.h>
 
-#include  <CrySchematyc/Env/IEnvRegistrar.h>
-#include  <CrySchematyc/Env/Elements/EnvComponent.h>
+#include <CrySchematyc/Env/IEnvRegistrar.h>
+#include <CrySchematyc/Env/Elements/EnvComponent.h>
 #include <CryCore/StaticInstanceList.h>
+#include <Cry3DEngine/I3DEngine.h>
+#include <CryPhysics/physinterface.h>
 
 CRYREGISTER_CLASS(CEntityComponentRope);
 
@@ -63,6 +65,8 @@ void CEntityComponentRope::ProcessEvent(const SEntityEvent& event)
 		}
 		break;
 	case ENTITY_EVENT_LEVEL_LOADED:
+	case ENTITY_EVENT_START_GAME:
+	case ENTITY_EVENT_LAYER_UNHIDE:
 		// Relink physics.
 		if (m_pRopeRenderNode)
 			m_pRopeRenderNode->LinkEndPoints();
@@ -80,17 +84,10 @@ void CEntityComponentRope::ProcessEvent(const SEntityEvent& event)
 	}
 }
 
-uint64 CEntityComponentRope::GetEventMask() const
+Cry::Entity::EventFlags CEntityComponentRope::GetEventMask() const
 {
-	return
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_HIDE) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_UNHIDE) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_VISIBLE) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_INVISIBLE) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_DONE) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_PHYS_BREAK) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_LEVEL_LOADED) |
-	  ENTITY_EVENT_BIT(ENTITY_EVENT_RESET);
+	return ENTITY_EVENT_HIDE | ENTITY_EVENT_UNHIDE | ENTITY_EVENT_VISIBLE | ENTITY_EVENT_INVISIBLE | ENTITY_EVENT_DONE | ENTITY_EVENT_PHYS_BREAK | 
+		ENTITY_EVENT_LEVEL_LOADED | ENTITY_EVENT_RESET | ENTITY_EVENT_START_GAME | ENTITY_EVENT_LAYER_UNHIDE;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -194,6 +191,13 @@ inline void RopeParamsToXml(IRopeRenderNode::SRopeParams& rp, XmlNodeRef& node, 
 		node->getAttr("hardness", rp.hardness);
 		node->getAttr("damping", rp.damping);
 		node->getAttr("sleepSpeed", rp.sleepSpeed);
+		node->getAttr("sizeDecay", rp.sizeChange);
+		node->getAttr("smoothIters", rp.boneSmoothIters);
+		node->getAttr("segObjLen", rp.segObjLen);
+		node->getAttr("segObjRot", rp.segObjRot);
+		node->getAttr("segObjRot0", rp.segObjRot0);
+		node->getAttr("segObjAxis", (int&)rp.segObjAxis);
+		rp.segmentObj = node->getAttr("segmentObj");
 	}
 	else
 	{
@@ -224,6 +228,13 @@ inline void RopeParamsToXml(IRopeRenderNode::SRopeParams& rp, XmlNodeRef& node, 
 		node->setAttr("hardness", rp.hardness);
 		node->setAttr("damping", rp.damping);
 		node->setAttr("sleepSpeed", rp.sleepSpeed);
+		node->setAttr("sizeDecay", rp.sizeChange);
+		node->setAttr("smoothIters", rp.boneSmoothIters);
+		node->setAttr("segObjLen", rp.segObjLen);
+		node->setAttr("segObjRot", rp.segObjRot);
+		node->setAttr("segObjRot0", rp.segObjRot0);
+		node->setAttr("segObjAxis", rp.segObjAxis);
+		node->setAttr("segmentObj", rp.segmentObj);
 	}
 }
 

@@ -1,8 +1,6 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include "StdAfx.h"
 #include "SystemFileDialog.h"
-
-#include <QTranslator>
 
 bool IsWildcardExtension(const QString& ext)
 {
@@ -172,4 +170,3 @@ QString CSystemFileDialog::RunSelectDirectory(const RunParams& runParams, QWidge
 	}
 	return selectedFiles.front();
 }
-

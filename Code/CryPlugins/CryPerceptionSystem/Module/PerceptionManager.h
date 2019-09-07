@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -8,6 +8,7 @@
 #include <CryAISystem/IAISystem.h>
 #include <CryAISystem/ValueHistory.h>
 #include <CryAISystem/IAISystemComponent.h>
+#include <CrySystem/ConsoleRegistration.h>
 
 struct IAIActor;
 struct IAIObject;

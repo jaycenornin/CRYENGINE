@@ -1,7 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "LevelIndependentFileMan.h"
+#include <CryCore/StlUtils.h>
 
 CLevelIndependentFileMan::CLevelIndependentFileMan()
 {
@@ -31,4 +32,3 @@ void CLevelIndependentFileMan::UnregisterModule(ILevelIndependentFileModule* pMo
 {
 	stl::find_and_erase(m_Modules, pModule);
 }
-

@@ -1,12 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
-
-//
-//	File: SystemCfg.h
-//
-//	History:
-//	-Jan 22,2004:Created
-//
-//////////////////////////////////////////////////////////////////////
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -16,27 +8,17 @@
 typedef string SysConfigKey;
 typedef string SysConfigValue;
 
-//////////////////////////////////////////////////////////////////////////
 class CSystemConfiguration
 {
 public:
-	CSystemConfiguration(const string& strSysConfigFilePath, CSystem* pSystem, ILoadConfigurationEntrySink* pSink, ELoadConfigurationType configType);
+	CSystemConfiguration(const string& strSysConfigFilePath, CSystem* pSystem, ILoadConfigurationEntrySink* pSink, ELoadConfigurationType configType, ELoadConfigurationFlags flags);
 	~CSystemConfiguration();
 
-	string RemoveWhiteSpaces(string& s)
-	{
-		s.Trim();
-		return s;
-	}
-
 	bool        IsError() const { return m_bError; }
-
 	static bool OpenFile(const string& filename, CCryFile& file, int flags);
 
-private: // ----------------------------------------
-
-	// Returns:
-	//   success
+private:
+	//! Returns success status
 	bool ParseSystemConfig();
 
 	CSystem*                     m_pSystem;
@@ -44,4 +26,5 @@ private: // ----------------------------------------
 	bool                         m_bError;
 	ILoadConfigurationEntrySink* m_pSink;                       // never 0
 	ELoadConfigurationType       m_configType;
+	ELoadConfigurationFlags      m_flags = ELoadConfigurationFlags::None;
 };

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -85,6 +85,7 @@ public:
 	virtual ~CNodesDictionary();
 
 	// CryGraphEditor::CAbstractDictionary
+	virtual void                            ResetEntries() override;
 	virtual int32                           GetNumEntries() const override { return m_root.GetNumChildEntries(); }
 	virtual const CAbstractDictionaryEntry* GetEntry(int32 index) const override;
 
@@ -100,4 +101,3 @@ private:
 };
 
 }
-

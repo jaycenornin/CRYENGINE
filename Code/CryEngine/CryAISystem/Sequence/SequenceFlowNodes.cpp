@@ -1,9 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SequenceFlowNodes.h"
 #include "SequenceManager.h"
-#include "SequenceAgent.h"
 #include "GoalPipe.h"
 #include "PipeUser.h"
 #include "Movement/MoveOp.h"
@@ -82,6 +81,7 @@ void CFlowNode_AISequenceStart::ProcessEvent(EFlowEvent event, SActivationInfo* 
 	case eFE_Initialize:
 		{
 			m_actInfo = *pActInfo;
+			m_waitingForTheForwardingEntityToBeSetOnAllTheNodes = false;
 		}
 		break;
 	case eFE_Activate:
@@ -257,6 +257,52 @@ void CFlowNode_AISequenceBookmark::HandleSequenceEvent(SequenceEvent sequenceEve
 
 //////////////////////////////////////////////////////////////////////////
 
+void CFlowNode_AISequenceActionBase::ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo)
+{
+	switch (event)
+	{
+	case eFE_Initialize:
+	{
+		m_actInfo = *pActInfo;
+		break;
+	}
+	case eFE_Activate:
+	{
+		m_actInfo = *pActInfo;
+
+		const SequenceId assignedSequenceId = GetAssignedSequenceId();
+		if (m_isRunning)
+		{
+			GetAISystem()->GetSequenceManager()->RequestActionRestart(assignedSequenceId);
+		}
+		else if(IsPortActive(pActInfo, InputPort_Start))
+		{
+			GetAISystem()->GetSequenceManager()->RequestActionStart(assignedSequenceId, m_actInfo.myID);
+		}
+		break;
+	}
+	}
+}
+
+void CFlowNode_AISequenceActionBase::HandleSequenceEvent(SequenceEvent sequenceEvent)
+{
+	switch (sequenceEvent)
+	{
+	case StartAction:
+	{
+		m_isRunning = true;
+		break;
+	}
+	case SequenceStopped:
+	{
+		m_isRunning = false;
+		break;
+	}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void CFlowNode_AISequenceActionMove::GetConfiguration(SFlowNodeConfig& config)
 {
 	static const SInputPortConfig inputPortConfig[] =
@@ -286,6 +332,8 @@ void CFlowNode_AISequenceActionMove::GetConfiguration(SFlowNodeConfig& config)
 
 void CFlowNode_AISequenceActionMove::ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo)
 {
+	CFlowNode_AISequenceActionBase::ProcessEvent(event, pActInfo);
+
 	switch (event)
 	{
 	case eFE_Update:
@@ -301,7 +349,7 @@ void CFlowNode_AISequenceActionMove::ProcessEvent(EFlowEvent event, SActivationI
 				{
 					if (m_movementRequestID)
 					{
-						gEnv->pAISystem->GetMovementSystem()->CancelRequest(m_movementRequestID);
+						gEnv->pAISystem->GetMovementSystem()->UnsuscribeFromRequestCallback(m_movementRequestID);
 						m_movementRequestID = 0;
 					}
 
@@ -312,6 +360,7 @@ void CFlowNode_AISequenceActionMove::ProcessEvent(EFlowEvent event, SActivationI
 
 					pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, false);
 
+					m_isRunning = false;
 					GetAISystem()->GetSequenceManager()->ActionCompleted(GetAssignedSequenceId());
 					ActivateOutput(&m_actInfo, OutputPort_Done, true);
 				}
@@ -319,27 +368,9 @@ void CFlowNode_AISequenceActionMove::ProcessEvent(EFlowEvent event, SActivationI
 		}
 		break;
 	}
-	case eFE_Initialize:
-	{
-		m_actInfo = *pActInfo;
-		break;
-	}
 	case eFE_Activate:
 	{
-		m_actInfo = *pActInfo;
-		m_movementRequestID = 0;
-		m_stopRadiusSqr = 0.0f;
-
-		const SequenceId assignedSequenceId = GetAssignedSequenceId();
-		//assert(assignedSequenceId);
-		if (!assignedSequenceId)
-			return;
-
-		if (IsPortActive(pActInfo, InputPort_Start))
-		{
-			GetAISystem()->GetSequenceManager()->RequestActionStart(assignedSequenceId, m_actInfo.myID);
-			pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, true);
-		}
+		pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, true);
 		break;
 	}
 	}
@@ -347,23 +378,33 @@ void CFlowNode_AISequenceActionMove::ProcessEvent(EFlowEvent event, SActivationI
 
 void CFlowNode_AISequenceActionMove::HandleSequenceEvent(SequenceEvent sequenceEvent)
 {
+	CFlowNode_AISequenceActionBase::HandleSequenceEvent(sequenceEvent);
+
 	switch (sequenceEvent)
 	{
 	case StartAction:
+	{
+		GetPositionAndDirectionForDestination(m_destPosition, m_destDirection);
+
+		m_stopRadiusSqr = sqr(GetPortFloat(&m_actInfo, InputPort_EndDistance));
+
+		MovementRequest movementRequest;
+		movementRequest.entityID = GetAssignedEntityId();
+		movementRequest.destination = m_destPosition;
+		movementRequest.callback = functor(*this, &CFlowNode_AISequenceActionMove::MovementRequestCallback);
+		movementRequest.style.SetSpeed((MovementStyle::Speed)GetPortInt(&m_actInfo, InputPort_Speed));
+		movementRequest.style.SetStance((MovementStyle::Stance)GetPortInt(&m_actInfo, InputPort_Stance));
+		movementRequest.dangersFlags = eMNMDangers_None;
+
+		m_movementRequestID = gEnv->pAISystem->GetMovementSystem()->QueueRequest(movementRequest);
+
+		break;
+	}
+	case SequenceStopped:
+		if (!m_movementRequestID.IsInvalid())
 		{
-			GetPositionAndDirectionForDestination(m_destPosition, m_destDirection);
-
-			m_stopRadiusSqr = sqr(GetPortFloat(&m_actInfo, InputPort_EndDistance));
-
-			MovementRequest movementRequest;
-			movementRequest.entityID = GetAssignedEntityId();
-			movementRequest.destination = m_destPosition;
-			movementRequest.callback = functor(*this, &CFlowNode_AISequenceActionMove::MovementRequestCallback);
-			movementRequest.style.SetSpeed((MovementStyle::Speed)GetPortInt(&m_actInfo, InputPort_Speed));
-			movementRequest.style.SetStance((MovementStyle::Stance)GetPortInt(&m_actInfo, InputPort_Stance));
-			movementRequest.dangersFlags = eMNMDangers_None;
-
-			m_movementRequestID = gEnv->pAISystem->GetMovementSystem()->QueueRequest(movementRequest);
+			gEnv->pAISystem->GetMovementSystem()->UnsuscribeFromRequestCallback(m_movementRequestID);
+			m_movementRequestID = 0;
 		}
 		break;
 	}
@@ -374,6 +415,7 @@ void CFlowNode_AISequenceActionMove::MovementRequestCallback(const MovementReque
 	CRY_ASSERT(m_movementRequestID == result.requestID);
 
 	m_movementRequestID = 0;
+	m_isRunning = false;
 
 	if (result.result != MovementRequestResult::ReachedDestination)
 	{
@@ -442,35 +484,10 @@ void CFlowNode_AISequenceActionMoveAlongPath::GetConfiguration(SFlowNodeConfig& 
 	config.SetCategory(EFLN_APPROVED);
 }
 
-void CFlowNode_AISequenceActionMoveAlongPath::ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo)
-{
-	switch (event)
-	{
-	case eFE_Initialize:
-		{
-			m_actInfo = *pActInfo;
-		}
-		break;
-
-	case eFE_Activate:
-		{
-			m_actInfo = *pActInfo;
-			m_movementRequestID = 0;
-
-			if (const SequenceId assignedSequenceId = GetAssignedSequenceId())
-			{
-				if (IsPortActive(pActInfo, InputPort_Start))
-				{
-					GetAISystem()->GetSequenceManager()->RequestActionStart(assignedSequenceId, m_actInfo.myID);
-				}
-			}
-		}
-		break;
-	}
-}
-
 void CFlowNode_AISequenceActionMoveAlongPath::HandleSequenceEvent(SequenceEvent sequenceEvent)
 {
+	CFlowNode_AISequenceActionBase::HandleSequenceEvent(sequenceEvent);
+
 	switch (sequenceEvent)
 	{
 	case StartAction:
@@ -495,6 +512,13 @@ void CFlowNode_AISequenceActionMoveAlongPath::HandleSequenceEvent(SequenceEvent 
 
 				m_movementRequestID = gEnv->pAISystem->GetMovementSystem()->QueueRequest(movementRequest);
 			}
+		}
+		break;
+	case SequenceStopped:
+		if (!m_movementRequestID.IsInvalid())
+		{
+			gEnv->pAISystem->GetMovementSystem()->UnsuscribeFromRequestCallback(m_movementRequestID);
+			m_movementRequestID = 0;
 		}
 		break;
 	}
@@ -522,6 +546,7 @@ void CFlowNode_AISequenceActionMoveAlongPath::MovementRequestCallback(const Move
 	CRY_ASSERT(m_movementRequestID == result.requestID);
 
 	m_movementRequestID = 0;
+	m_isRunning = false;
 
 	if (result.result != MovementRequestResult::ReachedDestination)
 	{
@@ -591,6 +616,8 @@ void CFlowNode_AISequenceActionAnimation::GetConfiguration(SFlowNodeConfig& conf
 
 void CFlowNode_AISequenceActionAnimation::ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo)
 {
+	CFlowNode_AISequenceActionBase::ProcessEvent(event, pActInfo);
+
 	switch (event)
 	{
 	case eFE_Update:
@@ -602,6 +629,7 @@ void CFlowNode_AISequenceActionAnimation::ProcessEvent(EFlowEvent event, SActiva
 				if (!pActor->QueryBodyInfo().isMoving)
 				{
 					pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, false);
+					m_isRunning = false;
 
 					GetAISystem()->GetSequenceManager()->ActionCompleted(GetAssignedSequenceId());
 					ActivateOutput(&m_actInfo, OutputPort_Done, true);
@@ -610,16 +638,8 @@ void CFlowNode_AISequenceActionAnimation::ProcessEvent(EFlowEvent event, SActiva
 		}
 		break;
 	}
-	case eFE_Initialize:
-	{
-		m_actInfo = *pActInfo;
-		break;
-	}
 	case eFE_Activate:
 	{
-		m_actInfo = *pActInfo;
-
-		m_movementRequestID = 0;
 		m_bTeleportWhenNotMoving = false;
 
 		const SequenceId assignedSequenceId = GetAssignedSequenceId();
@@ -628,14 +648,13 @@ void CFlowNode_AISequenceActionAnimation::ProcessEvent(EFlowEvent event, SActiva
 
 		if (IsPortActive(pActInfo, InputPort_Start))
 		{
-			GetAISystem()->GetSequenceManager()->RequestActionStart(assignedSequenceId, m_actInfo.myID);
 			pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, true);
 		}
 
-		if (m_running && IsPortActive(pActInfo, InputPort_Stop))
+		if (m_isRunning && IsPortActive(pActInfo, InputPort_Stop))
 		{
 			ClearAnimation(false);
-			m_running = false;
+			m_isRunning = false;
 
 			pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, false);
 
@@ -666,6 +685,8 @@ void CFlowNode_AISequenceActionAnimation::GetPositionAndDirectionForDestination(
 
 void CFlowNode_AISequenceActionAnimation::HandleSequenceEvent(SequenceEvent sequenceEvent)
 {
+	CFlowNode_AISequenceActionBase::HandleSequenceEvent(sequenceEvent);
+
 	switch (sequenceEvent)
 	{
 	case StartAction:
@@ -716,14 +737,18 @@ void CFlowNode_AISequenceActionAnimation::HandleSequenceEvent(SequenceEvent sequ
 			movementRequest.dangersFlags = eMNMDangers_None;
 
 			m_movementRequestID = gEnv->pAISystem->GetMovementSystem()->QueueRequest(movementRequest);
-			m_running = true;
 		}
 		break;
 
 	case SequenceStopped:
 		{
 			ClearAnimation(true);
-			m_running = false;
+
+			if (!m_movementRequestID.IsInvalid())
+			{
+				gEnv->pAISystem->GetMovementSystem()->UnsuscribeFromRequestCallback(m_movementRequestID);
+				m_movementRequestID = 0;
+			}
 		}
 		break;
 	}
@@ -734,7 +759,7 @@ void CFlowNode_AISequenceActionAnimation::MovementRequestCallback(const Movement
 	CRY_ASSERT(m_movementRequestID == result.requestID);
 
 	m_movementRequestID = 0;
-	m_running = false;
+	m_isRunning = false;
 
 	if (result.result != MovementRequestResult::ReachedDestination)
 	{
@@ -829,6 +854,8 @@ void CFlowNode_AISequenceActionWait::GetConfiguration(SFlowNodeConfig& config)
 
 void CFlowNode_AISequenceActionWait::ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo)
 {
+	CFlowNode_AISequenceActionBase::ProcessEvent(event, pActInfo);
+
 	switch (event)
 	{
 	case eFE_Update:
@@ -836,27 +863,19 @@ void CFlowNode_AISequenceActionWait::ProcessEvent(EFlowEvent event, SActivationI
 		const CTimeValue timeElapsed = GetAISystem()->GetFrameStartTime() - m_startTime;
 		if (timeElapsed.GetMilliSecondsAsInt64() > m_waitTimeMs)
 		{
+			m_isRunning = false;
 			pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, false);
-			
 			GetAISystem()->GetSequenceManager()->ActionCompleted(GetAssignedSequenceId());
 			ActivateOutput(&m_actInfo, OutputPort_Done, true);
 		}
 		break;
 	}
-	case eFE_Initialize:
-	{
-		m_actInfo = *pActInfo;
-		break;
-	}
 	case eFE_Activate:
-	{
-		m_waitTimeMs = 0;
-		
+	{		
 		if (const SequenceId assignedSequenceId = GetAssignedSequenceId())
 		{
 			if (IsPortActive(pActInfo, InputPort_Start))
 			{
-				GetAISystem()->GetSequenceManager()->RequestActionStart(assignedSequenceId, pActInfo->myID);
 				pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, true);
 			}
 		}
@@ -867,6 +886,8 @@ void CFlowNode_AISequenceActionWait::ProcessEvent(EFlowEvent event, SActivationI
 
 void CFlowNode_AISequenceActionWait::HandleSequenceEvent(SequenceEvent sequenceEvent)
 {
+	CFlowNode_AISequenceActionBase::HandleSequenceEvent(sequenceEvent);
+
 	switch (sequenceEvent)
 	{
 	case AIActionSequence::StartAction:
@@ -908,6 +929,8 @@ void CFlowNode_AISequenceActionShoot::GetConfiguration(SFlowNodeConfig& config)
 
 void CFlowNode_AISequenceActionShoot::ProcessEvent(EFlowEvent event, SActivationInfo* pActInfo)
 {
+	CFlowNode_AISequenceActionBase::ProcessEvent(event, pActInfo);
+
 	switch (event)
 	{
 	case eFE_Update:
@@ -924,105 +947,93 @@ void CFlowNode_AISequenceActionShoot::ProcessEvent(EFlowEvent event, SActivation
 				pPipeUser->SetFireTarget(NILREF);
 			}
 
+			m_isRunning = false;
 			pActInfo->pGraph->SetRegularlyUpdated(pActInfo->myID, false);
-
 			GetAISystem()->GetSequenceManager()->ActionCompleted(GetAssignedSequenceId());
 			ActivateOutput(&m_actInfo, OutputPort_Done, true);
 		}
 		break;
 	}
-	case eFE_Initialize:
-		{
-			m_actInfo = *pActInfo;
-		}
-		break;
-
-	case eFE_Activate:
-		{
-			m_actInfo = *pActInfo;
-
-			if (const SequenceId assignedSequenceId = GetAssignedSequenceId())
-			{
-				if (IsPortActive(pActInfo, InputPort_Start))
-				{
-					GetAISystem()->GetSequenceManager()->RequestActionStart(assignedSequenceId, pActInfo->myID);
-				}
-			}
-		}
-		break;
 	}
 }
 
 void CFlowNode_AISequenceActionShoot::HandleSequenceEvent(SequenceEvent sequenceEvent)
 {
+	CFlowNode_AISequenceActionBase::HandleSequenceEvent(sequenceEvent);
+
 	switch (sequenceEvent)
 	{
 	case StartAction:
+	{
+		if (m_actInfo.pEntity)
 		{
-			if (m_actInfo.pEntity)
+			CPipeUser* pPipeUser = CastToCPipeUserSafe(m_actInfo.pEntity->GetAI());
+			if (pPipeUser)
 			{
-				CPipeUser* pPipeUser = CastToCPipeUserSafe(m_actInfo.pEntity->GetAI());
-				if (pPipeUser)
+				IAIObject* pRefPoint = pPipeUser->GetRefPoint();
+				if (pRefPoint)
 				{
-					IAIObject* pRefPoint = pPipeUser->GetRefPoint();
-					if (pRefPoint)
+					Vec3 position;
+
+					EntityId targetEntityId = GetPortEntityId(&m_actInfo, InputPort_TargetEntity);
+					if (IEntity* targetEntity = gEnv->pEntitySystem->GetEntity(targetEntityId))
 					{
-						Vec3 position;
-
-						EntityId targetEntityId = GetPortEntityId(&m_actInfo, InputPort_TargetEntity);
-						if (IEntity* targetEntity = gEnv->pEntitySystem->GetEntity(targetEntityId))
-						{
-							if (IAIObject* targetEntityAIObject = targetEntity->GetAI())
-								position = targetEntityAIObject->GetPos();
-							else
-								position = targetEntity->GetWorldPos();
-						}
+						if (IAIObject* targetEntityAIObject = targetEntity->GetAI())
+							position = targetEntityAIObject->GetPos();
 						else
-						{
-							position = GetPortVec3(&m_actInfo, InputPort_TargetPosition);
-						}
+							position = targetEntity->GetWorldPos();
+					}
+					else
+					{
+						position = GetPortVec3(&m_actInfo, InputPort_TargetPosition);
+					}
 
-						// It's not possible to shoot from the relaxed state, so it is necessary to set the stance to combat.
-						if (IAIActor* aiActor = CastToIAIActorSafe(m_actInfo.pEntity->GetAI()))
+					// It's not possible to shoot from the relaxed state, so it is necessary to set the stance to combat.
+					if (IAIActor* aiActor = CastToIAIActorSafe(m_actInfo.pEntity->GetAI()))
+					{
+						if (IAIActorProxy* aiActorProxy = aiActor->GetProxy())
 						{
-							if (IAIActorProxy* aiActorProxy = aiActor->GetProxy())
+							SAIBodyInfo bodyInfo;
+							aiActorProxy->QueryBodyInfo(bodyInfo);
+							if (bodyInfo.stance == STANCE_RELAXED)
 							{
-								SAIBodyInfo bodyInfo;
-								aiActorProxy->QueryBodyInfo(bodyInfo);
-								if (bodyInfo.stance == STANCE_RELAXED)
-								{
-									aiActor->GetState().bodystate = STANCE_STAND;
-								}
+								aiActor->GetState().bodystate = STANCE_STAND;
 							}
 						}
-						
-						pRefPoint->SetPos(position);
-						pRefPoint->SetEntityID(targetEntityId);
-
-						pPipeUser->SetFireMode(FIREMODE_FORCED);
-						pPipeUser->SetFireTarget(GetWeakRef(static_cast<CAIObject*>(pRefPoint)));
-
-						m_startTime = GetAISystem()->GetFrameStartTime();
-						m_fireTimeMS = int(1000.0f * GetPortFloat(&m_actInfo, InputPort_Duration));
-
-						m_actInfo.pGraph->SetRegularlyUpdated(m_actInfo.myID, true);
-						return;
 					}
+
+					pRefPoint->SetPos(position);
+					pRefPoint->SetEntityID(targetEntityId);
+
+					pPipeUser->SetFireMode(FIREMODE_FORCED);
+					pPipeUser->SetFireTarget(GetWeakRef(static_cast<CAIObject*>(pRefPoint)));
+
+					m_startTime = GetAISystem()->GetFrameStartTime();
+					m_fireTimeMS = int(1000.0f * GetPortFloat(&m_actInfo, InputPort_Duration));
+
+					m_actInfo.pGraph->SetRegularlyUpdated(m_actInfo.myID, true);
+					return;
 				}
 			}
-			GetAISystem()->GetSequenceManager()->ActionCompleted(GetAssignedSequenceId());
-			ActivateOutput(&m_actInfo, OutputPort_Done, true);
-			break;
 		}
+		GetAISystem()->GetSequenceManager()->ActionCompleted(GetAssignedSequenceId());
+		ActivateOutput(&m_actInfo, OutputPort_Done, true);
+		break;
+	}
 	case SequenceStopped:
+	{
+		if (IEntity* pEntity = gEnv->pEntitySystem->GetEntity(GetAssignedEntityId()))
 		{
-			SequenceAgent agent(GetAssignedEntityId());
-			if (IPipeUser* pipeUser = agent.GetPipeUser())
+			if (IAIObject* pAIObject = pEntity->GetAI())
 			{
-				pipeUser->SetFireMode(FIREMODE_OFF);
+				if (IPipeUser* pipeUser = pAIObject->CastToIPipeUser())
+				{
+					pipeUser->SetFireMode(FIREMODE_OFF);
+				}
 			}
-			break;
 		}
+		break;
+	}
 	}
 }
 
@@ -1120,14 +1131,24 @@ void CFlowNode_AISequenceJoinFormation::ProcessEvent(EFlowEvent event, SActivati
 			bool isSignalSent = false;
 			if (pActInfo->pEntity && IsPortActive(pActInfo, InputPort_Start))
 			{
-				EntityId entityID = pActInfo->pEntity->GetId();
-				SequenceAgent nodeAgent(entityID);
+				if (IAIObject* pAIObject = pActInfo->pEntity->GetAI())
+				{
+					if (CAIActor* pAIActor = pAIObject->CastToCAIActor())
+					{
+						const EntityId entityIdToFollow = GetPortEntityId(pActInfo, InputPort_LeaderId);
 
-				EntityId entityIdToFollow = GetPortEntityId(pActInfo, InputPort_LeaderId);
-				SequenceAgent agentToFollow(entityIdToFollow);
+						AISignals::IAISignalExtraData* pData = gEnv->pAISystem->CreateSignalExtraData();
+						const int goalPipeId = gEnv->pAISystem->AllocGoalPipeId();
+						pData->iValue = goalPipeId;
+						pAIActor->SetSignal(GetAISystem()->GetSignalManager()->CreateSignal(
+							AISIGNAL_ALLOW_DUPLICATES,
+							gEnv->pAISystem->GetSignalManager()->GetBuiltInSignalDescriptions().GetOnActJoinFormation(),
+							entityIdToFollow,
+							pData));
 
-				nodeAgent.SendSignal("ACT_JOIN_FORMATION", agentToFollow.GetEntity());
-				isSignalSent = true;
+						isSignalSent = true;
+					}
+				}
 			}
 			ActivateOutput(pActInfo, OutputPort_Done, isSignalSent);
 		}
@@ -1137,10 +1158,10 @@ void CFlowNode_AISequenceJoinFormation::ProcessEvent(EFlowEvent event, SActivati
 
 void CFlowNode_AISequenceJoinFormation::SendSignal(IAIActor* pIAIActor, const char* signalName, IEntity* pSender)
 {
-	IAISignalExtraData* pData = gEnv->pAISystem->CreateSignalExtraData();
-	const int goalPipeId = gEnv->pAISystem->AllocGoalPipeId();
+	AISignals::IAISignalExtraData* pData = gEnv->pAISystem->CreateSignalExtraData();
+	const int goalPipeId = GetAISystem()->AllocGoalPipeId();
 	pData->iValue = goalPipeId;
-	pIAIActor->SetSignal(AISIGNAL_ALLOW_DUPLICATES, signalName, pSender, pData);
+	pIAIActor->SetSignal(GetAISystem()->GetSignalManager()->CreateSignal_DEPRECATED(AISIGNAL_DEFAULT, signalName, pSender ? pSender->GetId() : INVALID_ENTITYID, pData));
 }
 
 //////////////////////////////////////////////////////////////////////////

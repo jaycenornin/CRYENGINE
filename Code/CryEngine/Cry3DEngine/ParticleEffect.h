@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   ParticleEffect.h
@@ -37,7 +37,7 @@ struct TrinaryFlags
 		: On(0), Off(0) {}
 
 	void Clear()
-	{ On = Off = 0; }
+		{ On = Off = 0; }
 
 	// Set from an int where -1 is off, 0 is neutral, 1 is forced
 	void SetState(int state, T flags)
@@ -51,15 +51,17 @@ struct TrinaryFlags
 	}
 
 	TrinaryFlags& operator|=(T flags)
-	{ On |= flags; return *this; }
+		{ On |= flags; return *this; }
 	TrinaryFlags& operator&=(T flags)
-	{ Off |= ~flags; return *this; }
+		{ Off |= ~flags; return *this; }
 
 	T operator&(T flags) const
-	{ return (flags | On) & ~Off; }
-
+		{ return (flags | On) & ~Off; }
 	T operator&(TrinaryFlags<T> const& other) const
-	{ return (On | other.On) & ~(Off | other.Off); }
+		{ return (On | other.On) & ~(Off | other.Off); }
+
+	bool operator!=(const TrinaryFlags& o) const
+		{ return ((On ^ o.On) | (Off ^ o.Off)) != 0; }
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -142,14 +144,14 @@ struct SEmitParams;
 // Additional runtime parameters.
 //
 struct ResourceParticleParams
-	: ParticleParams, Cry3DEngineBase, ZeroInit<ResourceParticleParams>
+	: ParticleParams, Cry3DEngineBase
 {
 	// Texture, material, geometry params.
-	float                 fTexAspect;               // H/V aspect ratio.
-	uint16                mConfigSpecMask;          // Allowed config specs.
+	float                 fTexAspect = 0.0f;        // H/V aspect ratio.
+	uint16                mConfigSpecMask = 0;      // Allowed config specs.
 	_smart_ptr<IMaterial> pMaterial;                // Used to override the material
 	_smart_ptr<IStatObj>  pStatObj;                 // If it isn't set to 0, this object will be used instead of a sprite
-	uint32                nEnvFlags;                // Summary of environment info needed for effect.
+	uint32                nEnvFlags = 0;            // Summary of environment info needed for effect.
 	TrinaryFlags<uint64>  nRenObjFlags;             // Flags for renderer, combining FOB_ and OS_.
 	SParticleShaderData   ShaderData;               // Data to be used by the particle shaders
 

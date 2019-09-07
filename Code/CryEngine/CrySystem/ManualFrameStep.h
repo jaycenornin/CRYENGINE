@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -10,6 +10,7 @@
 
 #include <CryInput/IInput.h>
 #include <CryNetwork/NetHelpers.h>
+#include <CrySystem/IManualFrameStepController.h>
 
 enum class EManualFrameStepResult
 {

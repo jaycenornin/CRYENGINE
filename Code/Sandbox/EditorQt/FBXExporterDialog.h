@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -11,9 +11,9 @@ public:
 	// Dialog Data
 	enum {IDD = IDD_TV_EXPORT_FBX};
 	float GetFPS() const                                   { return m_fps; }
-	bool  GetExportCoordsLocalToTheSelectedObject()        { return m_bExportLocalCoords; };
-	bool  GetExportOnlyMasterCamera()                      { return m_bExportOnlyMasterCamera; };
-	void  SetExportLocalCoordsCheckBoxEnable(bool checked) { m_bExportLocalCoordsCheckBoxEnable = checked; };
+	bool  GetExportCoordsLocalToTheSelectedObject()        { return m_bExportLocalCoords; }
+	bool  GetExportOnlyMasterCamera()                      { return m_bExportOnlyMasterCamera; }
+	void  SetExportLocalCoordsCheckBoxEnable(bool checked) { m_bExportLocalCoordsCheckBoxEnable = checked; }
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
@@ -33,6 +33,4 @@ protected:
 	bool    m_bExportLocalCoordsCheckBoxEnable;
 	bool    m_bExportOnlyMasterCamera;
 	bool    m_bDisplayOnlyFPSSetting;
-private:
 };
-

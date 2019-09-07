@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef DYNAMICRESPONSESYSTEM_PROXY_H_
 #define DYNAMICRESPONSESYSTEM_PROXY_H_
@@ -24,7 +24,7 @@ public:
 	// IEntityComponent interface implementation.
 	//////////////////////////////////////////////////////////////////////////
 	virtual void         ProcessEvent(const SEntityEvent& event) override;
-	virtual uint64       GetEventMask() const override;
+	virtual Cry::Entity::EventFlags       GetEventMask() const override;
 	virtual EEntityProxy GetProxyType() const override { return ENTITY_PROXY_DYNAMICRESPONSE; }
 	virtual void         GetMemoryUsage(ICrySizer* pSizer) const override
 	{

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CCryDX12Texture2D.hpp"
@@ -32,7 +32,7 @@ CCryDX12Texture2D* CCryDX12Texture2D::Create(CCryDX12Device* pDevice)
 
 CCryDX12Texture2D* CCryDX12Texture2D::Create(CCryDX12Device* pDevice, CCryDX12SwapChain* pSwapChain, ID3D12Resource* pResource)
 {
-	DX12_ASSERT(pResource);
+	DX12_ASSERT(pResource, "CreateTexture() called without resource!");
 
 	D3D12_RESOURCE_DESC desc12 = pResource->GetDesc();
 
@@ -223,7 +223,7 @@ CCryDX12Texture2D* CCryDX12Texture2D::Create(CCryDX12Device* pDevice, const FLOA
 
 	if ((hresult != S_OK) || !resource)
 	{
-		DX12_ASSERT(0, "Could not create texture 2D resource!");
+		DX12_ERROR("Could not create texture 2D resource!");
 		return NULL;
 	}
 

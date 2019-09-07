@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AIObjectManager.h"
@@ -153,7 +153,7 @@ IAIObject* CAIObjectManager::CreateAIObject(const AIObjectParams& params)
 	switch (type)
 	{
 	case AIOBJECT_DUMMY:
-		CRY_ASSERT_MESSAGE(false, "Creating dummy object through the AI object manager (use CAISystem::CreateDummyObject instead)");
+		CRY_ASSERT(false, "Creating dummy object through the AI object manager (use CAISystem::CreateDummyObject instead)");
 		return 0;
 	case AIOBJECT_ACTOR:
 		type = AIOBJECT_ACTOR;

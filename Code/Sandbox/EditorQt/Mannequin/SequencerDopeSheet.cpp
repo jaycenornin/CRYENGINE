@@ -1,8 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "SequencerDopeSheet.h"
-#include "Controls\MemDC.h"
+#include "Controls/MemDC.h"
 #include "MannPreferences.h"
 #include "SequencerUndo.h"
 
@@ -301,7 +301,6 @@ void CSequencerDopeSheet::DrawKeys(CSequencerTrack* track, CDC* dc, CRect& rc, R
 						imgType = SEQBMP_PARAMS;
 						break;
 					}
-					;
 				}
 
 				// images are ordered (sel,unsel),(sel,unsel),(sel,unsel),(sel,unsel)
@@ -714,4 +713,3 @@ void CSequencerDopeSheet::DrawNodeItem(CSequencerNode* pAnimNode, CDC* dc, CRect
 
 	dc->SelectObject(prevFont);
 }
-

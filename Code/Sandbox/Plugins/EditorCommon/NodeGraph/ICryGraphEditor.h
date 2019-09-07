@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -12,6 +12,7 @@
 #include <CryIcon.h>
 
 #include "NodeGraphViewStyle.h"
+#include <set>
 
 class QWidget;
 class QGraphicsItem;
@@ -58,6 +59,7 @@ enum EGraphViewWidgetType : int32
 	eGraphViewWidgetType_NodeWidget,
 	eGraphViewWidgetType_ConnectionWidget,
 	eGraphViewWidgetType_GroupWidget,
+	eGraphViewWidgetType_CommentWidget,
 
 	eGraphViewWidgetType_UserType
 };
@@ -307,4 +309,3 @@ private:
 // ~TODO
 
 }
-

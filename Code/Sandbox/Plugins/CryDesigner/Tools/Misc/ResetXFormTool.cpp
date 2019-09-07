@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ResetXFormTool.h"
@@ -76,4 +76,3 @@ void ResetXFormTool::OnResetXForm()
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_ResetXForm, eToolGroup_Misc, "ResetXForm", ResetXFormTool,
                                                            resetxform, "runs ResetXForm tool", "designer.resetxform");
-

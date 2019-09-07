@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -24,7 +24,7 @@ public:
 	virtual void   OnLButtonUp(const SMouseEvent& me)             {}
 	virtual void   OnMouseMove(const SMouseEvent& me)             {}
 
-	virtual void   Display(DisplayContext& dc)                    {}
+	virtual void   Display(SDisplayContext& dc)                   {}
 
 	virtual void   OnGizmoLMBDown(int mode)                       {}
 	virtual void   OnGizmoLMBUp(int mode)                         {}
@@ -39,4 +39,3 @@ private:
 
 }
 }
-

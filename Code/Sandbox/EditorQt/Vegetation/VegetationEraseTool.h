@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "VegetationPaintTool.h"
@@ -14,7 +14,5 @@ public:
 
 protected:
 	virtual ~CVegetationEraseTool() {}
-	// Delete itself.
 	virtual void DeleteThis() override { delete this; }
 };
-

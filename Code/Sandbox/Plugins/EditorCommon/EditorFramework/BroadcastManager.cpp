@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include <StdAfx.h>
 #include "BroadcastManager.h"
@@ -39,7 +39,9 @@ void CBroadcastManager::DisconnectById(const BroadcastEvent::EventType type, uin
 CBroadcastManager* CBroadcastManager::Get(QWidget* const pContextWidget)
 {
 	if (!pContextWidget)
+	{
 		return nullptr;
+	}
 
 	GetBroadcastManagerEvent getBroadcastManagerEvent;
 	QApplication::sendEvent(pContextWidget, &getBroadcastManagerEvent);

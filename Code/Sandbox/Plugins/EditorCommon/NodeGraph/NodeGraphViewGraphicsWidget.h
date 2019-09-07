@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -29,6 +29,7 @@ public:
 	virtual void                             DeleteLater();
 
 	virtual int32                            GetType() const { return eGraphViewWidgetType_Unset; }
+	virtual const CNodeGraphViewStyleItem&   GetStyle() const;
 	virtual CAbstractNodeGraphViewModelItem* GetAbstractItem() const = 0;
 
 	virtual void                             OnItemInvalidated();
@@ -103,4 +104,3 @@ inline T* CNodeGraphViewGraphicsWidget::Cast()
 }
 
 }
-

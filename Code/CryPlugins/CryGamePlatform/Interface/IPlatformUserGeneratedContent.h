@@ -1,6 +1,8 @@
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
+
 #pragma once
 
-#include "IGamePlatform.h"
+#include "PlatformTypes.h"
 
 namespace Cry
 {

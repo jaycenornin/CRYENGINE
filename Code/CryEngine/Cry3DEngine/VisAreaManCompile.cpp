@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   visareamancompile.cpp
@@ -24,8 +24,8 @@ bool CVisAreaManager::GetCompiledData(byte* pData, int nDataSize, std::vector<st
 #else
 	float fStartTime = GetCurAsyncTimeSec();
 
-	bool bHMap(!pExportInfo || pExportInfo->nHeigtmap);
-	bool bObjs(!pExportInfo || pExportInfo->nObjTypeMask);
+	//bool bHMap(!pExportInfo || pExportInfo->nHeigtmap);
+	//bool bObjs(!pExportInfo || pExportInfo->nObjTypeMask);
 
 	//  PrintMessage("Exporting indoor data (%s, %.2f MB) ...",
 	//  (bHMap && bObjs) ? "Objects and heightmap" : (bHMap ? "Heightmap" : (bObjs ? "Objects" : "Nothing")), ((float)nDataSize)/1024.f/1024.f);
@@ -173,10 +173,6 @@ bool CVisAreaManager::Load_T(T*& f, int& nDataSize, SVisAreaManChunkHeader* pVis
 
 	if (pVisAreaManagerChunkHeader->nChunkSize != nDataSize)
 	{ Error("CVisAreaManager::SetCompiledData: data size mismatch (%d != %d)", pVisAreaManagerChunkHeader->nChunkSize, nDataSize); return 0; }
-
-	bool bHMap(!pExportInfo || pExportInfo->nHeigtmap);
-	bool bObjs(!pExportInfo || pExportInfo->nObjTypeMask);
-	AABB* pBox = (pExportInfo && !pExportInfo->areaBox.IsReset()) ? &pExportInfo->areaBox : NULL;
 
 	EEndian eEndian = (pVisAreaManagerChunkHeader->nFlags & SERIALIZATION_FLAG_BIG_ENDIAN) ? eBigEndian : eLittleEndian;
 

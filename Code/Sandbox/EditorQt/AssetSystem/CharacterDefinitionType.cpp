@@ -1,10 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CharacterDefinitionType.h"
-#include "QT/Widgets/QPreviewWidget.h"
+
 #include "AssetSystem/Asset.h"
-#include "FilePathUtil.h"
+#include "PathUtils.h"
+#include "QT/Widgets/QPreviewWidget.h"
+#include "IEditorImpl.h"
 #include <ThreadingUtils.h>
 
 REGISTER_ASSET_TYPE(CCharacterDefinitionType)
@@ -43,5 +45,3 @@ void CCharacterDefinitionType::GenerateThumbnail(const CAsset* pAsset) const
 		pPreviewWidget->SavePreview(thumbnailFileName.c_str());
 	}).get();
 }
-
-

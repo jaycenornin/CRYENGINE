@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "GlobalRuntimeParamsBlueprint.h"
@@ -33,7 +33,7 @@ namespace UQS
 
 		ITextualGlobalRuntimeParamsBlueprint::SParameterInfo CTextualGlobalRuntimeParamsBlueprint::GetParameter(size_t index) const
 		{
-			assert(index < m_parameters.size());
+			CRY_ASSERT(index < m_parameters.size());
 			const SStoredParameterInfo& pi = m_parameters[index];
 			return SParameterInfo(pi.name.c_str(), pi.typeName.c_str(), pi.typeGUID, pi.bAddToDebugRenderWorld, pi.pSyntaxErrorCollector.get());
 		}

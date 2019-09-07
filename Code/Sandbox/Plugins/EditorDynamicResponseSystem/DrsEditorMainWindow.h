@@ -1,11 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <DockedWidget.h>
 #include <CrySerialization/IArchive.h>
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 class QPushButton;
 class QVBoxLayout;
 class QHBoxLayout;
@@ -23,7 +23,7 @@ public:
 protected:
 	void TriggerUpdate();
 
-	QPropertyTree* m_pPropertyTree;
+	QPropertyTreeLegacy* m_pPropertyTree;
 	QTimer*        m_pAutoUpdateTimer;
 
 	QVBoxLayout*   m_pVLayout;
@@ -67,7 +67,7 @@ public:
 
 	//////////////////////////////////////////////////////////
 	// CDockableWindow implementation
-	virtual const char*                       GetPaneTitle() const override        { return "Dynamic Response System"; };
+	virtual const char*                       GetPaneTitle() const override        { return "Dynamic Response System"; }
 	virtual IViewPaneClass::EDockingDirection GetDockingDirection() const override { return IViewPaneClass::DOCK_FLOAT; }
 	//////////////////////////////////////////////////////////
 
@@ -80,4 +80,3 @@ private:
 	DockedWidget<CDrsResponseEditorWindow>* m_pResponseEditorDockWidget;
 	DockedWidget<CDialogLinesEditorWidget>* m_pDialogLinesDockWidget;
 };
-

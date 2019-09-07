@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #if !defined(AFX_STDAFX_H__D3D35062_283E_4DF2_A9C4_9AE0A1B082A8__INCLUDED_)
 #define AFX_STDAFX_H__D3D35062_283E_4DF2_A9C4_9AE0A1B082A8__INCLUDED_
@@ -54,7 +54,7 @@
 #include <memory>
 #include <vector>
 
-#define NET_ASSERT(x) CRY_ASSERT_MESSAGE(x, # x)
+#define NET_ASSERT(x) CRY_ASSERT(x, # x)
 
 #if _MSC_VER > 1000
 	#pragma intrinsic(memcpy)

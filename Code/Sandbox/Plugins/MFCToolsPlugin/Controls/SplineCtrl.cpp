@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SplineCtrl.h"
@@ -253,9 +253,6 @@ void CSplineCtrl::DrawGrid(CDC* pDC)
 //////////////////////////////////////////////////////////////////////////
 void CSplineCtrl::DrawSpline(CDC* pDC)
 {
-	int cx = m_rcSpline.Width();
-	int cy = m_rcSpline.Height();
-
 	//Draw Curve
 	// create and select a thick, white pen
 	CPen pen;
@@ -863,4 +860,3 @@ void CSplineCtrl::SetTimelineCtrl(CTimelineCtrl* pTimelineCtrl)
 	if (m_pTimelineCtrl)
 		m_pTimelineCtrl->SetParent(this);
 }
-

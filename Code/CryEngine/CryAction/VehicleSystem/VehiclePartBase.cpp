@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -126,7 +126,7 @@ void CheckLowSpecFile(string& filename)
 
 		string lowspecFile = stripped + "_low" + suffix;
 
-		if (FILE* pFile = gEnv->pCryPak->FOpen(lowspecFile.c_str(), "rbx"))
+		if (FILE* pFile = gEnv->pCryPak->FOpen(lowspecFile.c_str(), "rb"))
 		{
 			filename = lowspecFile;
 			gEnv->pCryPak->FClose(pFile);

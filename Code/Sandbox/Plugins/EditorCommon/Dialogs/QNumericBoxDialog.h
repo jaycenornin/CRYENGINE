@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "Controls/EditorDialog.h"
@@ -37,5 +37,3 @@ private:
 	QNumericBox* m_numBox{ nullptr };
 	std::function<bool(float num)> m_check;
 };
-
-

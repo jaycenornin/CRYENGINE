@@ -1,25 +1,14 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Gizmo.h"
-#include "Grid.h"
 
-//////////////////////////////////////////////////////////////////////////
-// CGizmo implementation.
-//////////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////////
 CGizmo::CGizmo()
 	: m_flags(0)
 {
 	// Set selectable flag by default. Unselectable gizmos should opt-out
 	// Also set state to invalid so any updates can run the first time
 	m_flags = EGIZMO_SELECTABLE | EGIZMO_INVALID;
-}
-
-//////////////////////////////////////////////////////////////////////////
-CGizmo::~CGizmo()
-{
 }
 
 void CGizmo::SetHighlighted(bool highlighted)
@@ -35,4 +24,3 @@ void CGizmo::SetHighlighted(bool highlighted)
 		UnsetFlag(EGIZMO_HIGHLIGHTED);
 	}
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ImageListCtrl.h"
@@ -777,4 +777,3 @@ void CImageListCtrl::InvalidateAllBitmaps()
 	for (int i = 0; i < m_items.size(); i++)
 		m_items[i]->bBitmapValid = false;
 }
-

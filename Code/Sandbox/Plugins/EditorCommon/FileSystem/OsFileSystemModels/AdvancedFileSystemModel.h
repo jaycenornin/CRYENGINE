@@ -1,10 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "EditorCommonAPI.h"
 
 #include <QFileSystemModel>
-#include <QHash>
 
 /**
  * \brief Replacement for QFileSystemModel. Do not use QFileSystemModel
@@ -22,4 +21,3 @@ public:
 	// interface QAbstractItemModel
 	virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 };
-

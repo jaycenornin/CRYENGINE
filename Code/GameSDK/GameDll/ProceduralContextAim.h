@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #ifndef __PROCEDURAL_CONTEXT_AIM__H__
 #define __PROCEDURAL_CONTEXT_AIM__H__
@@ -47,7 +47,7 @@ private:
 	void UpdatePolarCoordinatesSmoothingParameters();
 
 private:
-	IAnimationPoseBlenderDir* m_pPoseBlenderAim;
+	IAnimationPoseBlenderDir* GetPoseBlenderAim();
 
 	bool m_gameRequestsAiming;
 	bool m_procClipRequestsAiming;

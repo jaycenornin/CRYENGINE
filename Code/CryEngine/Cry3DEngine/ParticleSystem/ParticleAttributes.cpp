@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ParticleCommon.h"
@@ -107,6 +107,7 @@ int CAttributeTable::FindAttributeIdByName(const CCryName& name) const
 
 void CAttributeTable::Serialize(IArchive& ar)
 {
+	CRY_PFX2_PROFILE_DETAIL;
 	ar(m_attributes, "Attributes", "Attributes");
 	if (ar.isInput())
 	{

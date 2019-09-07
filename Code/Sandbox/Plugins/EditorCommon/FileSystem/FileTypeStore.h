@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include "FileType.h"
@@ -23,4 +23,3 @@ private:
 private:
 	QHash<QString, QVector<const SFileType*>> m_extensionTypes;
 };
-

@@ -1,8 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "EquipPack.h"
 #include "EquipPackLib.h"
+#include <CrySystem/XML/IXml.h>
+#include <CryCore/StlUtils.h>
 
 CEquipPack::CEquipPack(CEquipPackLib* pCreator)
 {
@@ -163,4 +165,3 @@ bool CEquipPack::Save(XmlNodeRef node)
 	}
 	return true;
 }
-

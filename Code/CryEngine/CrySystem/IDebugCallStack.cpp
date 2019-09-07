@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -208,10 +208,6 @@ void IDebugCallStack::FatalError(const char* description)
 	{
 		CryMessageBox(description, "CryEngine Fatal Error", eMB_Error);
 	}
-#endif
-
-#if CRY_PLATFORM_WINDOWS || !defined(_RELEASE)
-	__debugbreak(); // We're intentionally stopping execution and crashing here.
 #endif
 }
 

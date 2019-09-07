@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -33,7 +33,7 @@ public:
 	bool        OnLButtonDown(CViewport* view, UINT nFlags, CPoint point) override;
 	bool        OnLButtonUp(CViewport* view, UINT nFlags, CPoint point) override;
 	bool        OnMouseMove(CViewport* view, UINT nFlags, CPoint point) override;
-	void        Display(DisplayContext& dc) override;
+	void        Display(SDisplayContext& dc) override;
 	void        Serialize(Serialization::IArchive& ar);
 	bool        IsManipulatorVisible() override;
 
@@ -69,4 +69,3 @@ private:
 	std::vector<_smart_ptr<OffsetManipulator>> m_OffsetManipulators;
 };
 }
-

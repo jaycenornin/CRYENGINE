@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -40,7 +40,6 @@ class EditorDBATable;
 class EditorCompressionPresetTable;
 class FilterAnimationList;
 class GizmoSink;
-class SkeletonList;
 struct CharacterDefinition;
 struct DisplayOptions;
 struct SceneContent;
@@ -67,7 +66,6 @@ public:
 	unique_ptr<ExplorerFileList>  sourceAssetList;
 	EditorDBATable*               dbaTable;
 	EditorCompressionPresetTable* compressionPresetTable;
-	SkeletonList*                 compressionSkeletonList;
 	// ^^^
 
 	// serialization contexts
@@ -87,4 +85,3 @@ public:
 };
 
 }
-

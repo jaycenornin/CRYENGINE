@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"                   // precompiled headers
 #include "SimpleTriangleRasterizer.h" // CSimpleTriangleRastizer
@@ -408,4 +408,3 @@ void CSimpleTriangleRasterizer::ShrinkTriangle(float inoutfX[3], float inoutfY[3
 		inoutfY[a] += (dy1 + dy2) * infAmount;
 	}
 }
-

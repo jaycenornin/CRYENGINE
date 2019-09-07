@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -32,7 +32,7 @@ namespace UQS
 			// ~IItemMonitor
 
 		private:
-			void                   OnNavMeshChanged(NavigationAgentTypeID agentTypeID, NavigationMeshID meshID, uint32 tileID);
+			void                   OnNavMeshChanged(NavigationAgentTypeID agentTypeID, NavigationMeshID meshID, MNM::TileID tileID);
 
 		private:
 			NavigationAgentTypeID  m_agentTypeID;

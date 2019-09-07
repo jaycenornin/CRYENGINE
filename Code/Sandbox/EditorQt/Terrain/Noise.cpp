@@ -1,26 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "Noise.h"
-#include "Util\DynamicArray2D.h"
-
+#include "LogFile.h"
+#include "Util/DynamicArray2D.h"
+#include "Util/EditorUtils.h"
+#include <CryMath/Cry_Math.h>
 #include <CryMath/Random.h>
 
 #pragma warning (push)
 #pragma warning (disable : 4244)
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-CNoise::CNoise()
-{
-
-}
-
-CNoise::~CNoise()
-{
-
-}
 
 __forceinline float CNoise::Spline(float x, float* knot)
 {
@@ -218,4 +207,3 @@ cleanup:
 }
 
 #pragma warning (pop)
-

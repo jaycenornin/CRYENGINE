@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -69,7 +69,7 @@ namespace UQS
 
 			inline void CFunctionDeleter::operator()(IFunction* pFunctionToDestroy)
 			{
-				assert(m_pFunctionFactory);
+				CRY_ASSERT(m_pFunctionFactory);
 				m_pFunctionFactory->DestroyFunction(pFunctionToDestroy);
 			}
 		} // namespace Internal

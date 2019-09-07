@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "VKShader.hpp"
@@ -28,8 +28,7 @@ namespace NCryVulkan
 		memcpy(shaderCode.data(), pShaderCode, shaderCodeSize);
 		if (stripReflections)
 		{
-			bool success = VkSpvHelper::StripGoogleExtensionsFromShader(shaderCode);
-			CRY_ASSERT(success == true);
+			CRY_VERIFY(VkSpvHelper::StripGoogleExtensionsFromShader(shaderCode));
 			shaderCodeSize = static_cast<uint32_t>(shaderCode.size());
 		}
 

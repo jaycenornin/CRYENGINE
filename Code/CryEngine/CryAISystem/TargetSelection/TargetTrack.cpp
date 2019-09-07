@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -501,7 +501,7 @@ void CTargetTrack::UpdateStimulusInvoke(SStimulusInvocation& invoke, const Targe
 		if (pTarget)
 			invoke.m_vLastPos = pTarget->GetPos();
 		else
-			CRY_ASSERT_MESSAGE(0, "No position could be set from invoked stimulus event!");
+			CRY_ASSERT(0, "No position could be set from invoked stimulus event!");
 	}
 
 	if (pTarget)

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /********************************************************************
    -------------------------------------------------------------------------
@@ -155,9 +155,6 @@ bool CAISystem::CheckVisibilityToBody(CAIActor* pObserver, CAIActor* pBody, floa
 
 	if (IAIObject::eFOV_Outside == pObserver->IsObjectInFOV(pBody, pObserver->GetParameters().m_PerceptionParams.perceptionScale.visual * 0.75f))
 		return false;
-
-	//--------------- ACCURATE MEASURING
-	float dist = sqrtf(distSq);
 
 	PhysSkipList skipList;
 	pObserver->GetPhysicalSkipEntities(skipList);

@@ -1,10 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /************************************************************************
 
    An Interface for actions that can be executed by Response Segments
 
-   /************************************************************************/
+************************************************************************/
 
 #ifndef _DYNAMICRESPONSEACTION_H_
 #define _DYNAMICRESPONSEACTION_H_

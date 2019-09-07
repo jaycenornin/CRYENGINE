@@ -1,9 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "FilterProxyModel.h"
 
-#include <ModelUtils.h>
+#include "../Common/ModelUtils.h"
 
 namespace ACE
 {
@@ -11,12 +11,6 @@ namespace Impl
 {
 namespace SDLMixer
 {
-//////////////////////////////////////////////////////////////////////////
-CFilterProxyModel::CFilterProxyModel(QObject* const pParent)
-	: QAttributeFilterProxyModel(QDeepFilterProxyModel::Behavior::AcceptIfChildMatches, pParent)
-{
-}
-
 //////////////////////////////////////////////////////////////////////////
 bool CFilterProxyModel::rowMatchesFilter(int sourceRow, QModelIndex const& sourceParent) const
 {

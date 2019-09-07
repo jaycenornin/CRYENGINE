@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // Nodes for coordinate space transformations
 
@@ -183,7 +183,6 @@ private:
 					const QuatT resultTransform   = actualTransformation * inputTransform;
 					const Ang3  resultOrientation = Ang3(resultTransform.q);
 
-					const Vec3& outputPosition    = resultTransform.t;
 					const Vec3  outputOrientation = RAD2DEG(Vec3(resultOrientation.x, resultOrientation.y, resultOrientation.z));
 
 					ActivateOutput(pActInfo, eOP_Done, true);

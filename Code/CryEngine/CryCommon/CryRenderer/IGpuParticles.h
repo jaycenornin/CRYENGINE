@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -87,6 +87,7 @@ struct SParticleParameters
 	Vec3      physWind;
 	float     farToNearDistance;
 	Vec3      cameraPosition;
+	float     minDrawAngle;
 	float     lifeTime;
 	int32     numParticles;
 	int32     numNewBorns;
@@ -128,11 +129,13 @@ enum EFeatureUpdateFlags
 // Includes InitializationParams, a subset of ParticleParams, and UpdateFlags
 struct SUpdateParams : SParticleInitializationParameters
 {
-	float  lifeTime;
 	Quat   emitterOrientation;
 	Vec3   emitterPosition;
 	Vec3   physAccel;
 	Vec3   physWind;
+	float  minDrawPixels;
+	float  deltaTime;
+	float  lifeTime;
 
 	uint32 initFlags;
 	uint32 updateFlags;
@@ -190,9 +193,9 @@ enum EVortexDirection
     float maxSize;              \
     bool affectOpacity; )       \
   X(Opacity,                    \
-    Vec2 alphaScale;            \
-    Vec2 clipLow;               \
-    Vec2 clipRange;             \
+    Range alphaScale;           \
+    Range clipLow;              \
+    Range clipRange;            \
     float* samples;             \
     uint32 numSamples; )        \
   X(MotionPhysics,              \
@@ -268,9 +271,8 @@ struct SFeatureParametersBase
 	const Parameters& GetParameters() const
 	{
 		const Parameters& result = static_cast<const Parameters&>(*this);
-		// sanity check that Parameters is a derived class of
-		// SFeatureParametersBase
-		const SFeatureParametersBase& sanityCheck = result;
+		// sanity check that Parameters is a derived class of SFeatureParametersBase
+		static_assert(std::is_base_of<SFeatureParametersBase, Parameters>::value, "Parameters is not a derived class of SFeatureParametersBase");
 		return result;
 	}
 };
@@ -296,7 +298,7 @@ public:
 		InternalSetParameters(Parameters::type, parameters);
 	}
 protected:
-	virtual void InternalSetParameters(const EParameterType type, const SFeatureParametersBase& p) {};
+	virtual void InternalSetParameters(const EParameterType type, const SFeatureParametersBase& p) {}
 };
 
 // interface of GPU particle system
@@ -304,8 +306,13 @@ class IManager
 {
 public:
 	virtual void BeginFrame() = 0;
-
+	virtual void RenderThreadUpdate(CRenderView* pRenderView) = 0;
+	virtual void RenderThreadPreUpdate(CRenderView* pRenderView) = 0;
+	virtual void RenderThreadPostUpdate(CRenderView* pRenderView) = 0;
+	
 	virtual IParticleComponentRuntime* CreateParticleContainer(const SComponentParams& params, TConstArray<IParticleFeature*> features) = 0;
 	virtual IParticleFeature* CreateParticleFeature(EGpuFeatureType) = 0;
+	virtual void ReleaseResources() = 0;
+
 };
 }

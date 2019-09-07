@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
    -------------------------------------------------------------------------
@@ -19,6 +19,8 @@
 #include <CrySystem/Profilers/IDiskProfiler.h>
 #include <CrySystem/IStreamEngine.h>
 #include <CryMath/Cry_Color.h>
+#include <CryMemory/STLGlobalAllocator.h>
+#include <CryThreading/CryThread.h>
 
 class CDiskProfilerWindowsSpecific;
 

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -68,10 +68,8 @@ private:
 
 	static PolygonPtr CreatePolygon(const std::vector<BrushVec3>& vList, bool bFlip, PolygonPtr pBasePolygon);
 
-	PolygonPtr              m_pCapPolygon;
 	std::vector<PolygonPtr> m_PolygonsNeedPostProcess;
 	StairParameter          m_StairParameter;
 	bool                    m_bWidthIsLonger;
 };
 }
-

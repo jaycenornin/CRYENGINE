@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 
@@ -80,7 +80,6 @@ Manip::SSpaceAndIndex CharacterSpaceProvider::FindSpaceIndexByName(int spaceType
 	    spaceType == Serialization::SPACE_JOINT_WITH_PARENT_ROTATION ||
 	    spaceType == Serialization::SPACE_JOINT_WITH_CHARACTER_ROTATION)
 	{
-		IDefaultSkeleton& defaultSkeleton = pICharacterInstance->GetIDefaultSkeleton();
 		si.m_jointCRC32 = CCrc32::ComputeLowercase(name + (*name == '$'));
 		return si;
 	}
@@ -184,7 +183,6 @@ QuatT CharacterSpaceProvider::GetTransform(const Manip::SSpaceAndIndex& si) cons
 	default:
 		return characterLocation;   //root in world-space
 	}
-	;
 }
 
 // ---------------------------------------------------------------------------
@@ -345,4 +343,3 @@ void GizmoSink::SkipRead()
 }
 
 }
-

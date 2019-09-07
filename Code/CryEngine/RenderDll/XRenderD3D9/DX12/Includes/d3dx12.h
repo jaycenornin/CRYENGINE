@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //
 // Copyright (c) Microsoft. All rights reserved.
@@ -654,6 +654,7 @@ struct CD3DX12_RANGE : public D3D12_RANGE
 	}
 };
 
+#if NTDDI_WIN10_RS2 && (WDK_NTDDI_VERSION >= NTDDI_WIN10_RS2)
 //------------------------------------------------------------------------------------------------
 struct CD3DX12_RANGE_UINT64 : public D3D12_RANGE_UINT64
 {
@@ -698,6 +699,7 @@ struct CD3DX12_SUBRESOURCE_RANGE_UINT64 : public D3D12_SUBRESOURCE_RANGE_UINT64
 	}
 	operator const D3D12_SUBRESOURCE_RANGE_UINT64&() const { return *this; }
 };
+#endif
 
 //------------------------------------------------------------------------------------------------
 struct CD3DX12_SHADER_BYTECODE : public D3D12_SHADER_BYTECODE
@@ -2084,7 +2086,7 @@ inline UINT64 UpdateSubresources(
 	const D3D12_RANGE NoRead = { 0U, 0U };
 	const D3D12_RANGE FullWrite = { 0U, SIZE_T(RequiredSize) };
 
-	HRESULT hr = pIntermediate->Map(0, &NoRead, reinterpret_cast<void**>(&pData));
+	pIntermediate->Map(0, &NoRead, reinterpret_cast<void**>(&pData));
 
 	if (DestinationDesc.Dimension == D3D12_RESOURCE_DIMENSION_BUFFER)
 	{

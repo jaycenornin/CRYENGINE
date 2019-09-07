@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -35,7 +35,7 @@ public:
 	virtual bool OnMouseMove(CViewport* view, UINT nFlags, CPoint point) override;
 	virtual bool OnKeyDown(CViewport* view, uint32 nChar, uint32 nRepCnt, uint32 nFlags) override;
 
-	virtual void Display(DisplayContext& dc) override;
+	virtual void Display(SDisplayContext& dc) override;
 	virtual void Enter() override;
 
 	virtual void OnEditorNotifyEvent(EEditorNotifyEvent event) override;
@@ -90,4 +90,3 @@ protected:
 	BrushPlane     m_PlaneAlignedWithView;
 };
 }
-

@@ -1,14 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "PivotTool.h"
-#include "Core/Model.h"
-#include "DesignerEditor.h"
-#include "ViewManager.h"
-#include "Core/ModelDB.h"
+
 #include "Core/Helper.h"
-#include "ToolFactory.h"
-#include "Objects/DisplayContext.h"
+#include "DesignerEditor.h"
+
+#include <Viewport.h>
 
 namespace Designer
 {
@@ -57,8 +55,8 @@ void PivotTool::Leave()
 void PivotTool::InitializeManipulator()
 {
 	m_StartingDragManipulatorPos = m_PivotPos = BrushVec3(0, 0, 0);
-	GetIEditor()->SetEditMode(eEditModeMove);
-	if(GetDesigner())
+	GetIEditor()->GetLevelEditorSharedState()->SetEditMode(CLevelEditorSharedState::EditMode::Move);
+	if (GetDesigner())
 		GetDesigner()->UpdateTMManipulator(m_PivotPos, BrushVec3(0, 0, 1));
 }
 
@@ -87,7 +85,7 @@ void PivotTool::SetSelectionType(EPivotSelectionType selectionType, bool bForce)
 	}
 }
 
-void PivotTool::Display(DisplayContext& dc)
+void PivotTool::Display(SDisplayContext& dc)
 {
 	dc.SetColor(0xAAAAAAFF);
 	dc.DepthTestOff();
@@ -100,14 +98,14 @@ void PivotTool::Display(DisplayContext& dc)
 		if (m_nSelectedCandidate == i)
 			continue;
 		BrushVec3 vWorldVertexPos = GetWorldTM().TransformPoint(m_CandidateVertices[i]);
-		BrushVec3 vBoxSize = GetElementBoxSize(dc.view, dc.flags & DISPLAY_2D, vWorldVertexPos);
+		BrushVec3 vBoxSize = GetElementBoxSize(dc.view, dc.display2D, vWorldVertexPos);
 		dc.DrawSolidBox(ToVec3(vWorldVertexPos - vBoxSize), ToVec3(vWorldVertexPos + vBoxSize));
 	}
 	if (m_nSelectedCandidate != -1)
 	{
 		dc.SetColor(RGB(100, 100, 255));
 		BrushVec3 vWorldVertexPos = GetWorldTM().TransformPoint(m_CandidateVertices[m_nSelectedCandidate]);
-		BrushVec3 vBoxSize = GetElementBoxSize(dc.view, dc.flags & DISPLAY_2D, vWorldVertexPos);
+		BrushVec3 vBoxSize = GetElementBoxSize(dc.view, dc.display2D, vWorldVertexPos);
 		dc.DrawSolidBox(ToVec3(vWorldVertexPos - vBoxSize), ToVec3(vWorldVertexPos + vBoxSize));
 	}
 
@@ -161,9 +159,9 @@ bool PivotTool::OnKeyDown(CViewport* view, uint32 nChar, uint32 nRepCnt, uint32 
 	return true;
 }
 
-void PivotTool::OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& p0, BrushVec3 value, int flags)
+void PivotTool::OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData)
 {
-	BrushMatrix34 moveTM = GetOffsetTM(pManipulator, value, GetWorldTM());
+	BrushMatrix34 moveTM = GetOffsetTM(pManipulator, dragData.accumulateDelta, GetWorldTM());
 	m_PivotPos = moveTM.TransformPoint(m_StartingDragManipulatorPos);
 	GetDesigner()->UpdateTMManipulator(m_PivotPos, BrushVec3(0, 0, 1));
 }
@@ -176,4 +174,3 @@ void PivotTool::OnManipulatorBegin(IDisplayViewport* pView, ITransformManipulato
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_Pivot, eToolGroup_BasicSelection, "Pivot", PivotTool,
                                                            pivotselection, "runs pivot selection tool", "designer.pivotselection")
-

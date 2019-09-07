@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
@@ -286,7 +286,6 @@ void Device::GetCameraSetupInfo(float& fov, float& aspectRatioFactor) const
 
 HMDCameraSetup Device::GetHMDCameraSetup(int nEye, float ratio, float fnear) const
 {
-	const EyeSetup& setup = m_eyes[nEye];
 	// TODO: Generate projection matrix
 	assert(false);
 	return HMDCameraSetup{};
@@ -572,9 +571,9 @@ bool Device::InitializeRenderer(void* d3dDevice, void* d3dContext)
 	return bSuccess;
 }
 
-bool Device::PresentTextureSet(int textureSetIndex)
+bool Device::PresentTextureSet(uint64 frameId, int textureSetIndex)
 {
-	this->OnEndFrame();
+	this->OnEndFrame(frameId);
 
 	if (m_renderBufferSets.size() <= textureSetIndex) return false;
 

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "BaseEnv/Components/BaseEnv_EntityDetectionVolumeComponent.h"
@@ -116,7 +116,6 @@ namespace SchematycBaseEnv
 			m_bEnabled    = m_pProperties->bEnabled;
 
 			const EntityId entityId = CEntityComponentBase::GetEntityId();
-			IEntity&       entity = CEntityComponentBase::GetEntity();
 			const Matrix34 worldTM = CEntityComponentBase::GetEntity().GetWorldTM();
 				
 			CSpatialIndex&           spatialIndex = CBaseEnv::GetInstance().GetSpatialIndex();

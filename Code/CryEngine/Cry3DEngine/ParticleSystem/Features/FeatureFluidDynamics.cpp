@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  Created:     21/10/2015 by Benjamin Block
@@ -24,7 +24,7 @@ class CFeatureMotionFluidDynamics : public CParticleFeature
 public:
 	CRY_PFX2_DECLARE_FEATURE
 
-	typedef TValue<uint> TParticleCount;
+	typedef TValue<TNumber<uint>> TParticleCount;
 
 	CFeatureMotionFluidDynamics()
 		: m_initialVelocity(0.0, 0.0, 5.0)

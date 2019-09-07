@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // Opens a temporary file for read only access, where the file could be
 // located in a zip or pak file. Note that if the file specified
@@ -91,7 +91,7 @@ TempFilePakExtraction::TempFilePakExtraction(const char* filename, const char* t
 	if (pPakSystem->ExtractNoOverwrite(m_strOriginalFileName.c_str(), tempFullFileName.c_str()))
 	{
 		m_strTempFileName = tempFullFileName;
-		SetFileAttributesA(m_strTempFileName.c_str(), FILE_ATTRIBUTE_READONLY);
+		FileUtil::MakeReadOnly(m_strTempFileName.c_str());
 	}
 	else
 	{
@@ -104,7 +104,7 @@ TempFilePakExtraction::~TempFilePakExtraction()
 {
 	if (HasTempFile())
 	{
-		SetFileAttributesA(m_strTempFileName.c_str(), FILE_ATTRIBUTE_ARCHIVE);
+		FileUtil::MakeWritable(m_strTempFileName.c_str());
 		DeleteFile(m_strTempFileName.c_str());
 	}
 }

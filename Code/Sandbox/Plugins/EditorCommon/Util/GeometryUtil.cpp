@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "GeometryUtil.h"
@@ -166,7 +166,7 @@ EDITOR_COMMON_API void ConvexHull2DAndrew(std::vector<Vec3>& ptsOut, const std::
 
 	std::vector<Vec3> P = ptsIn;
 	{
-		CRY_PROFILE_SECTION(PROFILE_AI, "SORT Andrew")
+		CRY_PROFILE_SECTION(PROFILE_AI, "SORT Andrew");
 		std::sort(P.begin(), P.end(), PointSorterAndrew);
 	}
 
@@ -247,4 +247,3 @@ EDITOR_COMMON_API void ConvexHull2DAndrew(std::vector<Vec3>& ptsOut, const std::
 	if (!ptsOut.empty() && ptEqual(ptsOut.front(), ptsOut.back()))
 		ptsOut.pop_back();
 }
-

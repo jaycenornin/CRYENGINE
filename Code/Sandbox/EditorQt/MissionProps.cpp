@@ -1,12 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "MissionProps.h"
+
+#include "Controls/PropertyItem.h"
 #include "CryEditDoc.h"
+#include "LogFile.h"
 #include "mission.h"
 #include "missionscript.h"
-#include <FilePathUtil.h>
-#include "Controls/PropertyItem.h"
+#include <PathUtils.h>
+#include <Util/FileUtil.h>
 
 // CMissionProps dialog
 
@@ -132,4 +135,3 @@ void CMissionProps::OnBnClickedEdit()
 {
 	GetIEditorImpl()->GetDocument()->GetCurrentMission()->GetScript()->Edit();
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 #include <CrySerialization/IArchive.h>
@@ -29,4 +29,3 @@ inline bool Serialize(Serialization::IArchive& ar, GUID& guid, const char* name,
 		guid = GuidUtil::FromString(str.c_str());
 	return true;
 }
-

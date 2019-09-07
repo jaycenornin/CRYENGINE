@@ -1,7 +1,9 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "AlembicCompileDialog.h"
+#include "Util/EditorUtils.h"
+#include <CrySystem/File/ICryPak.h>
 
 IMPLEMENT_DYNAMIC(CAlembicCompileDialog, CDialog)
 BEGIN_MESSAGE_MAP(CAlembicCompileDialog, CDialog)
@@ -313,4 +315,3 @@ CAlembicCompileDialog::SConfig CAlembicCompileDialog::LoadConfig(const CString& 
 
 	return config;
 }
-

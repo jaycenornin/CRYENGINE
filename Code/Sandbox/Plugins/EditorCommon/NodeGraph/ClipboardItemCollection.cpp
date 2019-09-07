@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "ClipboardItemCollection.h"
@@ -7,6 +7,7 @@
 #include "AbstractNodeItem.h"
 #include "AbstractPinItem.h"
 #include "AbstractNodeGraphViewModel.h"
+#include <IEditor.h>
 
 #include <CrySerialization/IArchive.h>
 #include <CrySerialization/IArchiveHost.h>
@@ -157,4 +158,3 @@ void CClipboardItemCollection::Serialize(Serialization::IArchive& archive)
 }
 
 }
-

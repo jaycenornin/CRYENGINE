@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 //
 //  Crytek Engine Source File.
 //  Copyright (C), Crytek Studios, 2001-2006.
@@ -16,6 +16,7 @@
 #define _SKELETON_INFO
 #pragma once
 
+#include "AnimList.h"
 #include <Cry3DEngine/CGF/CGFContent.h>
 
 class CSkeletonInfo
@@ -29,6 +30,7 @@ public:
 
 public:
 	CSkinningInfo m_SkinningInfo;
+	CAnimList m_animList;
 };
 
 #endif

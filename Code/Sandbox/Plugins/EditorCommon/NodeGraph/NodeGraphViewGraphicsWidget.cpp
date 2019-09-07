@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "NodeGraphViewGraphicsWidget.h"
@@ -14,7 +14,6 @@ CNodeGraphViewGraphicsWidget::CNodeGraphViewGraphicsWidget(CNodeGraphView& view)
 	, m_isHighlighted(false)
 	, m_isDeactivated(false)
 {
-
 }
 
 CNodeGraphViewGraphicsWidget::~CNodeGraphViewGraphicsWidget()
@@ -26,6 +25,12 @@ void CNodeGraphViewGraphicsWidget::DeleteLater()
 {
 	GetView().scene()->removeItem(this);
 	deleteLater();
+}
+
+const CNodeGraphViewStyleItem& CNodeGraphViewGraphicsWidget::GetStyle() const
+{
+	static CNodeGraphViewStyleItem style("Default");
+	return style;
 }
 
 void CNodeGraphViewGraphicsWidget::OnItemInvalidated()
@@ -117,4 +122,3 @@ void CNodeGraphViewGraphicsWidget::OnItemDeactivatedChanged()
 }
 
 }
-

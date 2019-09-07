@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "JoystickUtils.h"
@@ -93,4 +93,3 @@ void JoystickUtils::PlaceKey(IJoystickChannel* pChannel, float time)
 		interpolator->InsertKeyFloat(frameTime, value);
 	}
 }
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "SliderCtrlEx.h"
@@ -329,7 +329,6 @@ void CSliderCtrlCustomDraw::DrawTicks(CDC* pDC)
 
 	if (GetStyle() & TBS_AUTOTICKS)
 	{
-		bool bTop = ((GetStyle() & TBS_BOTH) == TBS_BOTH) || ((GetStyle() & TBS_TOP) == TBS_TOP);
 		bool bBottom = ((GetStyle() & TBS_BOTH) == TBS_BOTH) || ((GetStyle() & TBS_BOTTOM) == TBS_BOTTOM);
 
 		int r0 = GetRangeMin();
@@ -384,4 +383,3 @@ void CSliderCtrlCustomDraw::SetSelection(int nMin, int nMax)
 		//MoveWindow(rc,FALSE);
 	}
 }
-

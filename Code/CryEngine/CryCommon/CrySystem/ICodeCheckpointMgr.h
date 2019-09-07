@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //! \cond INTERNAL
 
@@ -45,6 +45,8 @@ struct ICodeCheckpointMgr
 	virtual void Release() = 0;
 	// </interfuscator:shuffle>
 };
+
+#include <CrySystem/ISystem.h>
 
 //! Inline helper class used for registration and update of code checkpoint state.
 class CCodeCheckpoint

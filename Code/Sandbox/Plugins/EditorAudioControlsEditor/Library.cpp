@@ -1,18 +1,12 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "Library.h"
 
-#include "AudioControlsEditorPlugin.h"
+#include "AssetsManager.h"
 
 namespace ACE
 {
-//////////////////////////////////////////////////////////////////////////
-CLibrary::CLibrary(string const& name)
-	: CAsset(name, EAssetType::Library)
-	, m_pakStatus(EPakStatus::None)
-{}
-
 //////////////////////////////////////////////////////////////////////////
 void CLibrary::SetModified(bool const isModified, bool const isForced /* = false */)
 {

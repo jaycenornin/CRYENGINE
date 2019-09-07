@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -8,6 +8,7 @@
 //! Epsilon for vector comparasion.
 #define FLOAT_EPSILON 0.000001f
 
+#include "EditorUtils.h"
 #include <CryMath/Cry_Geo.h>
 
 //!  Compare two vectors if they are equal.
@@ -299,4 +300,3 @@ inline int gcd(int a, int b)
 	}
 	return b;
 }
-

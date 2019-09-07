@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -9,7 +9,7 @@
 #include <QWidget>
 #include <QViewportSettings.h>
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 
 struct SViewSettings
 {
@@ -104,7 +104,6 @@ signals:
 private slots:
 	void                   OnPropertyTreeChanged();
 private:
-	QPropertyTree*                   m_pPropertyTree;
+	QPropertyTreeLegacy*                   m_pPropertyTree;
 	std::unique_ptr<SDisplayOptions> m_pOptions;
 };
-

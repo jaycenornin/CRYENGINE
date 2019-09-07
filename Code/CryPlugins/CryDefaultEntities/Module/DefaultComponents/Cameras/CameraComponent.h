@@ -8,6 +8,7 @@
 #include <CrySystem/VR/IHMDManager.h>
 #include "../Audio/ListenerComponent.h"
 #include <CrySystem/ICryPluginManager.h>
+#include <CryMath/Cry_Camera.h>
 
 #include "../../IDefaultComponentsPlugin.h"
 #include "ICameraManager.h"
@@ -71,7 +72,7 @@ namespace Cry
 				if (IHmdDevice* pDevice = gEnv->pSystem->GetHmdManager()->GetHmdDevice())
 				{
 					const auto& worldTranform = GetWorldTransformMatrix();
-					pDevice->EnableLateCameraInjectionForCurrentFrame(std::make_pair(Quat(worldTranform), worldTranform.GetTranslation()));
+					pDevice->EnableLateCameraInjectionForCurrentFrame(gEnv->pRenderer->GetFrameID(), std::make_pair(Quat(worldTranform), worldTranform.GetTranslation()));
 				}
 			}
 				else if (event.event == ENTITY_EVENT_START_GAME || event.event == ENTITY_EVENT_COMPONENT_PROPERTY_CHANGED)
@@ -83,10 +84,10 @@ namespace Cry
 				}
 			}
 
-			virtual uint64 GetEventMask() const override
+			virtual Cry::Entity::EventFlags GetEventMask() const override
 			{
-				uint64 bitFlags = IsActive() ? ENTITY_EVENT_BIT(ENTITY_EVENT_UPDATE) : 0;
-				bitFlags |= ENTITY_EVENT_BIT(ENTITY_EVENT_START_GAME) | ENTITY_EVENT_BIT(ENTITY_EVENT_COMPONENT_PROPERTY_CHANGED);
+				Cry::Entity::EventFlags bitFlags = IsActive() ? ENTITY_EVENT_UPDATE : Cry::Entity::EventFlags();
+				bitFlags |= ENTITY_EVENT_START_GAME | ENTITY_EVENT_COMPONENT_PROPERTY_CHANGED;
 
 				return bitFlags;
 			}

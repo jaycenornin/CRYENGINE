@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 /*************************************************************************
 -------------------------------------------------------------------------
@@ -16,6 +16,7 @@ History:
 #include "StdAfx.h"
 #include "IActorSystem.h"
 #include <CryEntitySystem/IEntitySystem.h>
+#include <CryRenderer/IRenderAuxGeom.h>
 #include "IItemSystem.h"
 #include "IVehicleSystem.h"
 #include "HUDSilhouettes.h"

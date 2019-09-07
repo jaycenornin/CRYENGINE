@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -76,7 +76,7 @@ struct AnimationJob
 };
 
 
-class ICryXML;
+struct ICryXML;
 
 class CAnimationConverter : public IConverter
 {
@@ -127,7 +127,7 @@ private:
 	bool RebuildDatabases();
 
 	void InitDbaTableEnumerator();
-	void InitSkeletonManager(const std::set<string>& usedSkeletons);
+	void InitSkeletonManager();
 
 
 	int m_platform;

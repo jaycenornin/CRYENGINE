@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <EditorFramework/Preferences.h>
@@ -46,4 +46,3 @@ struct SEditorFilePreferences : public SPreferencePage
 
 EDITOR_COMMON_API extern SEditorGeneralPreferences gEditorGeneralPreferences;
 EDITOR_COMMON_API extern SEditorFilePreferences gEditorFilePreferences;
-

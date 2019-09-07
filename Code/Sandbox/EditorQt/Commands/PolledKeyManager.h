@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #pragma once
 
 #include <QObject>
@@ -25,4 +25,3 @@ private:
 	typedef std::pair<CPolledKeyCommand*, QKeySequence> CmdAndKey;
 	std::vector<CmdAndKey> m_polledKeyState;
 };
-

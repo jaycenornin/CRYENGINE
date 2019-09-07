@@ -1,15 +1,15 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "MoveTool.h"
-#include "ViewManager.h"
-#include "Core/Model.h"
-#include "Core/Polygon.h"
-#include "Gizmos/ITransformManipulator.h"
-#include "DesignerEditor.h"
-#include "MovePipeline.h"
+
 #include "Core/Helper.h"
+#include "Core/ModelCompiler.h"
+#include "Tools/Select/MovePipeline.h"
 #include "Util/ExcludedEdgeManager.h"
+#include "DesignerEditor.h"
+
+#include <Viewport.h>
 
 namespace Designer
 {
@@ -118,12 +118,13 @@ void MoveTool::TransformSelections(const BrushMatrix34& offsetTM)
 	pSession->UpdateSelectionMeshFromSelectedElements();
 }
 
-void MoveTool::OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, CPoint& p0, BrushVec3 value, int flags)
+void MoveTool::OnManipulatorDrag(IDisplayViewport* pView, ITransformManipulator* pManipulator, const SDragData& dragData)
 {
 	if (!m_bManipulatingGizmo)
 		return;
 
-	TransformSelections(GetOffsetTM(pManipulator, value, GetWorldTM()));
+	const CLevelEditorSharedState::EditMode editMode = GetIEditor()->GetLevelEditorSharedState()->GetEditMode();
+	TransformSelections(GetOffsetTM(pManipulator, dragData.accumulateDelta, GetWorldTM()));
 }
 
 void MoveTool::StartTransformation(bool bIsoloated)
@@ -251,4 +252,3 @@ REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_EdgePolygon
                                                            edgepolygon, "runs edge and polygon tool", "designer.edgepolygon")
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_VertexEdgePolygon, eToolGroup_BasicSelectionCombination, "Vertex Edge Polygon", MoveVertexEdgePolygonTool,
                                                            vertexedgepolygon, "runs vertex, edge and polygon tool", "designer.vertexedgepolygon")
-

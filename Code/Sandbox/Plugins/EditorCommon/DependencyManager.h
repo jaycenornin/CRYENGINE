@@ -1,9 +1,10 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <CryCore/Platform/platform.h>
 #include "EditorCommonAPI.h"
+#include <CryCore/StlUtils.h>
 #include <vector>
 #include <map>
 
@@ -23,4 +24,3 @@ private:
 	typedef std::map<string, Strings, stl::less_stricmp<string>> AssetUsers;
 	AssetUsers m_assetUsers;
 };
-

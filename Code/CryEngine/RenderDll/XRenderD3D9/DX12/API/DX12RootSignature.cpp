@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "DX12RootSignature.hpp"
@@ -430,9 +430,6 @@ bool CRootSignature::Serialize(bool bGfx, UINT nodeMask)
 		{
 			if (pErrorBlob)
 			{
-				void* pError = pErrorBlob->GetBufferPointer();
-				size_t sizeError = pErrorBlob->GetBufferSize();
-
 				DX12_ERROR("Could not serialize root signature: %s", pErrorBlob->GetBufferPointer());
 
 				pErrorBlob->Release();

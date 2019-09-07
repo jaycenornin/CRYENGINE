@@ -1,10 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 
 #include <CryExtension/CryCreateClassInstance.h>
 #include <CryExtension/ClassWeaver.h>
 #include <CryAnimation/ICryAnimation.h>
+#include <CryRenderer/IRenderAuxGeom.h>
 
 #include "PoseAligner.h"
 
@@ -50,7 +51,7 @@ bool CContactRaycastPinger::Update(Vec3& position, Vec3& normal)
 	        SCollisionClass(0, collision_class_living | collision_class_articulated),
 	        &hits[0], totalHits, pSkipEntities, nSkip);
 
-	int hitCount = gEnv->pPhysicalWorld->RayWorldIntersection(rp);
+	gEnv->pPhysicalWorld->RayWorldIntersection(rp);
 
 	// Find best hit. This is the highest contact, that is a viable place to put the foot.
 	//	eg. Not on poles, other Pinger's legs, or other unwanted places.

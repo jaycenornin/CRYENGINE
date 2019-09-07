@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include <CryRenderer/IFlares.h>
@@ -7,6 +7,8 @@
 #include "LensFlareEditor.h"
 #include "LensFlareElementTree.h"
 #include "LensFlareItemTree.h"
+#include <Util/ImageUtil.h>
+#include <IUndoObject.h>
 
 BEGIN_MESSAGE_MAP(CLensFlareAtomicList, CImageListCtrl)
 END_MESSAGE_MAP()
@@ -135,4 +137,3 @@ void CLensFlareAtomicList::OnDraggingItem(CPoint point)
 		pEditor->GetLensFlareItemTree()->UpdateDraggingFromOtherWindow();
 	}
 }
-

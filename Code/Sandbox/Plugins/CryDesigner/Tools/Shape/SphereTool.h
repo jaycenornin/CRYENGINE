@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -16,6 +16,12 @@ public:
 	}
 	~SphereTool(){}
 
+	virtual void Serialize(Serialization::IArchive& ar) override
+	{
+		ShapeTool::Serialize(ar);
+		m_DiscParameter.Serialize(ar, true);
+	}
+
 protected:
 	void UpdateShape() override;
 	void UpdateDesignerBasedOnSpherePolygons(const BrushMatrix34& tm);
@@ -26,4 +32,3 @@ private:
 	std::vector<PolygonPtr> m_SpherePolygons;
 };
 }
-

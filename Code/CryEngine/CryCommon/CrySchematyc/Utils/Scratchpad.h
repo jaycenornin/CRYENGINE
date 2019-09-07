@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // #SchematycTODO : Move functions to .inl file?
 // #SchematycTODO : Do we need to worry about data alignment?
@@ -148,6 +148,11 @@ public:
 		if (m_size != rhs.m_size)
 			return false;
 		return 0 == memcmp(m_pData,rhs.m_pData,m_size);
+	}
+
+	bool IsEmpty() const
+	{
+		return m_size == 0;
 	}
 
 protected:

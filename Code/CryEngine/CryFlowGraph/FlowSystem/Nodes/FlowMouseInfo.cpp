@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 // -------------------------------------------------------------------------
 //  File name:   FlowMouseInfo.cpp
@@ -14,6 +14,7 @@
 
 #include <CryInput/IHardwareMouse.h>
 #include <CryFlowGraph/IFlowBaseNode.h>
+#include <CryRenderer/IRenderAuxGeom.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CFlowMouseCoordNode : public CFlowBaseNode<eNCT_Instanced>, public IHardwareMouseEventListener, public IInputEventListener

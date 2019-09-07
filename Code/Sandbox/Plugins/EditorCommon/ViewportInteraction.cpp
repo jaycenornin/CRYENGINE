@@ -1,8 +1,8 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 #include <StdAfx.h>
 #include "ViewportInteraction.h"
 
-#include "PolledKey.h"
+#include "Commands/PolledKey.h"
 
 REGISTER_POLLED_KEY(viewport, forward, "Moves the camera forward", CKeyboardShortcut("W; Up"));
 REGISTER_POLLED_KEY(viewport, backward, "Moves the camera backward", CKeyboardShortcut("S; Down"));
@@ -26,4 +26,3 @@ bool ViewportInteraction::CheckPolledKey(Key key)
 		return false;
 	}
 }
-

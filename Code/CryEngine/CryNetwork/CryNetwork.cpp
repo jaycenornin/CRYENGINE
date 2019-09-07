@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 //
 //	File: crynetwork.cpp
@@ -54,8 +54,6 @@ class CEngineModule_CryNetwork : public INetworkEngineModule
 	//////////////////////////////////////////////////////////////////////////
 	virtual bool Initialize(SSystemGlobalEnvironment& env, const SSystemInitParams& initParams) override
 	{
-		ISystem* pSystem = env.pSystem;
-
 		CNetwork* pNetwork = new CNetwork;
 
 		int ncpu = env.pi.numCoresAvailableToProcess;

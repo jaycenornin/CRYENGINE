@@ -1,11 +1,11 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
 #include <QWidget>
 #include <CrySerialization/Forward.h>
 
-class QPropertyTree;
+class QPropertyTreeLegacy;
 class QPushButton;
 
 class CSpokenLinesWidget : public QWidget
@@ -17,9 +17,8 @@ public:
 	void Serialize(Serialization::IArchive& ar);
 
 protected:
-	QPropertyTree* m_pPropertyTree;
+	QPropertyTreeLegacy* m_pPropertyTree;
 	QPushButton*   m_pUpdateButton;
 
 	int            m_SerializationFilter;
 };
-

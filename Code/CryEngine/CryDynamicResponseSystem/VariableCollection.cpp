@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "stdafx.h"
 #include "VariableCollection.h"
@@ -31,7 +31,7 @@ CVariableCollection::~CVariableCollection()
 CVariable* CVariableCollection::CreateVariable(const CHashedString& name, const CVariableValue& initialValue)
 {
 #if defined ENABLE_VARIABLE_VALUE_TYPE_CHECKINGS
-	CRY_ASSERT_MESSAGE(GetVariable(name) == nullptr, "Variable with this name already exists");
+	CRY_ASSERT(GetVariable(name) == nullptr, "Variable with this name already exists");
 #endif
 	if (!name.IsValid())
 		return nullptr;

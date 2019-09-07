@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -16,7 +16,6 @@ class EDITOR_COMMON_API QTrackingTooltip : public QFrame
 public:
 	QTrackingTooltip(QWidget* parent = nullptr);
 
-	virtual ~QTrackingTooltip(void);
 	void Show();
 	bool SetText(const QString& str);
 	bool SetPixmap(const QPixmap& pixmap);
@@ -51,4 +50,3 @@ protected:
 	QPoint m_cursorOffset;
 	static QSharedPointer<QTrackingTooltip> m_instance;
 };
-

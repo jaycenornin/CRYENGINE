@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "CCryDX12GIFactory.hpp"
@@ -18,7 +18,7 @@ CCryDX12GIFactory* CCryDX12GIFactory::Create()
 	if (S_OK != CreateDXGIFactory1(IID_GFX_ARGS(&pDXGIFactory4)))
 #endif
 	{
-		DX12_ASSERT("Failed to create underlying DXGI factory!");
+		DX12_ASSERT(0, "Failed to create underlying DXGI factory!");
 		return nullptr;
 	}
 

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "HUDUtils.h"
@@ -525,11 +525,6 @@ void* GetNearestTo(const TCenterSortArray& array, const Vec2& center, const floa
 
 		nearest = i;
 		nearestDistSq = distanceSq;
-	}
-
-	if(numPoints>0 && nearest<0)
-	{
-		int a=1;
 	}
 
 	if(nearest>=0)

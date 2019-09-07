@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #include "StdAfx.h"
 #include "ConeTool.h"
@@ -41,4 +41,3 @@ void ConeTool::UpdateShape(float fHeight)
 
 REGISTER_DESIGNER_TOOL_WITH_PROPERTYTREE_PANEL_AND_COMMAND(eDesigner_Cone, eToolGroup_Shape, "Cone", ConeTool,
                                                            cone, "runs cone tool", "designer.cone")
-

@@ -1,4 +1,4 @@
-// Copyright 2001-2018 Crytek GmbH / Crytek Group. All rights reserved.
+// Copyright 2001-2019 Crytek GmbH / Crytek Group. All rights reserved.
 
 #pragma once
 
@@ -84,7 +84,7 @@ namespace UQS
 
 			inline void CInstantEvaluatorDeleter::operator()(IInstantEvaluator* pInstantEvaluatorToDelete)
 			{
-				assert(m_pInstantEvaluatorFactory);
+				CRY_ASSERT(m_pInstantEvaluatorFactory);
 				m_pInstantEvaluatorFactory->DestroyInstantEvaluator(pInstantEvaluatorToDelete);
 			}
 
