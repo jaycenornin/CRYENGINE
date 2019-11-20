@@ -107,6 +107,24 @@ uintptr_t CCustomRenderer::RT_CreateOrUpdateBuffer(const SBufferParams &params, 
 	return handle;
 }
 
+
+void* Cry::Renderer::CustomPass::CCustomRenderer::RT_BufferBeginWrite(uintptr_t handle)
+{
+	if (handle == INVALID_BUFFER)
+		return nullptr;
+
+	return gcpRendD3D->m_DevBufMan.BeginWrite(handle);
+}
+
+void Cry::Renderer::CustomPass::CCustomRenderer::RT_BufferEndWrite(uintptr_t handle)
+{
+	if (handle == INVALID_BUFFER)
+		return;
+
+	gcpRendD3D->m_DevBufMan.EndReadWrite(handle);
+}
+
+
 std::unique_ptr<IDynTexture> CCustomRenderer::CreateDynamicRenderTarget(const SRTCreationParams &renderTargetParams) const
 {
 	uint32 flags = renderTargetParams.flags;
@@ -201,6 +219,21 @@ ITexture* CCustomRenderer::CreateRenderTarget(const SRTCreationParams &renderTar
 	return pRenderTarget->IsTextureLoaded() ? pRenderTarget : nullptr;
 }
 
+InputLayoutHandle Cry::Renderer::CustomPass::CCustomRenderer::RT_RegisterLayout(const SInputElementDescription* pDescriptions, size_t count)
+{
+	if (!count)
+		return 0;
+
+	//Do an inbetween copy to be save
+	static_assert(sizeof(SInputElementDescription) == sizeof(D3D11_INPUT_ELEMENT_DESC), "Mismatch between input layout descriptions");
+	std::vector<D3D11_INPUT_ELEMENT_DESC> descs(count);
+	memcpy(&descs[0], pDescriptions, count * sizeof(SInputElementDescription));
+
+	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data());
+}
+
+
+
 InputLayoutHandle CCustomRenderer::RT_RegisterLayout(TArray<SInputElementDescription> &layoutDesc)
 {
 	if (layoutDesc.empty())
@@ -246,6 +279,7 @@ void CCustomRenderer::ExecuteCustomPasses()
 		instance->Execute();
 	}
 }
+
 #pragma endregion
 
 #pragma region CCustomRendererInstance
@@ -488,7 +522,6 @@ void CCustomPass::SetShaderParams(const SShaderParams& params, CRenderPrimitive 
 	{
 		CTexture* pCTexture = static_cast<CTexture*>(texture.pTexture);
 		primitive.SetTexture(texture.slot, pCTexture);
-
 	}
 
 	for (auto &samplerState : params.samplerStates)

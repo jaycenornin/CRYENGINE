@@ -863,6 +863,9 @@ add_sources("CryRenderer_uber_UI.cpp"
 	SOURCE_GROUP "Custom Pass Renderer"
 	"../Common/CustomPass/CustomPassRenderer.h"
 	"../Common/CustomPass/CustomPassRenderer.cpp"
+	"../Common/CustomPass/CustomStage.h"
+	"../Common/CustomPass/CustomStage.cpp"
+	"../Common/CustomPass/CustomPass.h"
 )
 
 add_sources("NoUberFile"

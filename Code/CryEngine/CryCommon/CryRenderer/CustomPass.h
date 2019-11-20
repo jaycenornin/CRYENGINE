@@ -77,7 +77,8 @@ namespace Cry {
 			{
 				Vertex,
 				Index,
-				Constant
+				Constant,
+				Count
 			};
 
 			enum class EBufferUsage : uint8
@@ -160,7 +161,8 @@ namespace Cry {
 				FORMAT_R32G32B32A32_FLOAT = 2,
 				FORMAT_R32G32_FLOAT = 16,
 				R8G8B8A8_UNORM = 28,
-				R8G8B8A8_UINT = 30
+				R8G8B8A8_UINT = 30,
+				R32_FLOAT = 41
 			};
 
 			enum EInputSlotClassification
@@ -413,6 +415,7 @@ namespace Cry {
 			};
 
 			struct ICustomRendererImplementation;
+			struct SPassUpdateScope;
 			//A per implementation renderer instance that manages 
 			struct ICustomRendererInstance
 			{
@@ -488,6 +491,8 @@ namespace Cry {
 			private:
 				ICustomRendererInstance* pRenderer = nullptr;
 			};
+			
+			
 
 
 			struct ICustomPassRenderer
@@ -505,6 +510,7 @@ namespace Cry {
 				virtual int					RT_RegisterConstantName(const char* name) = 0;
 				//virtual void				RT_UnregisterConstantName(int idx) = 0;
 
+				virtual InputLayoutHandle	RT_RegisterLayout(const SInputElementDescription* pDescriptions, size_t count) = 0;
 				virtual InputLayoutHandle	RT_RegisterLayout(TArray<SInputElementDescription> &layoutDesc) = 0;
 				virtual void				RT_RegisterSamplers() = 0;
 
@@ -514,10 +520,24 @@ namespace Cry {
 				virtual uintptr_t			RT_CreateOrUpdateBuffer(const SBufferParams &params, uintptr_t bufferHandle = INVALID_BUFFER) = 0;
 				virtual void				RT_FreeBuffer(uintptr_t handle) = 0;
 				
+				virtual void*				RT_BufferBeginWrite(uintptr_t handle) = 0;
+				virtual void				RT_BufferEndWrite(uintptr_t handle) = 0;
+
 				virtual void				RT_ClearRenderTarget(ITexture* pTarget, ColorF clearColor) const = 0;
 			protected:
 			};
 
+			//Hack to get the Pass Renderer instance without public interface changes
+			template<class T>
+			inline static ICustomPassRenderer* GetCustomPassRenderer()
+			{
+				Cry::Renderer::CustomPass::ICustomPassRenderer* pPointer = nullptr;
+				Cry::Renderer::CustomPass::ICustomPassRenderer** ppPointer = &pPointer;
+				UINT_PTR ptr = reinterpret_cast<UINT_PTR>(ppPointer);
+				gEnv->pSystem->GetISystemEventDispatcher()->OnSystemEvent((ESystemEvent)9001, ptr, 0);
+				
+				return pPointer;
+			}
 			
 		}
 	}

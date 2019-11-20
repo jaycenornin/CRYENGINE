@@ -157,6 +157,8 @@ public:
 	virtual void										UnregisterRendererInstance(uint32 id);
 
 	virtual int					RT_RegisterConstantName(const char* name)  override final;
+
+	virtual InputLayoutHandle	RT_RegisterLayout(const SInputElementDescription* pDescriptions, size_t count) override final;
 	virtual InputLayoutHandle	RT_RegisterLayout(TArray<SInputElementDescription> &layoutDesc)  override final;
 	virtual void				RT_RegisterSamplers()  override final {};
 	
@@ -165,6 +167,9 @@ public:
 
 	virtual uintptr_t			RT_CreateOrUpdateBuffer(const SBufferParams &params, uintptr_t bufferHandle = INVALID_BUFFER) override;
 	virtual void				RT_FreeBuffer(uintptr_t bufferHandle);
+
+	virtual void*				RT_BufferBeginWrite(uintptr_t handle) override final;
+	virtual void				RT_BufferEndWrite(uintptr_t handle) override final;
 
 	virtual void				RT_ClearRenderTarget(ITexture* pTarget, ColorF clearColor)const  override ;
 
