@@ -274,11 +274,6 @@ CAsset* CAssetsManager::CreateFolder(string const& name, CAsset* const pParent)
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CAssetsManager::OnBeforeControlModified(CControl* const pControl)
-{
-}
-
-//////////////////////////////////////////////////////////////////////////
 void CAssetsManager::OnConnectionAdded(CControl* const pControl)
 {
 	SignalConnectionAdded(pControl);
@@ -315,7 +310,7 @@ string const& CAssetsManager::GetConfigFolderPath() const
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CAssetsManager::OnAfterControlModified(CControl* const pControl)
+void CAssetsManager::OnControlModified(CControl* const pControl)
 {
 	SignalControlModified(pControl);
 }
@@ -666,6 +661,98 @@ void CAssetsManager::MoveAssets(CAsset* const pParent, Assets const& assets)
 }
 
 //////////////////////////////////////////////////////////////////////////
+void CAssetsManager::DuplicateAssets(Assets const& assets)
+{
+	for (auto const pAsset : assets)
+	{
+		EAssetType const type = pAsset->GetType();
+
+		if ((type != EAssetType::Folder) && (type != EAssetType::Library))
+		{
+			bool isParentSelected = false;
+
+			if (type == EAssetType::State)
+			{
+				CAsset* const pParent = pAsset->GetParent();
+
+				for (auto const pParentAsset : assets)
+				{
+					if (pParentAsset == pParent)
+					{
+						// Don't duplicate states if their parent switch also gets duplicated.
+						isParentSelected = true;
+						break;
+					}
+				}
+			}
+
+			if (!isParentSelected)
+			{
+				auto const pOldControl = static_cast<CControl*>(pAsset);
+				CControl* const pNewControl = CreateControl(AssetUtils::GenerateUniqueControlName(pOldControl->GetName(), type, nullptr), type, pOldControl->GetParent());
+
+				pNewControl->SetDescription(pOldControl->GetDescription());
+				pNewControl->SetContextId(pOldControl->GetContextId());
+				pNewControl->SetAutoLoad(pOldControl->IsAutoLoad());
+				pNewControl->SetFlags(pOldControl->GetFlags());
+
+				if (type != EAssetType::Switch)
+				{
+					size_t const numConnections = pOldControl->GetConnectionCount();
+
+					for (size_t i = 0; i < numConnections; ++i)
+					{
+						IConnection* const pIConnection = g_pIImpl->DuplicateConnection(type, pOldControl->GetConnectionAt(i));
+
+						if (pIConnection != nullptr)
+						{
+							pNewControl->AddConnection(pIConnection);
+						}
+					}
+				}
+				else
+				{
+					DuplicateStates(pOldControl, pNewControl);
+				}
+
+				pNewControl->SetModified(true);
+			}
+		}
+	}
+
+	SignalControlsDuplicated();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CAssetsManager::DuplicateStates(CControl* const pOldSwitch, CControl* const pNewSwitch)
+{
+	size_t const numStates = pOldSwitch->ChildCount();
+
+	for (size_t i = 0; i < numStates; ++i)
+	{
+		auto const pOldState = static_cast<CControl*>(pOldSwitch->GetChild(i));
+		CControl* const pNewState = CreateControl(pOldState->GetName(), EAssetType::State, pNewSwitch);
+
+		pNewState->SetDescription(pOldState->GetDescription());
+		pNewState->SetFlags(pOldState->GetFlags());
+
+		size_t const numConnections = pOldState->GetConnectionCount();
+
+		for (size_t i = 0; i < numConnections; ++i)
+		{
+			IConnection* const pIConnection = g_pIImpl->DuplicateConnection(EAssetType::State, pOldState->GetConnectionAt(i));
+
+			if (pIConnection != nullptr)
+			{
+				pNewState->AddConnection(pIConnection);
+			}
+		}
+
+		pNewState->SetModified(true);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
 void CAssetsManager::CreateAndConnectImplItems(Impl::IItem* const pIItem, CAsset* const pParent)
 {
 	SignalOnBeforeAssetAdded(pParent);
@@ -694,11 +781,11 @@ CAsset* CAssetsManager::CreateAndConnectImplItemsRecursively(Impl::IItem* const 
 
 		if (type != EAssetType::State)
 		{
-			name = AssetUtils::GenerateUniqueControlName(name, type);
+			name = AssetUtils::GenerateUniqueControlName(name, type, nullptr);
 		}
 		else
 		{
-			name = AssetUtils::GenerateUniqueName(name, type, pParent);
+			name = AssetUtils::GenerateUniqueName(name, type, nullptr, pParent);
 		}
 
 		ControlId const controlId = (type != EAssetType::State) ? AssetUtils::GenerateUniqueAssetId(name, type) : AssetUtils::GenerateUniqueStateId(pParent->GetName(), name);
@@ -719,7 +806,7 @@ CAsset* CAssetsManager::CreateAndConnectImplItemsRecursively(Impl::IItem* const 
 	else
 	{
 		// If the type of the control is invalid then it must be a folder or container
-		name = AssetUtils::GenerateUniqueName(name, EAssetType::Folder, pParent);
+		name = AssetUtils::GenerateUniqueName(name, EAssetType::Folder, nullptr, pParent);
 		auto const pFolder = new CFolder(name, AssetUtils::GenerateUniqueFolderId(name, pParent));
 		pParent->AddChild(pFolder);
 		pFolder->SetParent(pParent);

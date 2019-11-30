@@ -244,10 +244,10 @@ void FreeMemoryPools()
 }
 
 //////////////////////////////////////////////////////////////////////////
-void LoadEventsMaxAttenuations(const string& soundbanksPath)
+void LoadEventsMaxAttenuations(CryFixedStringT<MaxFilePathLength> const& soundbanksPath)
 {
 	g_maxAttenuations.clear();
-	string const bankInfoPath = soundbanksPath + "/SoundbanksInfo.xml";
+	CryFixedStringT<MaxFilePathLength> const bankInfoPath = soundbanksPath + "/SoundbanksInfo.xml";
 	XmlNodeRef const rootNode = GetISystem()->LoadXmlFromFile(bankInfoPath.c_str());
 
 	if (rootNode.isValid())
@@ -434,7 +434,7 @@ void CImpl::Update()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::Init(uint16 const objectPoolSize)
+bool CImpl::Init(uint16 const objectPoolSize)
 {
 	// If something fails so severely during initialization that we need to fall back to the NULL implementation
 	// we will need to shut down what has been initialized so far. Therefore make sure to call Shutdown() before returning eARS_FAILURE!
@@ -464,7 +464,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	{
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 	AkMemPoolId const prepareMemPoolId = AK::MemoryMgr::CreatePool(nullptr, g_cvars.m_prepareEventMemoryPoolSize << 10, 16, AkMalloc, 16);
@@ -473,7 +473,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	{
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 	wwiseResult = AK::MemoryMgr::SetPoolName(prepareMemPoolId, "PrepareEventMemoryPool");
@@ -482,7 +482,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	{
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 	AkStreamMgrSettings streamSettings;
@@ -493,7 +493,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	{
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 	IThreadConfigManager* pThreadConfigMngr = gEnv->pThreadManager->GetThreadConfigManager();
@@ -543,7 +543,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 	CryFixedStringT<AK_MAX_PATH> temp = CRY_AUDIO_DATA_ROOT "/";
@@ -671,7 +671,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	{
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 	AkMusicSettings musicSettings;
@@ -683,7 +683,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	{
 		ShutDown();
 
-		return ERequestStatus::Failure;
+		return false;
 	}
 
 #if defined(CRY_AUDIO_IMPL_WWISE_USE_DEBUG_CODE)
@@ -731,7 +731,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 
 	LoadEventsMaxAttenuations(m_regularSoundBankFolder);
 
-	return ERequestStatus::Success;
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -954,11 +954,9 @@ void CImpl::ResumeAll()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::StopAllSounds()
+void CImpl::StopAllSounds()
 {
 	AK::SoundEngine::StopAll();
-
-	return ERequestStatus::Success;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1026,9 +1024,9 @@ void CImpl::UnregisterInMemoryFile(SFileInfo* const pFileInfo)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
+bool CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
 {
-	ERequestStatus result = ERequestStatus::Failure;
+	bool isConstructed = false;
 
 	if ((_stricmp(rootNode->getTag(), g_szFileTag) == 0) && (pFileInfo != nullptr))
 	{
@@ -1037,23 +1035,19 @@ ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const
 		if ((szFileName != nullptr) && (szFileName[0] != '\0'))
 		{
 			char const* const szLocalized = rootNode->getAttr(g_szLocalizedAttribute);
-			pFileInfo->bLocalized = (szLocalized != nullptr) && (_stricmp(szLocalized, g_szTrueValue) == 0);
-			pFileInfo->szFileName = szFileName;
+			pFileInfo->isLocalized = (szLocalized != nullptr) && (_stricmp(szLocalized, g_szTrueValue) == 0);
+			cry_strcpy(pFileInfo->fileName, szFileName);
+			CryFixedStringT<MaxFilePathLength> const filePath = (pFileInfo->isLocalized ? m_localizedSoundBankFolder : m_regularSoundBankFolder) + "/" + szFileName;
+			cry_strcpy(pFileInfo->filePath, filePath.c_str());
 			pFileInfo->memoryBlockAlignment = AK_BANK_PLATFORM_DATA_ALIGNMENT;
 
 			MEMSTAT_CONTEXT(EMemStatContextType::AudioImpl, "CryAudio::Impl::Wwise::CSoundBank");
 			pFileInfo->pImplData = new CSoundBank();
-			result = ERequestStatus::Success;
-		}
-		else
-		{
-			pFileInfo->szFileName = nullptr;
-			pFileInfo->memoryBlockAlignment = 0;
-			pFileInfo->pImplData = nullptr;
+			isConstructed = true;
 		}
 	}
 
-	return result;
+	return isConstructed;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1063,27 +1057,14 @@ void CImpl::DestructFile(IFile* const pIFile)
 }
 
 //////////////////////////////////////////////////////////////////////////
-char const* const CImpl::GetFileLocation(SFileInfo* const pFileInfo)
-{
-	char const* szResult = nullptr;
-
-	if (pFileInfo != nullptr)
-	{
-		szResult = pFileInfo->bLocalized ? m_localizedSoundBankFolder.c_str() : m_regularSoundBankFolder.c_str();
-	}
-
-	return szResult;
-}
-
-//////////////////////////////////////////////////////////////////////////
 void CImpl::GetInfo(SImplInfo& implInfo) const
 {
 #if defined(CRY_AUDIO_IMPL_WWISE_USE_DEBUG_CODE)
-	implInfo.name = m_name.c_str();
+	cry_strcpy(implInfo.name, m_name.c_str());
 #else
-	implInfo.name = "name-not-present-in-release-mode";
+	cry_fixed_size_strcpy(implInfo.name, g_implNameInRelease);
 #endif  // CRY_AUDIO_IMPL_WWISE_USE_DEBUG_CODE
-	implInfo.folderName = g_szImplFolderName;
+	cry_strcpy(implInfo.folderName, g_szImplFolderName, strlen(g_szImplFolderName));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1271,7 +1252,7 @@ ITriggerConnection* CImpl::ConstructTriggerConnection(ITriggerInfo const* const 
 
 	if (pTriggerInfo != nullptr)
 	{
-		char const* const szName = pTriggerInfo->name.c_str();
+		char const* const szName = pTriggerInfo->name;
 		AkUniqueID const uniqueId = AK::SoundEngine::GetIDFromString(szName);
 
 		MEMSTAT_CONTEXT(EMemStatContextType::AudioImpl, "CryAudio::Impl::Wwise::CEvent");
@@ -1737,7 +1718,7 @@ void CImpl::SetPanningRule(int const panningRule)
 //////////////////////////////////////////////////////////////////////////
 void CImpl::GetInitBankSize()
 {
-	string const initBankPath = m_regularSoundBankFolder + "/Init.bnk";
+	CryFixedStringT<MaxFilePathLength> const initBankPath = m_regularSoundBankFolder + "/Init.bnk";
 	m_initBankSize = gEnv->pCryPak->FGetSize(initBankPath.c_str());
 }
 #endif  // CRY_AUDIO_IMPL_WWISE_USE_DEBUG_CODE
@@ -1899,7 +1880,7 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> memAllocSizeString;
 	auto const memAllocSize = static_cast<size_t>(memInfo.allocated - memInfo.freed);
-	Debug::FormatMemoryString(memAllocSizeString, memAllocSize - totalPoolSize);
+	Debug::FormatMemoryString(memAllocSizeString, memAllocSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalPoolSizeString;
 	Debug::FormatMemoryString(totalPoolSizeString, totalPoolSize);
@@ -1908,7 +1889,7 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 	Debug::FormatMemoryString(initBankSizeString, m_initBankSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalMemSizeString;
-	size_t const totalMemSize = memAllocSize + m_initBankSize;
+	size_t const totalMemSize = memAllocSize + totalPoolSize + m_initBankSize;
 	Debug::FormatMemoryString(totalMemSizeString, totalMemSize);
 
 	auxGeom.Draw2dLabel(posX, headerPosY, Debug::g_systemHeaderFontSize, Debug::s_globalColorHeader, false, "%s (System: %s | Pools: %s | Init Bank: %s | Total: %s)",

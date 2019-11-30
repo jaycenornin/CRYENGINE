@@ -139,7 +139,7 @@ CImpl::CImpl()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::Init(uint16 const objectPoolSize)
+bool CImpl::Init(uint16 const objectPoolSize)
 {
 	if (g_cvars.m_eventPoolSize < 1)
 	{
@@ -195,7 +195,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	Pa_Initialize();
 #endif  // CRY_AUDIO_IMPL_PORTAUDIO_USE_DEBUG_CODE
 
-	return ERequestStatus::Success;
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -311,14 +311,12 @@ void CImpl::ResumeAll()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::StopAllSounds()
+void CImpl::StopAllSounds()
 {
 	for (auto const pObject : g_constructedObjects)
 	{
 		pObject->StopAllTriggers();
 	}
-
-	return ERequestStatus::Success;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -332,9 +330,9 @@ void CImpl::UnregisterInMemoryFile(SFileInfo* const pFileInfo)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
+bool CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
 {
-	return ERequestStatus::Failure;
+	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -344,27 +342,14 @@ void CImpl::DestructFile(IFile* const pIFile)
 }
 
 //////////////////////////////////////////////////////////////////////////
-char const* const CImpl::GetFileLocation(SFileInfo* const pFileInfo)
-{
-	char const* szResult = nullptr;
-
-	if (pFileInfo != nullptr)
-	{
-		szResult = pFileInfo->bLocalized ? m_localizedSoundBankFolder.c_str() : m_regularSoundBankFolder.c_str();
-	}
-
-	return szResult;
-}
-
-//////////////////////////////////////////////////////////////////////////
 void CImpl::GetInfo(SImplInfo& implInfo) const
 {
 #if defined(CRY_AUDIO_IMPL_PORTAUDIO_USE_DEBUG_CODE)
-	implInfo.name = m_name.c_str();
+	cry_strcpy(implInfo.name, m_name.c_str());
 #else
-	implInfo.name = "name-not-present-in-release-mode";
+	cry_fixed_size_strcpy(implInfo.name, g_implNameInRelease);
 #endif  // CRY_AUDIO_IMPL_PORTAUDIO_USE_DEBUG_CODE
-	implInfo.folderName = g_szImplFolderName;
+	cry_strcpy(implInfo.folderName, g_szImplFolderName, strlen(g_szImplFolderName));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -528,7 +513,7 @@ ITriggerConnection* CImpl::ConstructTriggerConnection(ITriggerInfo const* const 
 	{
 		stack_string path = (pTriggerInfo->isLocalized ? m_localizedSoundBankFolder.c_str() : m_regularSoundBankFolder.c_str());
 		path += "/";
-		stack_string const folderName = pTriggerInfo->path.c_str();
+		stack_string const folderName(pTriggerInfo->path);
 
 		if (!folderName.empty())
 		{
@@ -536,7 +521,7 @@ ITriggerConnection* CImpl::ConstructTriggerConnection(ITriggerInfo const* const 
 			path += "/";
 		}
 
-		stack_string const name = pTriggerInfo->name.c_str();
+		stack_string const name(pTriggerInfo->name);
 		path += name.c_str();
 
 		SF_INFO sfInfo;
@@ -800,13 +785,14 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> memAllocSizeString;
 	auto const memAllocSize = static_cast<size_t>(memInfo.allocated - memInfo.freed);
-	Debug::FormatMemoryString(memAllocSizeString, memAllocSize - totalPoolSize);
+	Debug::FormatMemoryString(memAllocSizeString, memAllocSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalPoolSizeString;
 	Debug::FormatMemoryString(totalPoolSizeString, totalPoolSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalMemSizeString;
-	Debug::FormatMemoryString(totalMemSizeString, memAllocSize);
+	size_t const totalMemSize = memAllocSize + totalPoolSize;
+	Debug::FormatMemoryString(totalMemSizeString, totalMemSize);
 
 	auxGeom.Draw2dLabel(posX, headerPosY, Debug::g_systemHeaderFontSize, Debug::s_globalColorHeader, false, "%s (System: %s | Pools: %s | Total: %s)",
 	                    m_name.c_str(), memAllocSizeString.c_str(), totalPoolSizeString.c_str(), totalMemSizeString.c_str());

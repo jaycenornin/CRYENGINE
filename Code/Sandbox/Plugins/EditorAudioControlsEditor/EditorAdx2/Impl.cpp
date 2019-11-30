@@ -373,7 +373,7 @@ void CImpl::Initialize(
 
 	CryAudio::SImplInfo systemImplInfo;
 	gEnv->pAudioSystem->GetImplInfo(systemImplInfo);
-	m_implName = systemImplInfo.name.c_str();
+	m_implName = systemImplInfo.name;
 
 	SetImplInfo(implInfo);
 
@@ -619,6 +619,103 @@ IConnection* CImpl::CreateConnectionToControl(EAssetType const assetType, IItem 
 }
 
 //////////////////////////////////////////////////////////////////////////
+IConnection* CImpl::DuplicateConnection(EAssetType const assetType, IConnection* const pIConnection)
+{
+	IConnection* pNewIConnection = nullptr;
+
+	auto const pItem = static_cast<CItem const*>(GetItem(pIConnection->GetID()));
+
+	switch (pItem->GetType())
+	{
+	case EItemType::Cue:
+		{
+			auto const pOldConnection = static_cast<CCueConnection*>(pIConnection);
+			auto const pNewConnection = new CCueConnection(
+				pOldConnection->GetID(),
+				pOldConnection->GetCueSheetName(),
+				pOldConnection->GetActionType());
+
+			pNewIConnection = static_cast<IConnection*>(pNewConnection);
+
+			break;
+		}
+	case EItemType::AisacControl: // Intentional fall-through.
+	case EItemType::Category:     // Intentional fall-through.
+	case EItemType::GameVariable:
+		{
+			switch (assetType)
+			{
+			case EAssetType::Parameter: // Intentional fall-through.
+			case EAssetType::Environment:
+				{
+					auto const pOldConnection = static_cast<CParameterConnection*>(pIConnection);
+					auto const pNewConnection = new CParameterConnection(
+						pOldConnection->GetID(),
+						pOldConnection->IsAdvanced(),
+						pOldConnection->GetType(),
+						pOldConnection->GetMinValue(),
+						pOldConnection->GetMaxValue(),
+						pOldConnection->GetMultiplier(),
+						pOldConnection->GetShift());
+
+					pNewIConnection = static_cast<IConnection*>(pNewConnection);
+
+					break;
+				}
+			case EAssetType::State:
+				{
+					auto const pOldConnection = static_cast<CParameterToStateConnection*>(pIConnection);
+					auto const pNewConnection = new CParameterToStateConnection(
+						pOldConnection->GetID(),
+						pItem->GetType(),
+						pOldConnection->GetValue());
+
+					pNewIConnection = static_cast<IConnection*>(pNewConnection);
+
+					break;
+				}
+			default:
+				{
+					break;
+				}
+			}
+
+			break;
+		}
+	case EItemType::Snapshot:
+		{
+			auto const pOldConnection = static_cast<CSnapshotConnection*>(pIConnection);
+			auto const pNewConnection = new CSnapshotConnection(
+				pOldConnection->GetID(),
+				pOldConnection->GetActionType(),
+				pOldConnection->GetChangeoverTime());
+
+			pNewIConnection = static_cast<IConnection*>(pNewConnection);
+
+			break;
+		}
+	case EItemType::Bus:           // Intentional fall-through.
+	case EItemType::Binary:        // Intentional fall-through.
+	case EItemType::DspBusSetting: // Intentional fall-through.
+	case EItemType::SelectorLabel:
+		{
+			auto const pOldConnection = static_cast<CGenericConnection*>(pIConnection);
+			auto const pNewConnection = new CGenericConnection(pOldConnection->GetID());
+
+			pNewIConnection = static_cast<IConnection*>(pNewConnection);
+
+			break;
+		}
+	default:
+		{
+			break;
+		}
+	}
+
+	return pNewIConnection;
+}
+
+//////////////////////////////////////////////////////////////////////////
 IConnection* CImpl::CreateConnectionFromXMLNode(XmlNodeRef const& node, EAssetType const assetType)
 {
 	IConnection* pIConnection = nullptr;
@@ -815,7 +912,7 @@ XmlNodeRef CImpl::CreateXMLNodeFromConnection(
 		{
 		case EItemType::Cue:
 			{
-				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName());
+				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName().c_str());
 				auto const pCueConnection = static_cast<CCueConnection const*>(pIConnection);
 
 				string cueSheetName = Utils::FindCueSheetName(pItem, m_rootItem);
@@ -825,7 +922,7 @@ XmlNodeRef CImpl::CreateXMLNodeFromConnection(
 					cueSheetName = pCueConnection->GetCueSheetName();
 				}
 
-				node->setAttr(CryAudio::Impl::Adx2::g_szCueSheetAttribute, cueSheetName);
+				node->setAttr(CryAudio::Impl::Adx2::g_szCueSheetAttribute, cueSheetName.c_str());
 
 				switch (pCueConnection->GetActionType())
 				{
@@ -856,7 +953,7 @@ XmlNodeRef CImpl::CreateXMLNodeFromConnection(
 		case EItemType::Category:     // Intentional fall-through.
 		case EItemType::GameVariable:
 			{
-				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName());
+				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName().c_str());
 
 				switch (assetType)
 				{
@@ -932,10 +1029,10 @@ XmlNodeRef CImpl::CreateXMLNodeFromConnection(
 				if (pParent != nullptr)
 				{
 					XmlNodeRef const switchNode = GetISystem()->CreateXmlNode(TypeToTag(pParent->GetType()));
-					switchNode->setAttr(CryAudio::g_szNameAttribute, pParent->GetName());
+					switchNode->setAttr(CryAudio::g_szNameAttribute, pParent->GetName().c_str());
 
 					XmlNodeRef const stateNode = switchNode->createNode(CryAudio::Impl::Adx2::g_szSelectorLabelTag);
-					stateNode->setAttr(CryAudio::g_szNameAttribute, pItem->GetName());
+					stateNode->setAttr(CryAudio::g_szNameAttribute, pItem->GetName().c_str());
 					switchNode->addChild(stateNode);
 
 					node = switchNode;
@@ -946,13 +1043,13 @@ XmlNodeRef CImpl::CreateXMLNodeFromConnection(
 		case EItemType::DspBusSetting: // Intentional fall-through.
 		case EItemType::Bus:
 			{
-				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName());
+				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName().c_str());
 
 				break;
 			}
 		case EItemType::Snapshot:
 			{
-				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName());
+				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName().c_str());
 
 				auto const pSnapshotConnection = static_cast<CSnapshotConnection const*>(pIConnection);
 
@@ -970,7 +1067,7 @@ XmlNodeRef CImpl::CreateXMLNodeFromConnection(
 			}
 		case EItemType::Binary:
 			{
-				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName());
+				node->setAttr(CryAudio::g_szNameAttribute, pItem->GetName().c_str());
 
 				if ((pItem->GetFlags() & EItemFlags::IsLocalized) != EItemFlags::None)
 				{
@@ -1102,7 +1199,7 @@ void CImpl::OnAfterWriteLibrary()
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CImpl::EnableConnection(IConnection const* const pIConnection, bool const isLoading)
+void CImpl::EnableConnection(IConnection const* const pIConnection)
 {
 	auto const pItem = static_cast<CItem*>(GetItem(pIConnection->GetID()));
 
@@ -1114,7 +1211,7 @@ void CImpl::EnableConnection(IConnection const* const pIConnection, bool const i
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CImpl::DisableConnection(IConnection const* const pIConnection, bool const isLoading)
+void CImpl::DisableConnection(IConnection const* const pIConnection)
 {
 	auto const pItem = static_cast<CItem*>(GetItem(pIConnection->GetID()));
 
@@ -1183,11 +1280,12 @@ void CImpl::SetImplInfo(SImplInfo& implInfo)
 {
 	SetLocalizedAssetsPath();
 
-	implInfo.name = m_implName.c_str();
-	implInfo.folderName = CryAudio::Impl::Adx2::g_szImplFolderName;
-	implInfo.projectPath = m_projectPath.c_str();
-	implInfo.assetsPath = m_assetsPath.c_str();
-	implInfo.localizedAssetsPath = m_localizedAssetsPath.c_str();
+	cry_strcpy(implInfo.name, m_implName.c_str());
+	cry_strcpy(implInfo.folderName, CryAudio::Impl::Adx2::g_szImplFolderName, strlen(CryAudio::Impl::Adx2::g_szImplFolderName));
+	cry_strcpy(implInfo.projectPath, m_projectPath.c_str());
+	cry_strcpy(implInfo.assetsPath, m_assetsPath.c_str());
+	cry_strcpy(implInfo.localizedAssetsPath, m_localizedAssetsPath.c_str());
+
 	implInfo.flags = (
 		EImplInfoFlags::SupportsProjects |
 		EImplInfoFlags::SupportsTriggers |

@@ -2,10 +2,12 @@
 
 #include "stdafx.h"
 #include "FileCacheManager.h"
-#include "Common.h"
 #include "File.h"
 #include "PreloadRequest.h"
 #include "CVars.h"
+#include "System.h"
+#include "Request.h"
+#include "CallbackRequestData.h"
 #include "Common/FileInfo.h"
 #include "Common/IImpl.h"
 #include <CryRenderer/IRenderer.h>
@@ -58,24 +60,22 @@ void CFileCacheManager::Initialize()
 }
 
 //////////////////////////////////////////////////////////////////////////
-FileId CFileCacheManager::TryAddFileCacheEntry(XmlNodeRef const& fileNode, ContextId const contextId, bool const bAutoLoad)
+FileId CFileCacheManager::TryAddFileCacheEntry(XmlNodeRef const& fileNode, ContextId const contextId, bool const isAutoLoad)
 {
 	FileId fileId = InvalidFileId;
 	Impl::SFileInfo fileInfo;
 
-	if (g_pIImpl->ConstructFile(fileNode, &fileInfo) == ERequestStatus::Success)
+	if (g_pIImpl->ConstructFile(fileNode, &fileInfo))
 	{
-		CryFixedStringT<MaxFilePathLength> fullPath(g_pIImpl->GetFileLocation(&fileInfo));
-		fullPath += "/";
-		fullPath += fileInfo.szFileName;
+		CryFixedStringT<MaxFilePathLength> const filePath(fileInfo.filePath);
 		MEMSTAT_CONTEXT(EMemStatContextType::AudioSystem, "CryAudio::CFile");
-		auto pFile = new CFile(fullPath, fileInfo.pImplData);
+		auto const pFile = new CFile(filePath.c_str(), fileInfo.pImplData);
 
 		if (pFile != nullptr)
 		{
 			pFile->m_memoryBlockAlignment = fileInfo.memoryBlockAlignment;
 
-			if (fileInfo.bLocalized)
+			if (fileInfo.isLocalized)
 			{
 				pFile->m_flags |= EFileFlags::Localized;
 			}
@@ -85,7 +85,7 @@ FileId CFileCacheManager::TryAddFileCacheEntry(XmlNodeRef const& fileNode, Conte
 
 			if (pExisitingFile == nullptr)
 			{
-				if (!bAutoLoad)
+				if (!isAutoLoad)
 				{
 					// Can now be ref-counted and therefore manually unloaded.
 					pFile->m_flags |= EFileFlags::UseCounted;
@@ -112,7 +112,7 @@ FileId CFileCacheManager::TryAddFileCacheEntry(XmlNodeRef const& fileNode, Conte
 			}
 			else
 			{
-				if (((pExisitingFile->m_flags & EFileFlags::UseCounted) != EFileFlags::None) && bAutoLoad)
+				if (((pExisitingFile->m_flags & EFileFlags::UseCounted) != EFileFlags::None) && isAutoLoad)
 				{
 					// This file entry is upgraded from "manual loading" to "auto loading" but needs a reset to "manual loading" again!
 					pExisitingFile->m_flags = (pExisitingFile->m_flags | EFileFlags::NeedsResetToManualLoading) & ~EFileFlags::UseCounted;
@@ -190,15 +190,21 @@ void CFileCacheManager::UpdateLocalizedFileCacheEntries()
 }
 
 //////////////////////////////////////////////////////////////////////////
-ERequestStatus CFileCacheManager::TryLoadRequest(PreloadRequestId const preloadRequestId, bool const bLoadSynchronously, bool const bAutoLoadOnly)
+ERequestStatus CFileCacheManager::TryLoadRequest(
+	PreloadRequestId const preloadRequestId,
+	bool const loadSynchronously,
+	bool const autoLoadOnly,
+	ERequestFlags const flags /*= ERequestFlags::None*/,
+	void* const pOwner /*= nullptr*/,
+	void* const pUserData /*= nullptr*/,
+	void* const pUserDataOwner /*= nullptr*/)
 {
-	bool bFullSuccess = false;
-	bool bFullFailure = true;
+	bool isSuccess = false;
 	CPreloadRequest* const pPreloadRequest = stl::find_in_map(g_preloadRequests, preloadRequestId, nullptr);
 
-	if (pPreloadRequest != nullptr && (!bAutoLoadOnly || (bAutoLoadOnly && pPreloadRequest->m_bAutoLoad)))
+	if (pPreloadRequest != nullptr && (!autoLoadOnly || (autoLoadOnly && pPreloadRequest->m_bAutoLoad)))
 	{
-		bFullSuccess = true;
+		isSuccess = true;
 
 		for (FileId const fileId : pPreloadRequest->m_fileIds)
 		{
@@ -206,26 +212,26 @@ ERequestStatus CFileCacheManager::TryLoadRequest(PreloadRequestId const preloadR
 
 			if (pFile != nullptr)
 			{
-				bool const bTemp = TryCacheFileCacheEntryInternal(pFile, fileId, bLoadSynchronously);
-				bFullSuccess = bFullSuccess && bTemp;
-				bFullFailure = bFullFailure && !bTemp;
+				isSuccess = TryCacheFileCacheEntryInternal(pFile, fileId, loadSynchronously) && isSuccess;
 			}
 		}
 	}
 
-	return (bFullSuccess) ? ERequestStatus::Success : ((bFullFailure) ? ERequestStatus::Failure : ERequestStatus::PartialSuccess);
+	ERequestStatus const requestStatus = (isSuccess ? ERequestStatus::Success : ERequestStatus::Failure);
+	SendFinishedPreloadRequest(preloadRequestId, isSuccess, flags, pOwner, pUserData, pUserDataOwner);
+
+	return requestStatus;
 }
 
 //////////////////////////////////////////////////////////////////////////
 ERequestStatus CFileCacheManager::TryUnloadRequest(PreloadRequestId const preloadRequestId)
 {
-	bool bFullSuccess = false;
-	bool bFullFailure = true;
+	bool isSuccess = false;
 	CPreloadRequest* const pPreloadRequest = stl::find_in_map(g_preloadRequests, preloadRequestId, nullptr);
 
 	if (pPreloadRequest != nullptr)
 	{
-		bFullSuccess = true;
+		isSuccess = true;
 
 		for (FileId const fileId : pPreloadRequest->m_fileIds)
 		{
@@ -233,18 +239,16 @@ ERequestStatus CFileCacheManager::TryUnloadRequest(PreloadRequestId const preloa
 
 			if (pFile != nullptr)
 			{
-				bool const bTemp = UncacheFileCacheEntryInternal(pFile, false);
-				bFullSuccess = bFullSuccess && bTemp;
-				bFullFailure = bFullFailure && !bTemp;
+				isSuccess = UncacheFileCacheEntryInternal(pFile, false) && isSuccess;
 			}
 		}
 	}
 
-	return (bFullSuccess) ? ERequestStatus::Success : ((bFullFailure) ? ERequestStatus::Failure : ERequestStatus::PartialSuccess);
+	return (isSuccess ? ERequestStatus::Success : ERequestStatus::Failure);
 }
 
 //////////////////////////////////////////////////////////////////////////
-ERequestStatus CFileCacheManager::UnloadDataByContext(ContextId const contextId)
+void CFileCacheManager::UnloadDataByContext(ContextId const contextId)
 {
 	Files::iterator iter(m_files.begin());
 	Files::const_iterator iterEnd(m_files.end());
@@ -267,12 +271,10 @@ ERequestStatus CFileCacheManager::UnloadDataByContext(ContextId const contextId)
 
 		++iter;
 	}
-
-	return ERequestStatus::Success;
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool CFileCacheManager::UncacheFileCacheEntryInternal(CFile* const pFile, bool const bNow, bool const bIgnoreUsedCount /* = false */)
+bool CFileCacheManager::UncacheFileCacheEntryInternal(CFile* const pFile, bool const uncacheImmediately, bool const ignoreUsedCount /* = false */)
 {
 	bool bSuccess = false;
 
@@ -282,7 +284,7 @@ bool CFileCacheManager::UncacheFileCacheEntryInternal(CFile* const pFile, bool c
 		--pFile->m_useCount;
 	}
 
-	if (pFile->m_useCount < 1 || bIgnoreUsedCount)
+	if (pFile->m_useCount < 1 || ignoreUsedCount)
 	{
 		// Must be cached to proceed.
 		if ((pFile->m_flags & EFileFlags::Cached) != EFileFlags::None)
@@ -293,7 +295,7 @@ bool CFileCacheManager::UncacheFileCacheEntryInternal(CFile* const pFile, bool c
 				pFile->m_flags |= EFileFlags::Removable;
 			}
 
-			if (bNow || bIgnoreUsedCount)
+			if (uncacheImmediately || ignoreUsedCount)
 			{
 				UncacheFile(pFile);
 			}
@@ -480,9 +482,9 @@ bool CFileCacheManager::FinishStreamInternal(IReadStreamPtr const pStream, int u
 			fileInfo.pFileData = pFile->m_pMemoryBlock->GetData();
 			fileInfo.size = pFile->m_size;
 			fileInfo.pImplData = pFile->m_pImplData;
-			fileInfo.szFileName = PathUtil::GetFile(pFile->m_path.c_str());
-			fileInfo.szFilePath = pFile->m_path.c_str();
-			fileInfo.bLocalized = (pFile->m_flags & EFileFlags::Localized) != EFileFlags::None;
+			cry_strcpy(fileInfo.fileName, PathUtil::GetFile(pFile->m_path.c_str()));
+			cry_strcpy(fileInfo.filePath, pFile->m_path.c_str());
+			fileInfo.isLocalized = (pFile->m_flags & EFileFlags::Localized) != EFileFlags::None;
 
 			g_pIImpl->RegisterInMemoryFile(&fileInfo);
 			bSuccess = true;
@@ -559,7 +561,8 @@ void CFileCacheManager::UncacheFile(CFile* const pFile)
 		fileInfo.pFileData = pFile->m_pMemoryBlock->GetData();
 		fileInfo.size = pFile->m_size;
 		fileInfo.pImplData = pFile->m_pImplData;
-		fileInfo.szFileName = PathUtil::GetFile(pFile->m_path.c_str());
+		cry_strcpy(fileInfo.fileName, PathUtil::GetFile(pFile->m_path.c_str()));
+		cry_strcpy(fileInfo.filePath, pFile->m_path.c_str());
 
 		g_pIImpl->UnregisterInMemoryFile(&fileInfo);
 	}
@@ -594,19 +597,14 @@ void CFileCacheManager::TryToUncacheFiles()
 void CFileCacheManager::UpdateLocalizedFileData(CFile* const pFile)
 {
 	static Impl::SFileInfo fileInfo;
-	fileInfo.bLocalized = true;
+	fileInfo.isLocalized = true;
 	fileInfo.size = 0;
 	fileInfo.pFileData = nullptr;
 	fileInfo.memoryBlockAlignment = 0;
 
-	CryFixedStringT<MaxFileNameLength> fileName(PathUtil::GetFile(pFile->m_path.c_str()));
 	fileInfo.pImplData = pFile->m_pImplData;
-	fileInfo.szFileName = fileName.c_str();
-
-	pFile->m_path = g_pIImpl->GetFileLocation(&fileInfo);
-	pFile->m_path += "/";
-	pFile->m_path += fileName.c_str();
-	pFile->m_path.MakeLower();
+	cry_strcpy(fileInfo.fileName, PathUtil::GetFile(pFile->m_path.c_str()));
+	cry_strcpy(fileInfo.filePath, pFile->m_path.c_str());
 
 	pFile->m_size = gEnv->pCryPak->FGetSize(pFile->m_path.c_str());
 	CRY_ASSERT(pFile->m_size > 0);
@@ -616,8 +614,8 @@ void CFileCacheManager::UpdateLocalizedFileData(CFile* const pFile)
 bool CFileCacheManager::TryCacheFileCacheEntryInternal(
 	CFile* const pFile,
 	FileId const id,
-	bool const bLoadSynchronously,
-	bool const bOverrideUseCount /*= false*/,
+	bool const loadSynchronously,
+	bool const overrideUseCount /*= false*/,
 	size_t const useCount /*= 0*/)
 {
 	bool bSuccess = false;
@@ -641,7 +639,7 @@ bool CFileCacheManager::TryCacheFileCacheEntryInternal(
 			pFile->m_flags |= EFileFlags::Loading;
 			pFile->m_pReadStream = gEnv->pSystem->GetStreamEngine()->StartRead(eStreamTaskTypeFSBCache, pFile->m_path.c_str(), this, &streamReadParams);
 
-			if (bLoadSynchronously)
+			if (loadSynchronously)
 			{
 				pFile->m_pReadStream->Wait();
 			}
@@ -689,7 +687,7 @@ bool CFileCacheManager::TryCacheFileCacheEntryInternal(
 	// Increment the used count on GameHints.
 	if (((pFile->m_flags & EFileFlags::UseCounted) != EFileFlags::None) && ((pFile->m_flags & (EFileFlags::Cached | EFileFlags::Loading)) != EFileFlags::None))
 	{
-		if (bOverrideUseCount)
+		if (overrideUseCount)
 		{
 			pFile->m_useCount = useCount;
 		}
@@ -710,5 +708,28 @@ bool CFileCacheManager::TryCacheFileCacheEntryInternal(
 	}
 
 	return bSuccess;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CFileCacheManager::SendFinishedPreloadRequest(
+	PreloadRequestId const preloadRequestId,
+	bool const isFullSuccess,
+	ERequestFlags const flags,
+	void* const pOwner,
+	void* const pUserData,
+	void* const pUserDataOwner)
+{
+	if ((flags& ERequestFlags::SubsequentCallbackOnExternalThread) != ERequestFlags::None)
+	{
+		SCallbackRequestData<ECallbackRequestType::ReportFinishedPreload> const requestData(preloadRequestId, isFullSuccess);
+		CRequest const request(&requestData, ERequestFlags::CallbackOnExternalOrCallingThread, pOwner, pUserData, pUserDataOwner);
+		g_system.PushRequest(request);
+	}
+	else if ((flags& ERequestFlags::SubsequentCallbackOnAudioThread) != ERequestFlags::None)
+	{
+		SCallbackRequestData<ECallbackRequestType::ReportFinishedPreload> const requestData(preloadRequestId, isFullSuccess);
+		CRequest const request(&requestData, ERequestFlags::CallbackOnAudioThread, pOwner, pUserData, pUserDataOwner);
+		g_system.PushRequest(request);
+	}
 }
 } // namespace CryAudio

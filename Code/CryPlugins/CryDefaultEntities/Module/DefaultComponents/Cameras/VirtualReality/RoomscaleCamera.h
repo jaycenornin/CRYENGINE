@@ -6,8 +6,8 @@
 
 #include <CrySystem/VR/IHMDDevice.h>
 #include <CrySystem/VR/IHMDManager.h>
-#include "../../Audio/ListenerComponent.h"
 #include <CrySystem/ICryPluginManager.h>
+#include "../ICameraManager.h"
 
 namespace Cry
 {
@@ -45,13 +45,6 @@ namespace Cry
 				// ~IEntityComponentPreviewer
 #endif
 
-				// ICameraComponent
-				virtual void DisableAudioListener() final
-				{
-					m_pAudioListener->SetActive(false);
-				}
-				// ~ICameraComponent
-
 			public:
 				CRoomscaleCameraComponent();
 
@@ -74,12 +67,6 @@ namespace Cry
 				virtual void Activate()
 				{
 					m_pEntity->UpdateComponentEventMask(this);
-
-					if (m_pAudioListener)
-					{
-						m_pAudioListener->SetActive(true);
-					}
-
 					m_pCameraManager->SwitchCameraToActive(this);
 				}
 
@@ -108,7 +95,6 @@ namespace Cry
 				ICameraManager* m_pCameraManager = nullptr;
 
 				CCamera m_camera;
-				Cry::Audio::DefaultComponents::CListenerComponent* m_pAudioListener = nullptr;
 			};
 		}
 	}

@@ -163,7 +163,7 @@ void CMainWindow::UpdateState()
 	m_pRefreshAction->setEnabled(middleWareFound);
 	m_pPreferencesAction->setEnabled(middleWareFound);
 
-	setWindowTitle(QString("%1 (%2)").arg(g_szEditorName).arg(middleWareFound ? g_implInfo.name.c_str() : "Warning: No middleware implementation!"));
+	setWindowTitle(QString("%1 (%2)").arg(g_szEditorName).arg(middleWareFound ? g_implInfo.name : "Warning: No middleware implementation!"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -462,7 +462,7 @@ bool CMainWindow::OnSave()
 	QGuiApplication::setOverrideCursor(Qt::WaitCursor);
 	m_pMonitorSystem->Disable();
 	CAudioControlsEditorPlugin::SaveData();
-	gEnv->pAudioSystem->ReloadControlsData();
+	GetISystem()->GetISystemEventDispatcher()->OnSystemEvent(ESYSTEM_EVENT_AUDIO_RELOAD_CONTROLS_DATA, 0, 0);
 	m_pMonitorSystem->EnableDelayed();
 	QGuiApplication::restoreOverrideCursor();
 

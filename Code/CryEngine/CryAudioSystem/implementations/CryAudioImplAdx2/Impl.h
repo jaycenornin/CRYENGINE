@@ -29,7 +29,7 @@ public:
 
 	// CryAudio::Impl::IImpl
 	virtual void                    Update() override {}
-	virtual ERequestStatus          Init(uint16 const objectPoolSize) override;
+	virtual bool                    Init(uint16 const objectPoolSize) override;
 	virtual void                    ShutDown() override;
 	virtual void                    OnBeforeRelease() override {}
 	virtual void                    Release() override;
@@ -42,12 +42,11 @@ public:
 	virtual void                    UnmuteAll() override;
 	virtual void                    PauseAll() override;
 	virtual void                    ResumeAll() override;
-	virtual ERequestStatus          StopAllSounds() override;
+	virtual void                    StopAllSounds() override;
 	virtual void                    RegisterInMemoryFile(SFileInfo* const pFileInfo) override;
 	virtual void                    UnregisterInMemoryFile(SFileInfo* const pFileInfo) override;
-	virtual ERequestStatus          ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo) override;
+	virtual bool                    ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo) override;
 	virtual void                    DestructFile(IFile* const pIFile) override;
-	virtual char const* const       GetFileLocation(SFileInfo* const pFileInfo) override;
 	virtual void                    GetInfo(SImplInfo& implInfo) const override;
 	virtual ITriggerConnection*     ConstructTriggerConnection(XmlNodeRef const& rootNode, float& radius) override;
 	virtual ITriggerConnection*     ConstructTriggerConnection(ITriggerInfo const* const pITriggerInfo) override;
@@ -87,7 +86,7 @@ private:
 	bool InitializeLibrary();
 	bool AllocateVoicePool();
 	bool CreateDbas();
-	bool RegisterAcf();
+	void RegisterAcf();
 	void UnregisterAcf();
 	void InitializeFileSystem();
 

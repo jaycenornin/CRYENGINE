@@ -37,6 +37,7 @@ constexpr char const* g_szEventsAttribute = "events";
 constexpr char const* g_szParametersAttribute = "parameters";
 constexpr char const* g_szParametersAdvancedAttribute = "parametersadvanced";
 constexpr char const* g_szSwitchStatesAttribute = "switchstates";
+constexpr char const* g_szFilesAttribute = "files";
 
 // XML values
 constexpr char const* g_szTrueValue = "true";
@@ -55,12 +56,41 @@ constexpr float g_defaultParamMultiplier = 1.0f;
 constexpr float g_defaultParamShift = 0.0f;
 constexpr float g_defaultStateValue = 1.0f;
 
+static std::unordered_map<char const*, char const*> const g_supportedExtensions
+{
+	{ "ogg", "Ogg Vorbis" },
+	{ "wav", "Wave (Microsoft)" },
+	{ "mp3", "Mpeg Layer 3" },
+	{ "opus", "OPUS" },
+	{ "flac", "FLAC" },
+	{ "mod", "MOD (15 and 31 instruments)" },
+	{ "aiff", "APPLE" },
+	{ "xm", "FastTracker 2" },
+	{ "mid", "MIDI" },
+	{ "voc", "VOC" },
+	{ "669", "Composer, Unis" },
+	{ "amf", "DSMI Advanced Module, ASYLUM Music Format (v1.0)" },
+	{ "apun", "APlayer" },
+	{ "dsm", "DSIK internal format" },
+	{ "far", "Farandole Composer" },
+	{ "gdm", "General DigiMusic" },
+	{ "it", "Impulse Tracker" },
+	{ "imf", "Imago Orpheus" },
+	{ "med", "OctaMED" },
+	{ "mtm", "MultiTracker Module Editor" },
+	{ "okt", "Amiga Oktalyzer" },
+	{ "s3m", "Scream Tracker 3" },
+	{ "stm", "Scream Tracker" },
+	{ "stx", "Scream Tracker Music Interface Kit" },
+	{ "ult", "UltraTracker" },
+	{ "uni", "MikMod" } };
+
 // Required to create a preview trigger in editor.
 struct STriggerInfo final : public ITriggerInfo
 {
-	CryFixedStringT<MaxFileNameLength> name;
-	CryFixedStringT<MaxFilePathLength> path;
-	bool                               isLocalized;
+	char name[MaxFileNameLength] = { '\0' };
+	char path[MaxFilePathLength] = { '\0' };
+	bool isLocalized = false;
 };
 
 struct SPoolSizes final
@@ -69,6 +99,7 @@ struct SPoolSizes final
 	uint16 parameters = 0;
 	uint16 parametersAdvanced = 0;
 	uint16 switchStates = 0;
+	uint16 files = 0;
 };
 } // namespace SDL_mixer
 } // namespace Impl
