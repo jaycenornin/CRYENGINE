@@ -197,7 +197,7 @@ using std::sqrt;
 //
 
 // _MSC_VER check is a temporary workaround for apparent compiler bug in VS 16.3: SSE version of rsqrt_fast generates incorrect code
-#if CRY_PLATFORM_SSE2 && (!defined(_MSC_VER) || _MSC_VER < 1923)
+#if CRY_PLATFORM_SSE2 && (!defined(_MSC_VER) || _MSC_VER < 1923 || _MSC_VER >= 1924)
 
 ILINE f32 rcp_fast(f32 op)   { return _mm_cvtss_f32(_mm_rcp_ss(_mm_set_ss(op))); }
 ILINE f32 rcp(f32 op)        { float r = rcp_fast(op); return r * (2.0f - op * r); }

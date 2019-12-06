@@ -8,6 +8,7 @@
 #include <CrySerialization/CryStrings.h>
 
 #include <bitset>
+#include "../../CrySerialization/SerializationUtils.h"
 
 namespace BehaviorTree
 {
