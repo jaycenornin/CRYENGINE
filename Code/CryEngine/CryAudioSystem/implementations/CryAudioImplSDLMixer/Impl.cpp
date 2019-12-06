@@ -6,6 +6,7 @@
 #include "Common.h"
 #include "Event.h"
 #include "EventInstance.h"
+#include "File.h"
 #include "Listener.h"
 #include "Object.h"
 #include "VolumeParameter.h"
@@ -31,6 +32,13 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
+#define CRY_AUDIO_IMPL_SDL_MIXER_STRINGANIZE2(x) # x
+#define CRY_AUDIO_IMPL_SDL_MIXER_STRINGANIZE1(x) CRY_AUDIO_IMPL_SDL_MIXER_STRINGANIZE2(x)
+#define CRY_AUDIO_IMPL_SDL_MIXER_NAME                                         \
+	"SDL Mixer " CRY_AUDIO_IMPL_SDL_MIXER_STRINGANIZE1(SDL_MIXER_MAJOR_VERSION) \
+	"." CRY_AUDIO_IMPL_SDL_MIXER_STRINGANIZE1(SDL_MIXER_MINOR_VERSION)          \
+	"." CRY_AUDIO_IMPL_SDL_MIXER_STRINGANIZE1(SDL_MIXER_PATCHLEVEL)
+
 namespace CryAudio
 {
 namespace Impl
@@ -38,17 +46,16 @@ namespace Impl
 namespace SDL_mixer
 {
 static string const s_regularAssetsPath = string(CRY_AUDIO_DATA_ROOT) + "/" + g_szImplFolderName + "/" + g_szAssetsFolderName + "/";
-constexpr int g_supportedFormats = MIX_INIT_OGG | MIX_INIT_MP3;
+constexpr int g_supportedFormats = MIX_INIT_FLAC | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_MID | MIX_INIT_OPUS | MIX_INIT_MOD;
 constexpr int g_sampleRate = 48000;
 constexpr int g_bufferSize = 4096;
-
 static string s_localizedAssetsPath = "";
 
 enum class EChannelFinishedRequestQueueId : EnumFlagsType
 {
 	One,
 	Two,
-	Count,
+	Count
 };
 
 using ChannelFinishedRequests = std::deque<int>;
@@ -94,20 +101,23 @@ void LoadMetadata(string const& path, bool const isLocalized)
 
 					if (posExtension != string::npos)
 					{
-						string const fileExtension = name.data() + posExtension;
+						char const* const szExtension = name.data() + posExtension + 1;
 
-						if ((_stricmp(fileExtension, ".mp3") == 0) ||
-						    (_stricmp(fileExtension, ".ogg") == 0) ||
-						    (_stricmp(fileExtension, ".wav") == 0))
+						for (auto const& pair : CryAudio::Impl::SDL_mixer::g_supportedExtensions)
 						{
-							if (path.empty())
+							if (_stricmp(szExtension, pair.first) == 0)
 							{
-								g_samplePaths[StringToId(name.c_str())] = rootDir + name;
-							}
-							else
-							{
-								string const pathName = path + name;
-								g_samplePaths[StringToId(pathName.c_str())] = rootDir + pathName;
+								if (path.empty())
+								{
+									g_samplePaths[StringToId(name.c_str())] = rootDir + name;
+								}
+								else
+								{
+									string const pathName = path + name;
+									g_samplePaths[StringToId(pathName.c_str())] = rootDir + pathName;
+								}
+
+								break;
 							}
 						}
 					}
@@ -189,6 +199,36 @@ void ChannelFinishedPlaying(int const channel)
 {
 	if ((channel >= 0) && (channel < g_numMixChannels))
 	{
+		bool foundChannel = false;
+
+		for (auto& sampleChannels : g_sampleChannels)
+		{
+			if (!foundChannel)
+			{
+				auto iter(sampleChannels.second.begin());
+				auto const iterEnd(sampleChannels.second.cend());
+
+				for (; iter != iterEnd; ++iter)
+				{
+					if ((*iter) == channel)
+					{
+						if (iter != (iterEnd - 1))
+						{
+							(*iter) = sampleChannels.second.back();
+						}
+
+						sampleChannels.second.pop_back();
+						foundChannel = true;
+						break;
+					}
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
 		CryAutoLock<CryCriticalSection> autoLock(g_channelFinishedCriticalSection);
 		g_channelFinishedRequests[static_cast<int>(EChannelFinishedRequestQueueId::One)].push_back(channel);
 	}
@@ -245,22 +285,46 @@ void UnMute()
 //////////////////////////////////////////////////////////////////////////
 SampleId LoadSample(string const& sampleFilePath, bool const onlyMetadata, bool const isLocalized)
 {
-	SampleId const id = StringToId(sampleFilePath.c_str());
+	SampleId id = StringToId(sampleFilePath.c_str());
 
 	if (stl::find_in_map(g_sampleData, id, nullptr) == nullptr)
 	{
+		string const assetPath = (isLocalized ? s_localizedAssetsPath : s_regularAssetsPath) + sampleFilePath;
+
 		if (onlyMetadata)
 		{
-			string const assetPath = isLocalized ? s_localizedAssetsPath : s_regularAssetsPath;
-			g_samplePaths[id] = assetPath + sampleFilePath;
+			g_samplePaths[id] = assetPath;
 		}
-		else if (!LoadSampleImpl(id, sampleFilePath))
+		else if (!LoadSampleImpl(id, assetPath))
 		{
-			return g_invalidSampleId;
+			id = g_invalidSampleId;
 		}
 	}
 
 	return id;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void UnloadSample(SampleId const id)
+{
+	Mix_Chunk* pSample = stl::find_in_map(g_sampleData, id, nullptr);
+
+	if (pSample != nullptr)
+	{
+		for (auto const channel : g_sampleChannels[id])
+		{
+			Mix_HaltChannel(channel);
+		}
+
+		Mix_FreeChunk(pSample);
+		stl::member_find_and_erase(g_sampleData, id);
+	}
+#if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
+	else
+	{
+		Cry::Audio::Log(ELogType::Error, "Could not find sample with id %d during %s", id, __FUNCTION__);
+	}
+#endif  // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -281,6 +345,10 @@ void CountPoolSizes(XmlNodeRef const& node, SPoolSizes& poolSizes)
 	uint16 numSwitchStates = 0;
 	node->getAttr(g_szSwitchStatesAttribute, numSwitchStates);
 	poolSizes.switchStates += numSwitchStates;
+
+	uint16 numFiles = 0;
+	node->getAttr(g_szFilesAttribute, numFiles);
+	poolSizes.files += numFiles;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -292,6 +360,7 @@ void AllocateMemoryPools(uint16 const objectPoolSize, uint16 const eventPoolSize
 	CVolumeParameter::CreateAllocator(g_poolSizes.parameters);
 	CVolumeParameterAdvanced::CreateAllocator(g_poolSizes.parametersAdvanced);
 	CVolumeState::CreateAllocator(g_poolSizes.switchStates);
+	CFile::CreateAllocator(g_poolSizes.files);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -303,6 +372,7 @@ void FreeMemoryPools()
 	CVolumeParameter::FreeMemoryPool();
 	CVolumeParameterAdvanced::FreeMemoryPool();
 	CVolumeState::FreeMemoryPool();
+	CFile::FreeMemoryPool();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -327,7 +397,7 @@ string GetFullFilePath(char const* const szFileName, char const* const szPath)
 ///////////////////////////////////////////////////////////////////////////
 CImpl::CImpl()
 #if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
-	: m_name("SDL Mixer 2.0.2")
+	: m_name(CRY_AUDIO_IMPL_SDL_MIXER_NAME)
 #endif  // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
 {
 	g_pImpl = this;
@@ -359,9 +429,9 @@ void CImpl::Update()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::Init(uint16 const objectPoolSize)
+bool CImpl::Init(uint16 const objectPoolSize)
 {
-	ERequestStatus requestStatus = ERequestStatus::Failure;
+	bool isInitialized = false;
 
 	if (g_cvars.m_eventPoolSize < 1)
 	{
@@ -409,7 +479,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 				LoadMetadata("", false);
 				LoadMetadata("", true);
 
-				requestStatus = ERequestStatus::Success;
+				isInitialized = true;
 			}
 #if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
 			else
@@ -432,7 +502,7 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	}
 #endif    // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
 
-	return requestStatus;
+	return isInitialized;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -504,6 +574,7 @@ void CImpl::OnAfterLibraryDataChanged(int const poolAllocationMode)
 				g_poolSizes.parameters += iterPoolSizes.parameters;
 				g_poolSizes.parametersAdvanced += iterPoolSizes.parametersAdvanced;
 				g_poolSizes.switchStates += iterPoolSizes.switchStates;
+				g_poolSizes.files += iterPoolSizes.files;
 			}
 		}
 		else
@@ -518,12 +589,14 @@ void CImpl::OnAfterLibraryDataChanged(int const poolAllocationMode)
 				maxContextPoolSizes.parameters = std::max(maxContextPoolSizes.parameters, iterPoolSizes.parameters);
 				maxContextPoolSizes.parametersAdvanced = std::max(maxContextPoolSizes.parametersAdvanced, iterPoolSizes.parametersAdvanced);
 				maxContextPoolSizes.switchStates = std::max(maxContextPoolSizes.switchStates, iterPoolSizes.switchStates);
+				maxContextPoolSizes.files = std::max(maxContextPoolSizes.files, iterPoolSizes.files);
 			}
 
 			g_poolSizes.events += maxContextPoolSizes.events;
 			g_poolSizes.parameters += maxContextPoolSizes.parameters;
 			g_poolSizes.parametersAdvanced += maxContextPoolSizes.parametersAdvanced;
 			g_poolSizes.switchStates += maxContextPoolSizes.switchStates;
+			g_poolSizes.files += maxContextPoolSizes.files;
 		}
 	}
 
@@ -536,6 +609,7 @@ void CImpl::OnAfterLibraryDataChanged(int const poolAllocationMode)
 	g_poolSizes.parameters = std::max<uint16>(1, g_poolSizes.parameters);
 	g_poolSizes.parametersAdvanced = std::max<uint16>(1, g_poolSizes.parametersAdvanced);
 	g_poolSizes.switchStates = std::max<uint16>(1, g_poolSizes.switchStates);
+	g_poolSizes.files = std::max<uint16>(1, g_poolSizes.files);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -577,26 +651,81 @@ void CImpl::ResumeAll()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::StopAllSounds()
+void CImpl::StopAllSounds()
 {
 	Mix_HaltChannel(-1);
-	return ERequestStatus::Success;
 }
 
 ///////////////////////////////////////////////////////////////////////////
 void CImpl::RegisterInMemoryFile(SFileInfo* const pFileInfo)
 {
+	if ((pFileInfo != nullptr) && (pFileInfo->pImplData != nullptr))
+	{
+		auto const pFileData = static_cast<CFile*>(pFileInfo->pImplData);
+		CryFixedStringT<MaxFilePathLength> const filePath(pFileInfo->filePath);
+#if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
+		if (!LoadSampleImpl(pFileData->GetSampleId(), filePath))
+		{
+			Cry::Audio::Log(ELogType::Error, "Failed to load %s during %s", filePath.c_str(), __FUNCTION__);
+		}
+#else
+		LoadSampleImpl(pFileData->GetSampleId(), filePath);
+#endif    // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
+	}
+#if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
+	else
+	{
+		Cry::Audio::Log(ELogType::Error, "Invalid FileData passed to the SDL Mixer implementation of %s", __FUNCTION__);
+	}
+#endif    // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
 }
 
 ///////////////////////////////////////////////////////////////////////////
 void CImpl::UnregisterInMemoryFile(SFileInfo* const pFileInfo)
 {
+	if ((pFileInfo != nullptr) && (pFileInfo->pImplData != nullptr))
+	{
+		auto const pFileData = static_cast<CFile*>(pFileInfo->pImplData);
+		UnloadSample(pFileData->GetSampleId());
+	}
+#if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
+	else
+	{
+		Cry::Audio::Log(ELogType::Error, "Invalid FileData passed to the SDL Mixer implementation of %s", __FUNCTION__);
+	}
+#endif    // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
+bool CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
 {
-	return ERequestStatus::Failure;
+	bool isConstructed = false;
+
+	if ((pFileInfo != nullptr) && (_stricmp(rootNode->getTag(), g_szEventTag) == 0))
+	{
+		char const* const szFileName = rootNode->getAttr(g_szNameAttribute);
+
+		if (szFileName != nullptr && szFileName[0] != '\0')
+		{
+			char const* const szLocalized = rootNode->getAttr(g_szLocalizedAttribute);
+			pFileInfo->isLocalized = (szLocalized != nullptr) && (_stricmp(szLocalized, g_szTrueValue) == 0);
+			cry_strcpy(pFileInfo->fileName, szFileName);
+			pFileInfo->memoryBlockAlignment = 32;
+
+			char const* const szPath = rootNode->getAttr(g_szPathAttribute);
+			string const filePath = GetFullFilePath(szFileName, szPath);
+			string const fullFilePath = (pFileInfo->isLocalized ? s_localizedAssetsPath : s_regularAssetsPath) + filePath;
+			cry_strcpy(pFileInfo->filePath, fullFilePath.c_str());
+			SampleId const sampleId = LoadSample(filePath, true, pFileInfo->isLocalized);
+
+			MEMSTAT_CONTEXT(EMemStatContextType::AudioImpl, "CryAudio::Impl::SDL_mixer::CFile");
+			pFileInfo->pImplData = new CFile(sampleId);
+
+			isConstructed = true;
+		}
+	}
+
+	return isConstructed;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -605,28 +734,15 @@ void CImpl::DestructFile(IFile* const pIFile)
 	delete pIFile;
 }
 
-///////////////////////////////////////////////////////////////////////////
-char const* const CImpl::GetFileLocation(SFileInfo* const pFileInfo)
-{
-	static CryFixedStringT<MaxFilePathLength> s_path;
-	s_path = CRY_AUDIO_DATA_ROOT "/";
-	s_path += g_szImplFolderName;
-	s_path += "/";
-	s_path += g_szAssetsFolderName;
-	s_path += "/";
-
-	return s_path.c_str();
-}
-
 //////////////////////////////////////////////////////////////////////////
 void CImpl::GetInfo(SImplInfo& implInfo) const
 {
 #if defined(CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE)
-	implInfo.name = m_name.c_str();
+	cry_strcpy(implInfo.name, m_name.c_str());
 #else
-	implInfo.name = "name-not-present-in-release-mode";
+	cry_fixed_size_strcpy(implInfo.name, g_implNameInRelease);
 #endif  // CRY_AUDIO_IMPL_SDLMIXER_USE_DEBUG_CODE
-	implInfo.folderName = g_szImplFolderName;
+	cry_strcpy(implInfo.folderName, g_szImplFolderName, strlen(g_szImplFolderName));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -777,7 +893,7 @@ ITriggerConnection* CImpl::ConstructTriggerConnection(ITriggerInfo const* const 
 
 	if (pTriggerInfo != nullptr)
 	{
-		string const fullFilePath = GetFullFilePath(pTriggerInfo->name.c_str(), pTriggerInfo->path.c_str());
+		string const fullFilePath = GetFullFilePath(pTriggerInfo->name, pTriggerInfo->path);
 		SampleId const sampleId = LoadSample(fullFilePath, true, pTriggerInfo->isLocalized);
 
 		MEMSTAT_CONTEXT(EMemStatContextType::AudioImpl, "CryAudio::Impl::SDL_mixer::CEvent");
@@ -1181,13 +1297,25 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 		}
 	}
 
+	if (g_debugPoolSizes.files > 0)
+	{
+		auto& allocator = CFile::GetAllocator();
+		size_t const memAlloc = allocator.GetTotalMemory().nAlloc;
+		totalPoolSize += memAlloc;
+
+		if (drawDetailedInfo)
+		{
+			Debug::DrawMemoryPoolInfo(auxGeom, posX, posY, memAlloc, allocator.GetCounts(), "Preloaded Files", g_poolSizes.files);
+		}
+	}
+
 	CryModuleMemoryInfo memInfo;
 	ZeroStruct(memInfo);
 	CryGetMemoryInfoForModule(&memInfo);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> memAllocSizeString;
 	auto const memAllocSize = static_cast<size_t>(memInfo.allocated - memInfo.freed);
-	Debug::FormatMemoryString(memAllocSizeString, memAllocSize - totalPoolSize);
+	Debug::FormatMemoryString(memAllocSizeString, memAllocSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalPoolSizeString;
 	Debug::FormatMemoryString(totalPoolSizeString, totalPoolSize);
@@ -1196,7 +1324,7 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 	Debug::FormatMemoryString(totalSamplesString, g_loadedSampleSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalMemSizeString;
-	size_t const totalMemSize = memAllocSize + g_loadedSampleSize;
+	size_t const totalMemSize = memAllocSize + totalPoolSize + g_loadedSampleSize;
 	Debug::FormatMemoryString(totalMemSizeString, totalMemSize);
 
 	auxGeom.Draw2dLabel(posX, headerPosY, Debug::g_systemHeaderFontSize, Debug::s_globalColorHeader, false, "%s (System: %s | Pools: %s | Samples: %s | Total: %s)",

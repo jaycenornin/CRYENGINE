@@ -72,12 +72,14 @@ void CSkeletonAnim::FinishAnimationComputations()
 	const CharacterInstanceProcessing::SContext* pCtx = m_pInstance->GetProcessingContext();
 	if (pCtx)
 	{
-		g_pCharacterManager->GetContextSyncQueue().ExecuteForContextAndAllChildrenRecursively(
-		  pCtx->slot, [](CharacterInstanceProcessing::SContext& ctx)
+		const auto finishFunction = [](CharacterInstanceProcessing::SContext& ctx)
 		{
 			ctx.job.Wait();
 			return CharacterInstanceProcessing::SFinishAnimationComputations()(ctx);
-		});
+		};
+
+		g_pCharacterManager->GetContextSyncQueue().ExecuteForAllParentsRecursively(pCtx->slot, finishFunction);
+		g_pCharacterManager->GetContextSyncQueue().ExecuteForContextAndAllChildrenRecursively(pCtx->slot, finishFunction);
 	}
 }
 
@@ -173,6 +175,8 @@ void CSkeletonAnim::PoseModifiersPrepare(const QuatTS& location)
 
 void CSkeletonAnim::PoseModifiersExecutePost(Skeleton::CPoseData& poseData, const QuatTS& location)
 {
+	DEFINE_PROFILER_FUNCTION();
+
 	SAnimationPoseModifierParams params;
 	params.pCharacterInstance = m_pInstance;
 	params.pPoseData = &poseData;
@@ -185,6 +189,8 @@ void CSkeletonAnim::PoseModifiersExecutePost(Skeleton::CPoseData& poseData, cons
 
 void CSkeletonAnim::PoseModifiersSynchronize()
 {
+	DEFINE_PROFILER_FUNCTION();
+
 	for (uint i = 0; i < numVIRTUALLAYERS; ++i)
 	{
 		m_layers[i].m_poseModifierQueue.Synchronize();
@@ -199,6 +205,8 @@ void CSkeletonAnim::PoseModifiersSynchronize()
 
 void CSkeletonAnim::PoseModifiersSwapBuffersAndClearActive()
 {
+	DEFINE_PROFILER_FUNCTION();
+
 	for (uint i = 0; i < numVIRTUALLAYERS; ++i)
 	{
 		m_layers[i].m_poseModifierQueue.SwapBuffersAndClearActive();

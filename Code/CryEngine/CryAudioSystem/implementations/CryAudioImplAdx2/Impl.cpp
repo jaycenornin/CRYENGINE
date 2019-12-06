@@ -269,7 +269,7 @@ void ParseAcbInfoFile(XmlNodeRef const& rootNode, uint32 const acbId)
 }
 
 //////////////////////////////////////////////////////////////////////////
-void LoadAcbInfos(string const& folderPath)
+void LoadAcbInfos(CryFixedStringT<MaxFilePathLength> const& folderPath)
 {
 	_finddata_t fd;
 	ICryPak* const pCryPak = gEnv->pCryPak;
@@ -279,7 +279,7 @@ void LoadAcbInfos(string const& folderPath)
 	{
 		do
 		{
-			string fileName = fd.name;
+			CryFixedStringT<MaxFilePathLength> const fileName = fd.name;
 			XmlNodeRef const rootNode = GetISystem()->LoadXmlFromFile(folderPath + "/" + fileName);
 
 			if (rootNode.isValid())
@@ -349,16 +349,16 @@ CImpl::CImpl()
 	: m_pAcfBuffer(nullptr)
 	, m_dbasId(CRIATOMEXDBAS_ILLEGAL_ID)
 #if defined(CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE)
-	, m_name("Adx2 - " CRI_ATOM_VER_NUM)
+	, m_name("ADX2 - " CRI_ATOM_VER_NUM)
 #endif  // CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE
 {
 	g_pImpl = this;
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::Init(uint16 const objectPoolSize)
+bool CImpl::Init(uint16 const objectPoolSize)
 {
-	ERequestStatus result = ERequestStatus::Success;
+	bool isInitialized = true;
 
 	if (g_cvars.m_cuePoolSize < 1)
 	{
@@ -400,8 +400,9 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 
 	InitializeFileSystem();
 
-	if (InitializeLibrary() && AllocateVoicePool() && CreateDbas() && RegisterAcf())
+	if (InitializeLibrary() && AllocateVoicePool() && CreateDbas())
 	{
+		RegisterAcf();
 		SetListenerConfig();
 		SetPlayerConfig();
 		Set3dSourceConfig();
@@ -409,10 +410,10 @@ ERequestStatus CImpl::Init(uint16 const objectPoolSize)
 	else
 	{
 		ShutDown();
-		result = ERequestStatus::Failure;
+		isInitialized = false;
 	}
 
-	return result;
+	return isInitialized;
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -607,10 +608,9 @@ void CImpl::ResumeAll()
 }
 
 ///////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::StopAllSounds()
+void CImpl::StopAllSounds()
 {
 	criAtomExPlayer_StopAllPlayers();
-	return ERequestStatus::Success;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -622,7 +622,7 @@ void CImpl::RegisterInMemoryFile(SFileInfo* const pFileInfo)
 
 		if (pFileData != nullptr)
 		{
-			string acbToAwbPath = pFileInfo->szFilePath;
+			CryFixedStringT<MaxFilePathLength> acbToAwbPath(pFileInfo->filePath);
 			PathUtil::RemoveExtension(acbToAwbPath);
 			acbToAwbPath += ".awb";
 
@@ -632,14 +632,15 @@ void CImpl::RegisterInMemoryFile(SFileInfo* const pFileInfo)
 
 			if (pFileData->pAcb != nullptr)
 			{
-				string name = pFileInfo->szFileName;
+				CryFixedStringT<MaxFileNameLength> name(pFileInfo->fileName);
 				PathUtil::RemoveExtension(name);
 				g_acbHandles[StringToId(name.c_str())] = pFileData->pAcb;
 			}
 #if defined(CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE)
 			else
 			{
-				Cry::Audio::Log(ELogType::Error, "Failed to load ACB %s\n", pFileInfo->szFileName);
+				CryFixedStringT<MaxFileNameLength> const name(pFileInfo->fileName);
+				Cry::Audio::Log(ELogType::Error, "Failed to load ACB %s\n", name.c_str());
 			}
 #endif      // CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE
 		}
@@ -673,9 +674,9 @@ void CImpl::UnregisterInMemoryFile(SFileInfo* const pFileInfo)
 }
 
 //////////////////////////////////////////////////////////////////////////
-ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
+bool CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const pFileInfo)
 {
-	ERequestStatus result = ERequestStatus::Failure;
+	bool isConstructed = false;
 
 	if ((_stricmp(rootNode->getTag(), g_szBinaryTag) == 0) && (pFileInfo != nullptr))
 	{
@@ -684,8 +685,10 @@ ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const
 		if (szFileName != nullptr && szFileName[0] != '\0')
 		{
 			char const* const szLocalized = rootNode->getAttr(g_szLocalizedAttribute);
-			pFileInfo->bLocalized = (szLocalized != nullptr) && (_stricmp(szLocalized, g_szTrueValue) == 0);
-			pFileInfo->szFileName = szFileName;
+			pFileInfo->isLocalized = (szLocalized != nullptr) && (_stricmp(szLocalized, g_szTrueValue) == 0);
+			cry_strcpy(pFileInfo->fileName, szFileName);
+			CryFixedStringT<MaxFilePathLength> const filePath = (pFileInfo->isLocalized ? m_localizedSoundBankFolder : m_regularSoundBankFolder) + "/" + szFileName;
+			cry_strcpy(pFileInfo->filePath, filePath.c_str());
 
 			// The Atom library accesses on-memory data with a 32-bit width.
 			// The first address of the data must be aligned at a 4-byte boundary.
@@ -694,17 +697,11 @@ ERequestStatus CImpl::ConstructFile(XmlNodeRef const& rootNode, SFileInfo* const
 			MEMSTAT_CONTEXT(EMemStatContextType::AudioImpl, "CryAudio::Impl::Adx2::CBinary");
 			pFileInfo->pImplData = new CBinary();
 
-			result = ERequestStatus::Success;
-		}
-		else
-		{
-			pFileInfo->szFileName = nullptr;
-			pFileInfo->memoryBlockAlignment = 0;
-			pFileInfo->pImplData = nullptr;
+			isConstructed = true;
 		}
 	}
 
-	return result;
+	return isConstructed;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -714,27 +711,14 @@ void CImpl::DestructFile(IFile* const pIFile)
 }
 
 //////////////////////////////////////////////////////////////////////////
-char const* const CImpl::GetFileLocation(SFileInfo* const pFileInfo)
-{
-	char const* szResult = nullptr;
-
-	if (pFileInfo != nullptr)
-	{
-		szResult = pFileInfo->bLocalized ? m_localizedSoundBankFolder.c_str() : m_regularSoundBankFolder.c_str();
-	}
-
-	return szResult;
-}
-
-//////////////////////////////////////////////////////////////////////////
 void CImpl::GetInfo(SImplInfo& implInfo) const
 {
 #if defined(CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE)
-	implInfo.name = m_name.c_str();
+	cry_strcpy(implInfo.name, m_name.c_str());
 #else
-	implInfo.name = "name-not-present-in-release-mode";
+	cry_fixed_size_strcpy(implInfo.name, g_implNameInRelease);
 #endif  // CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE
-	implInfo.folderName = g_szImplFolderName;
+	cry_strcpy(implInfo.folderName, g_szImplFolderName, strlen(g_szImplFolderName));
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -946,8 +930,8 @@ ITriggerConnection* CImpl::ConstructTriggerConnection(ITriggerInfo const* const 
 
 	if (pTriggerInfo != nullptr)
 	{
-		char const* const szName = pTriggerInfo->name.c_str();
-		char const* const szCueSheetName = pTriggerInfo->cueSheet.c_str();
+		char const* const szName = pTriggerInfo->name;
+		char const* const szCueSheetName = pTriggerInfo->cueSheet;
 		uint32 const cueId = StringToId(szName);
 		uint32 const cueSheetId = StringToId(szCueSheetName);
 
@@ -1132,7 +1116,10 @@ void CImpl::DestructParameterConnection(IParameterConnection const* const pIPara
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool ParseSelectorNode(XmlNodeRef const& node, string& selectorName, string& selectorLabelName)
+bool ParseSelectorNode(
+	XmlNodeRef const& node,
+	CryFixedStringT<MaxFileNameLength>& selectorName,
+	CryFixedStringT<MaxFileNameLength>& selectorLabelName)
 {
 	bool foundAttributes = false;
 
@@ -1173,13 +1160,13 @@ ISwitchStateConnection* CImpl::ConstructSwitchStateConnection(XmlNodeRef const& 
 
 	if (_stricmp(szTag, g_szSelectorTag) == 0)
 	{
-		string szSelectorName;
-		string szSelectorLabelName;
+		CryFixedStringT<MaxFileNameLength> selectorName;
+		CryFixedStringT<MaxFileNameLength> selectorLabelName;
 
-		if (ParseSelectorNode(rootNode, szSelectorName, szSelectorLabelName))
+		if (ParseSelectorNode(rootNode, selectorName, selectorLabelName))
 		{
 			MEMSTAT_CONTEXT(EMemStatContextType::AudioImpl, "CryAudio::Impl::Adx2::CSelectorLabel");
-			pISwitchStateConnection = static_cast<ISwitchStateConnection*>(new CSelectorLabel(szSelectorName, szSelectorLabelName));
+			pISwitchStateConnection = static_cast<ISwitchStateConnection*>(new CSelectorLabel(selectorName.c_str(), selectorLabelName));
 		}
 	}
 	else if (_stricmp(szTag, g_szAisacControlTag) == 0)
@@ -1517,9 +1504,8 @@ bool CImpl::CreateDbas()
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool CImpl::RegisterAcf()
+void CImpl::RegisterAcf()
 {
-	bool acfRegistered = false;
 	bool acfExists = false;
 
 	CryFixedStringT<MaxFilePathLength> acfPath;
@@ -1563,8 +1549,6 @@ bool CImpl::RegisterAcf()
 
 		if (criAtomExAcf_GetAcfInfo(&acfInfo) == CRI_TRUE)
 		{
-			acfRegistered = true;
-
 			g_absoluteVelocityAisacId = criAtomExAcf_GetAisacControlIdByName(g_szAbsoluteVelocityAisacName);
 			g_occlusionAisacId = criAtomExAcf_GetAisacControlIdByName(g_szOcclusionAisacName);
 
@@ -1585,8 +1569,6 @@ bool CImpl::RegisterAcf()
 		Cry::Audio::Log(ELogType::Error, "ACF not found.");
 	}
 #endif  // CRY_AUDIO_IMPL_ADX2_USE_DEBUG_CODE
-
-	return acfRegistered;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1893,7 +1875,7 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> memAllocSizeString;
 	auto const memAllocSize = static_cast<size_t>(memInfo.allocated - memInfo.freed);
-	Debug::FormatMemoryString(memAllocSizeString, memAllocSize - totalPoolSize);
+	Debug::FormatMemoryString(memAllocSizeString, memAllocSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalPoolSizeString;
 	Debug::FormatMemoryString(totalPoolSizeString, totalPoolSize);
@@ -1902,7 +1884,7 @@ void CImpl::DrawDebugMemoryInfo(IRenderAuxGeom& auxGeom, float const posX, float
 	Debug::FormatMemoryString(acfSizeString, m_acfFileSize);
 
 	CryFixedStringT<Debug::MaxMemInfoStringLength> totalMemSizeString;
-	size_t const totalMemSize = memAllocSize + m_acfFileSize;
+	size_t const totalMemSize = memAllocSize + totalPoolSize + m_acfFileSize;
 	Debug::FormatMemoryString(totalMemSizeString, totalMemSize);
 
 	auxGeom.Draw2dLabel(posX, headerPosY, Debug::g_systemHeaderFontSize, Debug::s_globalColorHeader, false, "%s (System: %s | Pools: %s | ACF: %s | Total: %s)",

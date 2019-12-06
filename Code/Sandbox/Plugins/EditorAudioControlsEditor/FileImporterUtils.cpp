@@ -38,7 +38,7 @@ void OpenFileSelectorFromImpl(QString const& targetFolderName, bool const isLoca
 
 		for (auto const& filePath : importedFiles)
 		{
-			QFileInfo const& fileInfo(filePath);
+			QFileInfo const fileInfo(filePath);
 
 			if (fileInfo.isFile())
 			{
@@ -67,7 +67,7 @@ void OpenFileSelector(EImportTargetType const type, CAsset* const pAsset)
 
 		for (auto const& filePath : importedFiles)
 		{
-			QFileInfo const& fileInfo(filePath);
+			QFileInfo const fileInfo(filePath);
 
 			if (fileInfo.isFile())
 			{
@@ -95,8 +95,8 @@ void OpenFileImporter(
 	g_pFileMonitorMiddleware->Disable();
 	FileImportInfos fileInfos = fileImportInfos;
 
-	QString assetsPath = QtUtil::ToQString(PathUtil::GetGameFolder() + "/" + g_implInfo.assetsPath.c_str());
-	QString localizedAssetsPath = QtUtil::ToQString(PathUtil::GetGameFolder() + "/" + g_implInfo.localizedAssetsPath.c_str());
+	QString assetsPath = QtUtil::ToQString(PathUtil::GetGameFolder() + "/" + g_implInfo.assetsPath);
+	QString localizedAssetsPath = QtUtil::ToQString(PathUtil::GetGameFolder() + "/" + g_implInfo.localizedAssetsPath);
 	QString const targetFolderPath = (isLocalized ? localizedAssetsPath : assetsPath) + "/" + targetFolderName;
 
 	QDir const targetFolder(targetFolderPath);

@@ -65,6 +65,7 @@ CConnectionsWidget::CConnectionsWidget(QWidget* const pParent)
 	QObject::connect(m_pTreeView, &CTreeView::customContextMenuRequested, this, &CConnectionsWidget::OnContextMenu);
 	QObject::connect(m_pTreeView->selectionModel(), &QItemSelectionModel::selectionChanged, [this]()
 		{
+			StopConnectionExecution();
 			RefreshConnectionProperties();
 			UpdateSelectedConnections();
 		});
@@ -93,8 +94,14 @@ CConnectionsWidget::CConnectionsWidget(QWidget* const pParent)
 			}
 		}, reinterpret_cast<uintptr_t>(this));
 
+	g_assetsManager.SignalControlsDuplicated.Connect([this]()
+		{
+			SetControl(m_pControl, true, true);
+		}, reinterpret_cast<uintptr_t>(this));
+
 	g_implManager.SignalOnBeforeImplChange.Connect([this]()
 		{
+			StopConnectionExecution();
 			m_pTreeView->selectionModel()->clear();
 			RefreshConnectionProperties();
 		}, reinterpret_cast<uintptr_t>(this));
@@ -108,7 +115,10 @@ CConnectionsWidget::CConnectionsWidget(QWidget* const pParent)
 CConnectionsWidget::~CConnectionsWidget()
 {
 	g_assetsManager.SignalConnectionRemoved.DisconnectById(reinterpret_cast<uintptr_t>(this));
+	g_assetsManager.SignalControlsDuplicated.DisconnectById(reinterpret_cast<uintptr_t>(this));
 	g_implManager.SignalOnBeforeImplChange.DisconnectById(reinterpret_cast<uintptr_t>(this));
+
+	StopConnectionExecution();
 
 	m_pConnectionModel->DisconnectSignals();
 	m_pConnectionModel->deleteLater();
@@ -141,7 +151,7 @@ bool CConnectionsWidget::eventFilter(QObject* pObject, QEvent* pEvent)
 void CConnectionsWidget::OnContextMenu(QPoint const& pos)
 {
 	bool canExec = false;
-	QModelIndexList const& selection = m_pTreeView->selectionModel()->selectedRows();
+	QModelIndexList const selection = m_pTreeView->selectionModel()->selectedRows();
 	int const numSelections = selection.size();
 	auto const pContextMenu = new QMenu(this);
 
@@ -168,16 +178,31 @@ void CConnectionsWidget::OnContextMenu(QPoint const& pos)
 			ControlId const itemId = static_cast<ControlId>(selection[0].data(static_cast<int>(ModelUtils::ERoles::Id)).toInt());
 			Impl::IItem const* const pIItem = g_pIImpl->GetItem(itemId);
 
-			if ((pIItem != nullptr) && ((pIItem->GetFlags() & EItemFlags::IsPlaceHolder) == EItemFlags::None))
+			if (pIItem != nullptr)
 			{
 				pContextMenu->addSeparator();
-				pContextMenu->addAction(tr("Select in Middleware Data"), [=]()
-					{
-						if (g_pIImpl != nullptr)
+
+				if ((m_pControl->GetFlags() & EAssetFlags::IsDefaultControl) == 0)
+				{
+					string const& itemName = pIItem->GetName();
+					string const typeName = AssetUtils::GetTypeName(m_pControl->GetType());
+
+					pContextMenu->addAction(tr("Rename the connected " + typeName + " to \"" + itemName + "\""), [=]()
 						{
-						  g_pIImpl->OnSelectConnectedItem(itemId);
-						}
-					});
+							RenameControl(itemName);
+						});
+				}
+
+				if ((pIItem->GetFlags() & EItemFlags::IsPlaceHolder) == EItemFlags::None)
+				{
+					pContextMenu->addAction(tr("Select in Middleware Data"), [=]()
+						{
+							if (g_pIImpl != nullptr)
+							{
+							  g_pIImpl->OnSelectConnectedItem(itemId);
+							}
+						});
+				}
 			}
 		}
 
@@ -206,7 +231,7 @@ void CConnectionsWidget::OnConnectionAdded(ControlId const id)
 {
 	if (m_pControl != nullptr)
 	{
-		auto const& matches = m_pAttributeFilterProxyModel->match(m_pAttributeFilterProxyModel->index(0, 0, QModelIndex()), static_cast<int>(ModelUtils::ERoles::Id), id, 1, Qt::MatchRecursive);
+		QModelIndexList const matches = m_pAttributeFilterProxyModel->match(m_pAttributeFilterProxyModel->index(0, 0, QModelIndex()), static_cast<int>(ModelUtils::ERoles::Id), id, 1, Qt::MatchRecursive);
 
 		if (!matches.isEmpty())
 		{
@@ -222,7 +247,7 @@ bool CConnectionsWidget::RemoveSelectedConnection()
 {
 	if (m_pControl != nullptr)
 	{
-		QModelIndexList const& selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
+		QModelIndexList const selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
 
 		if (!selectedIndexes.empty())
 		{
@@ -278,6 +303,12 @@ void CConnectionsWidget::ExecuteConnection()
 }
 
 //////////////////////////////////////////////////////////////////////////
+void CConnectionsWidget::StopConnectionExecution()
+{
+	CAudioControlsEditorPlugin::StopTriggerExecution();
+}
+
+//////////////////////////////////////////////////////////////////////////
 XmlNodeRef CConnectionsWidget::ConstructTemporaryTriggerConnections(CControl const* const pControl)
 {
 	XmlNodeRef const node = GetISystem()->CreateXmlNode(CryAudio::g_szTriggerTag);
@@ -285,7 +316,7 @@ XmlNodeRef CConnectionsWidget::ConstructTemporaryTriggerConnections(CControl con
 	if (node.isValid())
 	{
 		node->setAttr(CryAudio::g_szNameAttribute, pControl->GetName());
-		QModelIndexList const& selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
+		QModelIndexList const selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
 
 		for (auto const& index : selectedIndexes)
 		{
@@ -306,9 +337,25 @@ XmlNodeRef CConnectionsWidget::ConstructTemporaryTriggerConnections(CControl con
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CConnectionsWidget::SetControl(CControl* const pControl, bool const restoreSelection)
+void CConnectionsWidget::RenameControl(string const& newName)
 {
-	if (m_pControl != pControl)
+	string const typeName = AssetUtils::GetTypeName(m_pControl->GetType());
+	string const& controlName = m_pControl->GetName();
+	QString const text = "Are you sure you want to rename the " + typeName + " \"" + controlName + "\" to \"" + newName + "\"?";
+
+	auto const messageBox = new CQuestionDialog();
+	messageBox->SetupQuestion(g_szEditorName, text);
+
+	if (messageBox->Execute() == QDialogButtonBox::Yes)
+	{
+		m_pControl->SetName(newName);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+void CConnectionsWidget::SetControl(CControl* const pControl, bool const restoreSelection, bool const isForced)
+{
+	if ((m_pControl != pControl) || isForced)
 	{
 		m_pControl = pControl;
 		Reset();
@@ -323,7 +370,7 @@ void CConnectionsWidget::SetControl(CControl* const pControl, bool const restore
 
 				for (auto const itemId : selectedConnections)
 				{
-					auto const& matches = m_pAttributeFilterProxyModel->match(m_pAttributeFilterProxyModel->index(0, 0, QModelIndex()), static_cast<int>(ModelUtils::ERoles::Id), itemId, 1, Qt::MatchRecursive);
+					QModelIndexList const matches = m_pAttributeFilterProxyModel->match(m_pAttributeFilterProxyModel->index(0, 0, QModelIndex()), static_cast<int>(ModelUtils::ERoles::Id), itemId, 1, Qt::MatchRecursive);
 
 					if (!matches.isEmpty())
 					{
@@ -365,7 +412,7 @@ void CConnectionsWidget::RefreshConnectionProperties()
 
 	if (m_pControl != nullptr)
 	{
-		QModelIndexList const& selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
+		QModelIndexList const selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
 
 		for (auto const& index : selectedIndexes)
 		{
@@ -391,7 +438,7 @@ void CConnectionsWidget::RefreshConnectionProperties()
 void CConnectionsWidget::UpdateSelectedConnections()
 {
 	ControlIds selectedIds;
-	QModelIndexList const& selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
+	QModelIndexList const selectedIndexes = m_pTreeView->selectionModel()->selectedRows(g_connectionsNameColumn);
 
 	for (auto const& index : selectedIndexes)
 	{
