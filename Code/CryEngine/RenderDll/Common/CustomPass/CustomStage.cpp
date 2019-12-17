@@ -67,7 +67,7 @@ void CCustomStage::BeginPass(const SPassData& passData, IPassWrapper* pPass)
 
 void CCustomStage::BeginPass(const SPrimitivePassData& primPass, IPassWrapper* pPass)
 {
-	auto& pass = GetProvidedOrNextPass(*pPass, m_primitivePasses);
+	auto& pass = GetProvidedOrNextPass(pPass, m_primitivePasses);
 
 	if(!pPass)
 		UpdatePass(pass.pass, primPass);
@@ -77,7 +77,7 @@ void CCustomStage::BeginPass(const SPrimitivePassData& primPass, IPassWrapper* p
 
 void CCustomStage::BeginPass(const SFullscreenPassData& screenPass, IPassWrapper* pPass)
 {
-	auto& pass = GetProvidedOrNextPass(*pPass, m_fullscreenPasses);
+	auto& pass = GetProvidedOrNextPass(pPass, m_fullscreenPasses);
 
 	if (!pPass)
 		UpdatePass(pass.pass, screenPass);

@@ -145,7 +145,7 @@ public:
 
 	EDirtyFlags                   Compile(const CPrimitiveRenderPass& targetPass);
 
-	void CRenderPrimitive::SetScissorRect(const D3D11_RECT& scissorRect);
+	void SetScissorRect(const D3D11_RECT& scissorRect);
 private:
 
 	struct SPrimitiveGeometry

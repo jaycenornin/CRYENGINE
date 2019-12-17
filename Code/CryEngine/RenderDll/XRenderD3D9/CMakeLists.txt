@@ -865,7 +865,12 @@ add_sources("CryRenderer_uber_UI.cpp"
 	"../Common/CustomPass/CustomPassRenderer.cpp"
 	"../Common/CustomPass/CustomStage.h"
 	"../Common/CustomPass/CustomStage.cpp"
-	"../Common/CustomPass/CustomPass.h"
+	"../Common/CustomPass/StageRenderer.cpp"
+	"../Common/CustomPass/StageRenderer.h"
+	"../Common/CustomPass/PassRenderer.cpp"
+	"../Common/CustomPass/PassRenderer.h"
+	"../Common/CustomPass/StageResourceProvider.cpp"
+	"../Common/CustomPass/StageResourceProvider.h"
 )
 
 add_sources("NoUberFile"

@@ -140,9 +140,9 @@ namespace CustomPass
 	}
 
 	template<class PassType>
-	static SPassWrapper<PassType>& GetProvidedOrNextPass(IPassWrapper& pPass, SPassStorage<PassType>& passStorage)
+	static SPassWrapper<PassType>& GetProvidedOrNextPass(IPassWrapper* pPass, SPassStorage<PassType>& passStorage)
 	{
-		return pPass ? *static_cast<SPassWrapper<PassType>&>(pPass) : GetNextPass(passStorage);
+		return pPass ? *ConvertWrapper<PassType>(pPass) : GetNextPass(passStorage);
 	}
 }
 }

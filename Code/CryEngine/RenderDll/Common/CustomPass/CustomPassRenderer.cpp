@@ -391,7 +391,7 @@ void CCustomRendererInstance::Execute()
 {
 	m_pImpl->RT_Render();
 	m_constantHeap.FreeUsed();
-	m_primitiveHeap.FreeUsed();
+	//m_primitiveHeap.FreeUsed();
 }
 
 CConstantBuffer* CCustomRendererInstance::GetFreeConstantBuffer(size_t bufferSize)
@@ -401,7 +401,7 @@ CConstantBuffer* CCustomRendererInstance::GetFreeConstantBuffer(size_t bufferSiz
 
 CRenderPrimitive* CCustomRendererInstance::GetFreePrimitive()
 {
-	return m_primitiveHeap.GetUnusedPrimitive();
+	return nullptr;//m_primitiveHeap.GetUnusedPrimitive();
 }
 
 ICustomRendererImplementation* CCustomRendererInstance::GetAssignedImplementation() const
@@ -703,32 +703,3 @@ void CSizeSortedConstantHeap::FreeUsedSets()
 	m_usedSet.clear();
 }
 #pragma endregion
-
-CRenderPrimitive* CPrimitiveHeap::GetUnusedPrimitive()
-{
-	if (m_freeList.empty())
-	{
-		m_usedList.emplace_back(std::make_unique<CRenderPrimitive>());
-	}
-	else
-	{
-		auto pPrim = std::move(m_freeList.back());
-		m_freeList.pop_back();
-		m_usedList.emplace_back(std::move(pPrim));
-	}
-	return m_usedList.back().get();
-}
-
-void CPrimitiveHeap::FreeUsed()
-{
-	if (m_freeList.empty())
-	{
-		m_freeList = std::move(m_usedList);
-	}
-	else
-	{
-		m_freeList.reserve(m_freeList.size() + m_usedList.size());
-		std::move(std::begin(m_usedList), std::end(m_usedList), std::back_inserter(m_freeList));
-	}
-	m_usedList.clear();
-}

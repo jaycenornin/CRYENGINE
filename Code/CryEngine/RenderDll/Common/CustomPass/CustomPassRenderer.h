@@ -1,6 +1,7 @@
 #pragma once	
 #include <CryRenderer/CustomPass.h>
 
+
 namespace Cry
 {
 namespace Renderer
@@ -69,17 +70,6 @@ private:
 	std::multiset<THeapEntry, HeapCompare> m_freeSet;
 };
 
-class CPrimitiveHeap
-{
-public:
-	CRenderPrimitive* GetUnusedPrimitive();
-	void FreeUsed();
-
-private:
-	std::vector<std::unique_ptr<CRenderPrimitive>>	m_usedList;
-	std::vector<std::unique_ptr<CRenderPrimitive>> m_freeList;
-};
-
 class CCustomRendererInstance : public ICustomRendererInstance
 {
 public:
@@ -120,7 +110,7 @@ private:
 
 private:
 	CSizeSortedConstantHeap			m_constantHeap;
-	CPrimitiveHeap					m_primitiveHeap;
+	//CPrimitiveHeap					m_primitiveHeap;
 
 	const string m_name;
 	const uint32 m_id;
