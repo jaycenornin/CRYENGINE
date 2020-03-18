@@ -6,7 +6,7 @@ endif()
 
 # The target in the TARGET signature of add_custom_command() must exist and must be defined in the current directory.
 # This is a workaround for the add_custom_command for gmock breaking with Ninja build for certain platforms.
-cmake_policy(SET CMP0040 OLD)
+#cmake_policy(SET CMP0040 OLD)
 
 set_property(GLOBAL PROPERTY DEBUG_CONFIGURATIONS Debug Profile)
 
@@ -63,9 +63,9 @@ if (NOT DEFINED BUILD_PLATFORM)
 	message(FATAL_ERROR "BUILD_PLATFORM not defined. Please always supply one of the CRYENGINE toolchain files.")
 endif()
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(NOT CYGWIN)

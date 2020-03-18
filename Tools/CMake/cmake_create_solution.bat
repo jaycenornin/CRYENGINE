@@ -77,16 +77,16 @@ pushd "%~dp0\..\.."
 mkdir %solution_path% > nul 2>&1
 cd %solution_path%
 if "%compiler_choice%" EQU "" (
-..\..\Tools\CMake\Win32\bin\cmake -D CMAKE_TOOLCHAIN_FILE=Tools\CMake\%toolchain% %extra_args% %rerun_extra_args%..\..
+cmake -D CMAKE_TOOLCHAIN_FILE=Tools\CMake\%toolchain% %extra_args% %rerun_extra_args%..\..
 ) ELSE (
 echo Generating CMake solution for %2
-..\..\Tools\CMake\Win32\bin\cmake -G %1 -D CMAKE_TOOLCHAIN_FILE=Tools\CMake\%toolchain% %extra_args% %initial_extra_args% ..\..
+cmake -G %1 -D CMAKE_TOOLCHAIN_FILE=Tools\CMake\%toolchain% %extra_args% %initial_extra_args% ..\..
 )
 if ERRORLEVEL 1 (
 PAUSE
 ) ELSE (
 ECHO Starting cmake-gui...
-start ..\..\Tools\CMake\Win32\bin\cmake-gui .
+start cmake-gui .
 )
 popd
 goto :eof

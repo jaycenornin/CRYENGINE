@@ -25,3 +25,5 @@ add_subdirectory(CryGamePlatform)
 add_subdirectory(CryUQS)
 
 add_subdirectory(CryHTTP/Module)
+add_subdirectory(CryImgui/Module)
+add_subdirectory(CryNoesis/Module)
