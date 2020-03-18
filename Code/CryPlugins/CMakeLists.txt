@@ -4,10 +4,6 @@ if (OPTION_ENGINE)
 	add_subdirectory(CrySensorSystem/Module)
 endif()
 
-if (PLUGIN_USERANALYTICS)
-	add_subdirectory(CryUserAnalytics/Module)
-endif()
-
 # VR plugins
 if (PLUGIN_VR_OCULUS)
 	add_subdirectory(VR/CryOculusVR/Module)
@@ -29,3 +25,5 @@ add_subdirectory(CryGamePlatform)
 add_subdirectory(CryUQS)
 
 add_subdirectory(CryHTTP/Module)
+add_subdirectory(CryImgui/Module)
+add_subdirectory(CryNoesis/Module)
