@@ -218,7 +218,7 @@ typedef vectorn_tpl<real> vectorn;
     template<> int vectorn_tpl<ftype>::vecn_pool_pos=0;                     \
 		template<> int vectorn_tpl<ftype>::vecn_pool_size=sz;
 #else
-	#define DECLARE_VECTORN_POOL(ftype,sz) template<> ftype vectorn_tpl<ftype>::vecn_pool[sz]; template<> int vectorn_tpl<ftype>::vecn_pool_pos=0; \
+	#define DECLARE_VECTORN_POOL(ftype,sz) template<> ftype vectorn_tpl<ftype>::vecn_pool[sz] = {}; template<> int vectorn_tpl<ftype>::vecn_pool_pos=0; \
 		template<> int vectorn_tpl<ftype>::vecn_pool_size=sz;
 #endif
 

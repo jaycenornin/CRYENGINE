@@ -1,17 +1,7 @@
 #pragma once
-
-
-
-
-
-
-
+#include "CryRenderer/Pipeline/IStageResources.h"
 
 namespace Cry
-
-
-
-
 {
 	namespace Renderer
 	{
@@ -23,14 +13,14 @@ namespace Cry
 
 			virtual int						RegisterConstantName(const char* name)  override final;
 
-			virtual InputLayoutHandle		RegisterLayout(const SInputElementDescription* pDescriptions, size_t count) override final;
-			virtual InputLayoutHandle		RegisterLayout(TArray<SInputElementDescription>& layoutDesc)  override final;
+			virtual InputLayoutHandle		RegisterLayout(const Shader::SInputElementDescription* pDescriptions, size_t count) override final;
+			virtual InputLayoutHandle		RegisterLayout(TArray<Shader::SInputElementDescription>& layoutDesc)  override final;
 			virtual void					RegisterSamplers()  override final {};
 
 			virtual uintptr_t				CreateConstantBuffer(size_t sizeInBytes) override final;
 			virtual void					FreeConstantBuffer(uintptr_t buffer) override final;
 
-			virtual uintptr_t				CreateOrUpdateBuffer(const SBufferParams& params, uintptr_t bufferHandle = INVALID_BUFFER) override final;
+			virtual uintptr_t				CreateOrUpdateBuffer(const Buffers::SBufferParams& params, uintptr_t bufferHandle = Buffers::CINVALID_BUFFER) override final;
 			virtual void					FreeBuffer(uintptr_t bufferHandle) override final;;
 
 			virtual void*					BufferBeginWrite(uintptr_t handle) override final;

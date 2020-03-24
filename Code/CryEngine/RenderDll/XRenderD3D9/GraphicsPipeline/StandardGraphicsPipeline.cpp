@@ -52,7 +52,7 @@
 #include "Common/ReverseDepth.h"
 #include "D3D_SVO.h"
 
-#include "Common/CustomPass/CustomPassRenderer.h"
+#include "Common/Pipeline/CustomPipeline.h"
 
 CStandardGraphicsPipeline::CStandardGraphicsPipeline(const IRenderer::SGraphicsPipelineDescription& desc, const std::string& uniqueIdentifier, const SGraphicsPipelineKey key)
 	: CGraphicsPipeline(desc, uniqueIdentifier, key)
@@ -502,10 +502,17 @@ void CStandardGraphicsPipeline::Execute()
 	if (GetStage<CVolumetricFogStage>()->IsStageActive(m_renderingFlags))
 		GetStage<CVolumetricFogStage>()->ResetFrame();
 
-	if (auto pPassRenderer = Cry::Renderer::CustomPass::CCustomRenderer::GetCustomPassRenderer())
+	//TODO:insert custom stage
+	/*if (auto pPassRenderer = Cry::Renderer::CustomPass::CCustomRenderer::GetCustomPassRenderer())
 	{
 		pPassRenderer->ExecuteCustomPasses();
+	}*/
+	if (auto pCustomStage = Cry::Renderer::Pipeline::CCustomPipeline::Get())
+	{
+		pCustomStage->RT_Render(); //Add multiple calls to this later so we can sort stages
 	}
+
+
 
 	PROFILE_LABEL_POP("GRAPHICS_PIPELINE");
 

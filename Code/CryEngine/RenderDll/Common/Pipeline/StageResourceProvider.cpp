@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "StageResourceProvider.h"
 
+using namespace Cry::Renderer;
+
 _smart_ptr<ITexture> Cry::Renderer::CStageResourceProvider::CreateRenderTarget(const SRTCreationParams& renderTargetParams) const
 {
 	_smart_ptr <CTexture> pRenderTarget = nullptr;
@@ -61,20 +63,20 @@ int Cry::Renderer::CStageResourceProvider::RegisterConstantName(const char* name
 	return m_constantNameLookup.size() - 1;
 }
 
-InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(const SInputElementDescription* pDescriptions, size_t count)
+InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(const Shader::SInputElementDescription* pDescriptions, size_t count)
 {
 	if (!count)
 		return 0;
 
 	//Do an inbetween copy to be save
-	static_assert(sizeof(SInputElementDescription) == sizeof(D3D11_INPUT_ELEMENT_DESC), "Mismatch between input layout descriptions");
+	static_assert(sizeof(Shader::SInputElementDescription) == sizeof(D3D11_INPUT_ELEMENT_DESC), "Mismatch between input layout descriptions");
 	std::vector<D3D11_INPUT_ELEMENT_DESC> descs(count);
-	memcpy(&descs[0], pDescriptions, count * sizeof(SInputElementDescription));
+	memcpy(&descs[0], pDescriptions, count * sizeof(Shader::SInputElementDescription));
 
 	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data());
 }
 
-InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(TArray<SInputElementDescription>& layoutDesc)
+InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(TArray<Shader::SInputElementDescription>& layoutDesc)
 {
 	if (layoutDesc.empty())
 		return 0;
@@ -82,9 +84,9 @@ InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(TArray<S
 	//SDeviceObjectHelpers::THwShaderInfo shaderInfo;
 	//SDeviceObjectHelpers::GetShaderInstanceInfo(shaderInfo, pCShader, techniqueCRCLC, 0, 0, 0, nullptr, false);
 
-	static_assert(sizeof(SInputElementDescription) == sizeof(D3D11_INPUT_ELEMENT_DESC), "Mismatch between input layout descriptions");
+	static_assert(sizeof(Shader::SInputElementDescription) == sizeof(D3D11_INPUT_ELEMENT_DESC), "Mismatch between input layout descriptions");
 	std::vector<D3D11_INPUT_ELEMENT_DESC> descs(layoutDesc.size());
-	memcpy(&descs[0], &layoutDesc[0], layoutDesc.size() * sizeof(SInputElementDescription));
+	memcpy(&descs[0], &layoutDesc[0], layoutDesc.size() * sizeof(Shader::SInputElementDescription));
 
 	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data());
 }
@@ -100,20 +102,20 @@ uintptr_t Cry::Renderer::CStageResourceProvider::CreateConstantBuffer(size_t siz
 
 void Cry::Renderer::CStageResourceProvider::FreeConstantBuffer(uintptr_t buffer)
 {
-	if (buffer == INVALID_BUFFER)
+	if (buffer == Buffers::CINVALID_BUFFER)
 		return;
 
 	CConstantBuffer* pBuffer = reinterpret_cast<CConstantBuffer*>(buffer);
 	pBuffer->Release();
 }
 
-uintptr_t Cry::Renderer::CStageResourceProvider::CreateOrUpdateBuffer(const SBufferParams& params, uintptr_t bufferHandle /*= INVALID_BUFFER*/)
+uintptr_t Cry::Renderer::CStageResourceProvider::CreateOrUpdateBuffer(const Buffers::SBufferParams& params, uintptr_t bufferHandle /*= INVALID_BUFFER*/)
 {
 	if (!params.stride || !params.elementCount)
-		return INVALID_BUFFER;
+		return Buffers::CINVALID_BUFFER;
 
 	buffer_handle_t handle = bufferHandle;
-	if (handle == INVALID_BUFFER)
+	if (handle == Buffers::CINVALID_BUFFER)
 	{
 		handle = gcpRendD3D->m_DevBufMan.Create((BUFFER_BIND_TYPE)params.type, (BUFFER_USAGE)params.usage, params.elementCount * params.stride);
 	}
@@ -135,8 +137,8 @@ uintptr_t Cry::Renderer::CStageResourceProvider::CreateOrUpdateBuffer(const SBuf
 		gcpRendD3D->m_DevBufMan.UpdateBuffer(handle, params.pData, params.elementCount * params.stride);
 	}
 
-	if (handle == INVALID_BUFFER)
-		return INVALID_BUFFER;
+	if (handle == Buffers::CINVALID_BUFFER)
+		return Buffers::CINVALID_BUFFER;
 
 	return handle;
 }
@@ -148,7 +150,7 @@ void Cry::Renderer::CStageResourceProvider::FreeBuffer(uintptr_t bufferHandle)
 
 void* Cry::Renderer::CStageResourceProvider::BufferBeginWrite(uintptr_t handle)
 {
-	if (handle == INVALID_BUFFER)
+	if (handle == Buffers::CINVALID_BUFFER)
 		return nullptr;
 
 	return gcpRendD3D->m_DevBufMan.BeginWrite(handle);
@@ -156,7 +158,7 @@ void* Cry::Renderer::CStageResourceProvider::BufferBeginWrite(uintptr_t handle)
 
 void Cry::Renderer::CStageResourceProvider::BufferEndWrite(uintptr_t handle)
 {
-	if (handle == INVALID_BUFFER)
+	if (handle == Buffers::CINVALID_BUFFER)
 		return;
 
 	gcpRendD3D->m_DevBufMan.EndReadWrite(handle);
