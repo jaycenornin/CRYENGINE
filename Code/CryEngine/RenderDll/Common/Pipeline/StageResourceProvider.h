@@ -17,7 +17,7 @@ namespace Cry
 			virtual InputLayoutHandle		RegisterLayout(TArray<Shader::SInputElementDescription>& layoutDesc)  override final;
 			virtual void					RegisterSamplers()  override final {};
 
-			virtual uintptr_t				CreateConstantBuffer(size_t sizeInBytes) override final;
+			virtual uintptr_t				CreateConstantBuffer(size_t sizeInBytes, const char* dbgName = nullptr) override final;
 			virtual void					FreeConstantBuffer(uintptr_t buffer) override final;
 
 			virtual uintptr_t				CreateOrUpdateBuffer(const Buffers::SBufferParams& params, uintptr_t bufferHandle = Buffers::CINVALID_BUFFER) override final;

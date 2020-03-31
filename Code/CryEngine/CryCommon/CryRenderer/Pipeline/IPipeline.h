@@ -90,10 +90,10 @@ namespace Cry
 				Should a render callback be provided it will be automatically invoked each frame and the per frame resources cleaned up.
 				Should no render callback be provided, the user needs to manually add a render entry and call RT_ResetDynamicStageData after each callback.
 				*/
-				virtual void CreateRenderStage(const char* name, uint32 hash, SStageCallbacks renderCallback) = 0;
+				virtual void CreateRenderStage(const char* name, uint32 hash, SStageCallbacks renderCallback, uint32 maxConstantBufferSize = 0) = 0;
 		
 				//Creates a new render stage on the render thread.
-				virtual _smart_ptr<SStageBase> RT_CreateRenderStage(string name, uint32 hash, SStageCallbacks renderCallback) = 0;
+				virtual _smart_ptr<SStageBase> RT_CreateRenderStage(string name, uint32 hash, SStageCallbacks renderCallback, uint32 maxConstantBufferSize = 0) = 0;
 
 				//Removes a render stage via its hash
 				virtual void RT_RemoveStage(uint32 hash) = 0;

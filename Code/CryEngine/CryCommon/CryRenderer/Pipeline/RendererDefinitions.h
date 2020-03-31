@@ -186,11 +186,14 @@ namespace Cry
 			enum class EInputElementFormat
 			{
 				FORMAT_R32G32B32A32_FLOAT = 2,
+				R16G16B16A16_UNORM = 11,
 				FORMAT_R32G32_FLOAT = 16,
 				R8G8B8A8_UNORM = 28,
 				R8G8B8A8_UINT = 30,
 				R32_FLOAT = 41
 			};
+
+			constexpr uint32 APPEND_ALIGNED_ELEMENT = 0xffffffff;
 
 			enum class EInputSlotClassification
 			{

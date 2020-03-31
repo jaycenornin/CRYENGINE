@@ -19,7 +19,7 @@ namespace Cry
 					BeginPass(pass);
 				}
 
-				static void AddPrimitive(CPrimitiveRenderPass& pass, const Pipeline::Pass::SPrimitiveParams& primitiveParams, CRenderPrimitive& primitive);
+				static void AddPrimitive(CPrimitiveRenderPass& pass, const Pipeline::Pass::SPrimitiveParams& primitiveParams, CRenderPrimitive& primitive, SStageDataStorage& storage);
 
 				static void DrawPrimitive(CRenderPrimitive& primitive, const Pipeline::Pass::SDrawParams& params);
 
@@ -29,11 +29,13 @@ namespace Cry
 
 				static void SetPrimitiveShaderParams(CRenderPrimitive& primitive, const Pipeline::Pass::SShaderParams& params);
 
-				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SConstantParams& params, CPrimitiveRenderPass& pass, bool bPreCompile);
+				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SConstantParams& params, CPrimitiveRenderPass& pass, bool bPreCompile, SStageDataStorage& storage);
 
-				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SNamedConstantsParams& params, CPrimitiveRenderPass& pass);
+				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SNamedConstantsParams& params, CPrimitiveRenderPass& pass, SStageDataStorage& storage);
 
-				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SInlineConstantParams& params, CPrimitiveRenderPass& pass);
+				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SInlineConstantParams& params, CPrimitiveRenderPass& pass, SStageDataStorage& storage);
+
+				static void SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SInlineMultiValueConstantParams& params, CPrimitiveRenderPass& pass, SStageDataStorage& storage);
 			}
 		}
 	}

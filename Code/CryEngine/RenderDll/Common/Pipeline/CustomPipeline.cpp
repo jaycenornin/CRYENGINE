@@ -10,6 +10,73 @@ using namespace Cry::Renderer::Pipeline;
 static CCustomPipeline* g_pStageRenderer = nullptr;
 static ICustomPipelinePtr g_pIPipelineUnknown;
 
+
+
+CPrimitiveRenderPass* CPassHeap::GetUsable()
+{
+	if (m_freeList.begin() == m_freeList.end())
+		m_useList.emplace_front();
+	else
+		m_useList.splice_after(m_useList.before_begin(), m_freeList, m_freeList.before_begin());
+
+	return &*m_useList.begin();
+}
+
+void CPassHeap::FreeUsable()
+{
+	for (auto& pass : m_useList)
+		pass.Reset();
+	
+	m_freeList.splice_after(m_freeList.before_begin(), m_useList);
+}
+
+CRenderPrimitive* CPrimitiveHeap::GetUsable()
+{
+	if (m_freeList.begin() == m_freeList.end())
+		m_useList.emplace_front();
+	else
+		m_useList.splice_after(m_useList.before_begin(), m_freeList, m_freeList.before_begin());
+
+	return &*m_useList.begin();
+}
+
+void CPrimitiveHeap::FreeUsable()
+{
+	for (auto& prim : m_useList)
+		prim.Reset();
+
+	m_freeList.splice_after(m_freeList.before_begin(), m_useList);
+}
+
+CConstantBuffer* CConstantBufferHeap::GetUsable()
+{
+	assert(maxBufferSize != 0, "[Custom Pipeline] Constant buffer requested but no size specified");
+
+	CryAutoCriticalSectionNoRecursive threadSafe(m_lock);
+
+	if (m_freeList.begin() == m_freeList.end())
+		m_useList.emplace_front(gRenDev->m_DevBufMan.CreateConstantBuffer(maxBufferSize));
+	else
+		m_useList.splice_after(m_useList.before_begin(), m_freeList, m_freeList.before_begin());
+
+	return *m_useList.begin();
+}
+
+void CConstantBufferHeap::FreeUsable()
+{
+	CryAutoCriticalSectionNoRecursive threadSafe(m_lock);
+
+	m_freeList.splice_after(m_freeList.before_begin(), m_useList);
+}
+
+void CConstantBufferHeap::SetSize(uint32 maxBufferSize)
+{
+	m_freeList.clear();
+	m_useList.clear();
+
+	maxBufferSize = maxBufferSize;
+}
+
 CCustomPipeline* CCustomPipeline::Get()
 {
 	return g_pStageRenderer;
@@ -60,16 +127,16 @@ void CCustomPipeline::ExecuteRenderThreadCommand(TRenderThreadCommand command)
 	gcpRendD3D->ExecuteRenderThreadCommand(std::forward<TRenderThreadCommand>(command));
 }
 
-void CCustomPipeline::CreateRenderStage(const char* name, uint32 hash, SStageCallbacks callbacks)
+void CCustomPipeline::CreateRenderStage(const char* name, uint32 hash, SStageCallbacks callbacks, uint32 maxConstantBufferSize)
 {
 	assert(callbacks.creationCallback && callbacks.destructionCallback, "Failed to create render stage. No creation and destruction callbacks were provided.");
 
-	ExecuteRenderThreadCommand([pThis = this, cName = string(name), hash, cCb = std::move(callbacks)]() {
-		pThis->RT_CreateRenderStage(std::move(cName), hash, std::move(cCb));
+	ExecuteRenderThreadCommand([pThis = this, cName = string(name), hash, cCb = std::move(callbacks), size = maxConstantBufferSize]() {
+		pThis->RT_CreateRenderStage(std::move(cName), hash, std::move(cCb), size);
 	});
 }
 
-_smart_ptr<SStageBase> CCustomPipeline::RT_CreateRenderStage(string name, uint32 hash, SStageCallbacks renderCallback)
+_smart_ptr<SStageBase> CCustomPipeline::RT_CreateRenderStage(string name, uint32 hash, SStageCallbacks renderCallback, uint32 maxConstantBufferSize)
 {
 	auto stageEntry = std::find_if(m_stageList.begin(), m_stageList.end(), [hash](auto& entry) { return hash == entry->hash; });
 	if (stageEntry != m_stageList.end())
@@ -77,6 +144,7 @@ _smart_ptr<SStageBase> CCustomPipeline::RT_CreateRenderStage(string name, uint32
 
 	_smart_ptr<SStage> pStage = new SStage(std::move(name), hash);
 	pStage->callbacks = std::move(renderCallback);
+	pStage->dataStorage.constantBuffers.SetSize(maxConstantBufferSize);
 
 	auto stage = pStage.get();
 
@@ -118,6 +186,9 @@ void CCustomPipeline::RT_Render()
 		StageRenderArguments args{};
 		renderEntry.renderCall(args);
 	}
+	//Clear stage data storage
+	for (auto stage : m_stageList)
+		RT_ResetDynamicStageData(*stage);
 }
 
 void CCustomPipeline::RT_AddRenderEntry(const char* name, uint32 hash, TStageRenderCallback renderCallback, int sort /*= 0*/)
@@ -140,11 +211,11 @@ uint32 CCustomPipeline::RT_AllocatePass(SStageBase& stageBase, const Pass::SPass
 {
 	SStage& stage = static_cast<SStage&>(stageBase);
 
-	auto pPass = std::make_unique<CPrimitiveRenderPass>();
-	pPass->SetLabel(params.passName);
-	RenderPass::UpdatePassData(*pPass, params);
-
 	stage.dataStorage.registeredPasses.emplace_back();
+	auto& pass = stage.dataStorage.registeredPasses.back();
+
+	pass.SetLabel(params.passName);
+	RenderPass::UpdatePassData(pass, params);
 
 	return stage.dataStorage.registeredPasses.size() - 1;
 }
@@ -170,7 +241,7 @@ void CCustomPipeline::RT_BeginNewPass(SStageBase& stageBase, const Pass::SPassPa
 	if (stage.pActivePass)
 		return;
 
-	stage.pActivePass = stage.dataStorage.dynamicPasses.GetUnused();
+	stage.pActivePass = stage.dataStorage.dynamicPasses.GetUsable();
 	RenderPass::UpdatePassData(*stage.pActivePass, params);
 	RenderPass::BeginPass(*stage.pActivePass);
 }
@@ -181,7 +252,7 @@ void CCustomPipeline::RT_BeginNewPass(SStageBase& stageBase)
 	if (stage.pActivePass)
 		return;
 
-	stage.pActivePass = stage.dataStorage.dynamicPasses.GetUnused();
+	stage.pActivePass = stage.dataStorage.dynamicPasses.GetUsable();
 	RenderPass::BeginPass(*stage.pActivePass);
 }
 
@@ -205,8 +276,8 @@ void CCustomPipeline::RT_AddPrimitives(SStageBase& stageBase, const TArray<Pass:
 
 	for (auto& param : params)
 	{
-		auto pRimitive = stage.dataStorage.primitives.GetUnused();
-		RenderPass::AddPrimitive(*stage.pActivePass, param, *pRimitive);
+		auto pRimitive = stage.dataStorage.primitives.GetUsable();
+		RenderPass::AddPrimitive(*stage.pActivePass, param, *pRimitive, stage.dataStorage);
 	}
 }
 
@@ -216,11 +287,11 @@ void CCustomPipeline::RT_AddPrimitive(SStageBase& stageBase, const Pass::SPrimit
 	if (!stage.pActivePass)
 		return;
 
-	auto pRimitive = stage.dataStorage.primitives.GetUnused();
+	auto pRimitive = stage.dataStorage.primitives.GetUsable();
 	if (!pRimitive)
 		return;
 
-	RenderPass::AddPrimitive(*stage.pActivePass, param, *pRimitive);
+	RenderPass::AddPrimitive(*stage.pActivePass, param, *pRimitive, stage.dataStorage);
 }
 
 void CCustomPipeline::RT_EndPass(SStageBase& stageBase, bool bExecute)
@@ -228,7 +299,7 @@ void CCustomPipeline::RT_EndPass(SStageBase& stageBase, bool bExecute)
 	SStage& stage = static_cast<SStage&>(stageBase);
 	if (!stage.pActivePass)
 		return;
-
+	
 	if (bExecute)
 		stage.pActivePass->Execute();
 	
@@ -249,15 +320,15 @@ void CCustomPipeline::RenderStage(SStage& stage)
 {
 	StageRenderArguments args{};
 	stage.callbacks.renderCallback(args);
-	RT_ResetDynamicStageData(stage);
 }
 
 void CCustomPipeline::RT_ResetDynamicStageData(SStageBase& stageBase)
 {
 	auto& stage = static_cast<SStage&>(stageBase);
 
-	stage.dataStorage.dynamicPasses.FreeUsed();
-	stage.dataStorage.primitives.FreeUsed();
+	stage.dataStorage.dynamicPasses.FreeUsable();
+	stage.dataStorage.primitives.FreeUsable();
+	stage.dataStorage.constantBuffers.FreeUsable();
 }
 
 

@@ -31,7 +31,7 @@ void RenderPass::BeginPass(CPrimitiveRenderPass& pass)
 	pass.BeginAddingPrimitives();
 }
 
-void RenderPass::AddPrimitive(CPrimitiveRenderPass& pass, const SPrimitiveParams& primitiveParams, CRenderPrimitive& primitive)
+void RenderPass::AddPrimitive(CPrimitiveRenderPass& pass, const SPrimitiveParams& primitiveParams, CRenderPrimitive& primitive, SStageDataStorage& storage)
 {
 	//Convert shader reflection params
 	auto flags = (CRenderPrimitive::EPrimitiveFlags)primitiveParams.shaderParams.flags;
@@ -56,9 +56,9 @@ void RenderPass::AddPrimitive(CPrimitiveRenderPass& pass, const SPrimitiveParams
 	SetPrimitiveShaderParams(primitive, primitiveParams.shaderParams);
 
 	//Add and compile constants for the primitive
-	SetShaderConstants(primitive, primitiveParams.constantParameters, pass, true);
+	SetShaderConstants(primitive, primitiveParams.constantParameters, pass, true, storage);
 	if (primitive.Compile(pass) != CRenderPrimitive::EDirtyFlags::eDirty_None)
-		SetShaderConstants(primitive, primitiveParams.constantParameters, pass, false);
+		SetShaderConstants(primitive, primitiveParams.constantParameters, pass, false, storage);
 
 	pass.AddPrimitive(&primitive);
 }
@@ -124,14 +124,17 @@ void RenderPass::SetPrimitiveShaderParams(CRenderPrimitive& primitive, const SSh
 	}
 }
 
-void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SConstantParams& params, CPrimitiveRenderPass& pass, bool bPreCompile)
+void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SConstantParams& params, CPrimitiveRenderPass& pass, bool bPreCompile, SStageDataStorage& storage)
 {
 	if (bPreCompile)
 	{
 		switch (params.type)
 		{
 		case EConstantParamsType::ConstantBuffer:
-			SetShaderConstants(primitive, static_cast<const SInlineConstantParams&>(params), pass);
+			SetShaderConstants(primitive, static_cast<const SInlineConstantParams&>(params), pass, storage);
+			break;
+		case Pass::EConstantParamsType::MultiValueConstantBuffer:
+			SetShaderConstants(primitive, static_cast<const SInlineMultiValueConstantParams&>(params), pass, storage);
 			break;
 		default:
 			break;
@@ -143,7 +146,7 @@ void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SConstant
 		switch (params.type)
 		{
 		case EConstantParamsType::NamedConstants:
-			SetShaderConstants(primitive, static_cast<const SNamedConstantsParams&>(params), pass);
+			SetShaderConstants(primitive, static_cast<const SNamedConstantsParams&>(params), pass, storage);
 			break;
 		default:
 			break;
@@ -151,34 +154,49 @@ void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SConstant
 	}
 }
 
-void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SInlineConstantParams& params, CPrimitiveRenderPass& pass)
+void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SInlineConstantParams& params, CPrimitiveRenderPass& pass, SStageDataStorage& storage)
 {
 	//Todo: Find a better way to handle this. Requires to much manual setup and probably not efficient way to handle resources
 	for (auto& buffer : params.buffers)
 	{
 		CConstantBuffer* pBuffer = nullptr;
 		if (buffer.externalBuffer != Buffers::CINVALID_BUFFER)
-		{
 			pBuffer = reinterpret_cast<CConstantBuffer*>(buffer.externalBuffer);
-		}
 		else
-		{
-			//TODO : Add a way to dynamically allocate buffers from a heap
-			assert(false, "Can`t allocate constant buffer from heap yet. Pleas manage manually");
-			//pBuffer = m_pInstance->GetFreeConstantBuffer(buffer.dataSize); 
-			return;
-		}
+			pBuffer = storage.constantBuffers.GetUsable();
 
 		if (buffer.isDirty)
-		{
-			pBuffer->UpdateBuffer(buffer.newData, buffer.dataSize);
-		}
+			pBuffer->UpdateBuffer(buffer.value.newData, buffer.value.dataSize);
 
 		primitive.SetInlineConstantBuffer((EConstantBufferShaderSlot)buffer.slot, pBuffer, (EShaderStage)buffer.stages);
 	}
 }
 
-void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SNamedConstantsParams& params, CPrimitiveRenderPass& pass)
+void Cry::Renderer::Pipeline::RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const Pipeline::Pass::SInlineMultiValueConstantParams& params, CPrimitiveRenderPass& pass, SStageDataStorage& storage)
+{
+	for (auto& buffer : params.buffers)
+	{
+		CConstantBuffer* pBuffer = nullptr;
+		if (buffer.externalBuffer != Buffers::CINVALID_BUFFER)
+			pBuffer = reinterpret_cast<CConstantBuffer*>(buffer.externalBuffer);
+		else
+			pBuffer = storage.constantBuffers.GetUsable();
+
+		if (buffer.isDirty && !buffer.values.empty())
+		{
+			uint32 offset = 0;
+			for (auto &value : buffer.values)
+			{
+				pBuffer->UpdateBuffer(value.newData, value.dataSize, offset);
+				offset += value.dataSize;
+			}
+		}
+			
+		primitive.SetInlineConstantBuffer((EConstantBufferShaderSlot)buffer.slot, pBuffer, (EShaderStage)buffer.stages);
+	}
+}
+
+void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SNamedConstantsParams& params, CPrimitiveRenderPass& pass, SStageDataStorage& storage)
 {
 	auto& constantManager = primitive.GetConstantManager();
 	constantManager.BeginNamedConstantUpdate();
@@ -201,4 +219,6 @@ void RenderPass::SetShaderConstants(CRenderPrimitive& primitive, const SNamedCon
 
 	constantManager.EndNamedConstantUpdate(&pass.GetViewport(), gcpRendD3D->GetActiveGraphicsPipeline()->GetCurrentRenderView());
 }
+
+
 

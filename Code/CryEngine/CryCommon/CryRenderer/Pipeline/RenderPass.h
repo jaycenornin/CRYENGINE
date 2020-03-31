@@ -83,7 +83,8 @@ namespace Cry
 				{
 					NoConstants,
 					NamedConstants,
-					ConstantBuffer
+					ConstantBuffer,
+					MultiValueConstantBuffer
 				};
 
 				struct SConstantParams
@@ -118,15 +119,28 @@ namespace Cry
 					TArray<SNamedConstantArray>  namedConstantArrays;
 				};
 
-				struct SConstantBuffer
+				struct SConstantBufferBase
 				{
 					uintptr_t	externalBuffer = Buffers::CINVALID_BUFFER;
 					bool		isDirty = true;
-
-					uint8* newData = nullptr;
-					uint32  dataSize = 0;
 					Shader::EConstantSlot slot = Shader::EConstantSlot::PerDraw;
 					Shader::EShaderStages stages = Shader::EShaderStages::ssVertex | Shader::EShaderStages::ssPixel;
+				};
+
+				struct SBufferValuePtr
+				{
+					uint8* newData = nullptr;
+					uint32  dataSize = 0;
+				};
+
+				struct SConstantBuffer : SConstantBufferBase
+				{				
+					SBufferValuePtr value;
+				};
+
+				struct SMultiVlaueConstantBuffer : SConstantBufferBase
+				{
+					TArray<SBufferValuePtr> values;
 				};
 
 				struct SInlineConstantParams : public SConstantParams
@@ -137,6 +151,16 @@ namespace Cry
 
 					TArray<SConstantBuffer> buffers;
 				};
+
+				struct SInlineMultiValueConstantParams : public SConstantParams
+				{
+					SInlineMultiValueConstantParams() {
+						type = EConstantParamsType::MultiValueConstantBuffer;
+					}
+
+					TArray<SMultiVlaueConstantBuffer> buffers;
+				};
+
 
 				struct SPrimitiveParams
 				{

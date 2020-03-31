@@ -73,7 +73,7 @@ InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(const Sh
 	std::vector<D3D11_INPUT_ELEMENT_DESC> descs(count);
 	memcpy(&descs[0], pDescriptions, count * sizeof(Shader::SInputElementDescription));
 
-	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data());
+	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data(), false);
 }
 
 InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(TArray<Shader::SInputElementDescription>& layoutDesc)
@@ -88,13 +88,14 @@ InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(TArray<S
 	std::vector<D3D11_INPUT_ELEMENT_DESC> descs(layoutDesc.size());
 	memcpy(&descs[0], &layoutDesc[0], layoutDesc.size() * sizeof(Shader::SInputElementDescription));
 
-	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data());
+	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data(), false);
 }
 
-uintptr_t Cry::Renderer::CStageResourceProvider::CreateConstantBuffer(size_t sizeInBytes)
+uintptr_t Cry::Renderer::CStageResourceProvider::CreateConstantBuffer(size_t sizeInBytes, const char* dbgName)
 {
 	auto pConstantBuffer = gcpRendD3D->m_DevBufMan.CreateConstantBuffer(sizeInBytes);
-
+	if (pConstantBuffer && dbgName)
+		pConstantBuffer->SetDebugName(dbgName);
 	//We should have some common constant buffer interface instead to enable lifetime management. This is a hack.
 	auto pConstantBufferRaw = pConstantBuffer.ReleaseOwnership();
 	return reinterpret_cast<uintptr_t>(pConstantBufferRaw);

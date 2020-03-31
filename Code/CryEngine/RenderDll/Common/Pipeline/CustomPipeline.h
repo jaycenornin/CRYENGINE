@@ -31,13 +31,54 @@ namespace Cry
 				size_t m_usedCount;
 			};
 
+			class CPassHeap
+			{
+				using TList = std::forward_list<CPrimitiveRenderPass>;
+				TList m_freeList;
+				TList m_useList;
+
+			public:
+				CPrimitiveRenderPass* GetUsable();
+				void FreeUsable();
+			};
+
+			class CPrimitiveHeap
+			{
+				using TList = std::forward_list<CRenderPrimitive>;
+				TList m_freeList;
+				TList m_useList;
+
+			public:
+				CRenderPrimitive* GetUsable();
+				void FreeUsable();
+			};
+
+			class CConstantBufferHeap
+			{
+				using TList = std::forward_list<CConstantBufferPtr>;
+				TList m_freeList;
+				TList m_useList;
+
+				CryCriticalSectionNonRecursive m_lock;
+
+				uint32	maxBufferSize = 0;
+			public:
+				void SetSize(uint32	maxBufferSize);
+
+				CConstantBuffer* GetUsable();
+				void FreeUsable();
+			};
+
+
 			struct SStageDataStorage
 			{
-				CUsedHeap<CPrimitiveRenderPass>		dynamicPasses; //TOD: Find better underlying storage type
+				CPassHeap		dynamicPasses; //TOD: Find better underlying storage type
 
 				LocalDynArray<CPrimitiveRenderPass,2>	registeredPasses; //TOD: Find better underlying storage type
 
-				CUsedHeap<CRenderPrimitive>			primitives; //TODO: This can probably be stored in a more clever way
+				CPrimitiveHeap		primitives; //TODO: This can probably be stored in a more clever way
+
+				CConstantBufferHeap constantBuffers;
 			};
 
 			struct SStage : public SStageBase
@@ -104,10 +145,10 @@ namespace Cry
 
 
 
-				virtual void CreateRenderStage(const char* name, uint32 hash, SStageCallbacks renderCallback) override;
+				virtual void CreateRenderStage(const char* name, uint32 hash, SStageCallbacks renderCallback, uint32 maxConstantBufferSize) override;
 
 				//Render Thread
-				virtual _smart_ptr<SStageBase> RT_CreateRenderStage(string name, uint32 hash, SStageCallbacks renderCallback) override;
+				virtual _smart_ptr<SStageBase> RT_CreateRenderStage(string name, uint32 hash, SStageCallbacks renderCallback, uint32 maxConstantBufferSize) override;
 				virtual void RT_RemoveStage(uint32 hash) override;
 
 				virtual void RT_AddRenderEntry(const char* name, uint32 hash, TStageRenderCallback renderCallback, int sort = 0) override;
