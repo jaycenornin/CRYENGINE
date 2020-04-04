@@ -124,7 +124,7 @@ public:
 	void                          SetBuffer(uint32 shaderSlot, CGpuBuffer* pBuffer, ResourceViewHandle resourceViewID = EDefaultResourceViews::Default, EShaderStage shaderStages = EShaderStage_Pixel);
 	void                          SetInlineConstantBuffer(EConstantBufferShaderSlot shaderSlot, CConstantBuffer* pBuffer, EShaderStage shaderStages = EShaderStage_Pixel);
 	void                          SetPrimitiveType(EPrimitiveType primitiveType);
-	void                          SetCustomVertexStream(buffer_handle_t vertexBuffer, InputLayoutHandle vertexFormat, uint32 vertexStride);
+	void                          SetCustomVertexStream(buffer_handle_t vertexBuffer, InputLayoutHandle vertexFormat, uint32 vertexStride, uint32 vertexByteOffset = 0);
 	void                          SetCustomIndexStream(buffer_handle_t indexBuffer, RenderIndexType indexType);
 	void                          SetDrawInfo(ERenderPrimitiveType primType, uint32 vertexBaseOffset, uint32 vertexOrIndexOffset, uint32 vertexOrIndexCount, uint32 instanceCount = 1);
 	void                          SetDrawTopology(ERenderPrimitiveType primType);
@@ -341,10 +341,11 @@ inline void CRenderPrimitive::SetPrimitiveType(EPrimitiveType primitiveType)
 	ASSIGN_VALUE(m_primitiveType, primitiveType, eDirty_Geometry);
 }
 
-inline void CRenderPrimitive::SetCustomVertexStream(buffer_handle_t vertexBuffer, InputLayoutHandle vertexFormat, uint32 vertexStride)
+inline void CRenderPrimitive::SetCustomVertexStream(buffer_handle_t vertexBuffer, InputLayoutHandle vertexFormat, uint32 vertexStride, uint32 vertexByteOffset)
 {
 	ASSIGN_VALUE(m_primitiveGeometry.vertexStream.hStream, vertexBuffer, eDirty_Geometry);
 	ASSIGN_VALUE(m_primitiveGeometry.vertexStream.nStride, vertexStride, eDirty_Geometry);
+	ASSIGN_VALUE(m_primitiveGeometry.vertexStream.nByteOffset, vertexByteOffset, eDirty_Geometry);
 	ASSIGN_VALUE(m_primitiveGeometry.vertexFormat, vertexFormat, eDirty_Geometry | eDirty_Topology);
 	ASSIGN_VALUE(m_primitiveType, ePrim_Custom, eDirty_Geometry);
 }

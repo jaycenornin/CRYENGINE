@@ -2,6 +2,8 @@
 #include "CustomPipeline.h"
 #include "PassRenderer.h"
 #include "StageResourceProvider.h"
+#include "../RenderView.h"
+#include "GraphicsPipeline/Common/GraphicsPipeline.h"
 
 using namespace Cry;
 using namespace Cry::Renderer;
@@ -331,6 +333,24 @@ void CCustomPipeline::RT_ResetDynamicStageData(SStageBase& stageBase)
 	stage.dataStorage.constantBuffers.FreeUsable();
 }
 
+void Cry::Renderer::Pipeline::CCustomPipeline::RT_StretchToColorTarget(ITexture* pSrc, uint32 stateMask)
+{
+	if (!pSrc)
+		return;
+
+	auto pPipeline = &*gcpRendD3D->GetActiveGraphicsPipeline();
+
+	if (!m_compositionPass)
+		m_compositionPass = std::make_unique<CStretchRectPass>(pPipeline);
+
+	auto pColorTarget = pPipeline->GetCurrentRenderView()->GetColorTarget();
+
+
+	if (!pColorTarget)
+		return;
+
+	m_compositionPass->Execute(static_cast<CTexture*>(pSrc), pColorTarget, true, stateMask);
+}
 
 
 CRYREGISTER_SINGLETON_CLASS(Cry::Renderer::Pipeline::CCustomPipeline);

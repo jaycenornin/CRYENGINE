@@ -63,6 +63,11 @@ int Cry::Renderer::CStageResourceProvider::RegisterConstantName(const char* name
 	return m_constantNameLookup.size() - 1;
 }
 
+void Cry::Renderer::CStageResourceProvider::UpdateTextureRegion(ITexture* pTexture, const IRenderer::SUpdateRect* rects, size_t numRects, const uint8* pSrcData, size_t rowPitch, ETEX_Format eSrcFormat)
+{
+
+}
+
 InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(const Shader::SInputElementDescription* pDescriptions, size_t count)
 {
 	if (!count)
@@ -74,6 +79,18 @@ InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(const Sh
 	memcpy(&descs[0], pDescriptions, count * sizeof(Shader::SInputElementDescription));
 
 	return CDeviceObjectFactory::CreateCustomVertexFormat(descs.size(), descs.data(), false);
+}
+
+SamplerStateHandle Cry::Renderer::CStageResourceProvider::RegisterSamplers(const Renderer::Sampler::SState& sampler)
+{
+	SSamplerState samplerState;
+	samplerState.SetClampMode((ESamplerAddressMode)sampler.addressU, (ESamplerAddressMode)sampler.addressV, (ESamplerAddressMode)sampler.addressW);
+	samplerState.m_nMinFilter = sampler.min;
+	samplerState.m_nMagFilter = sampler.mag;
+	samplerState.m_nMipFilter = sampler.mip;
+	samplerState.m_bNeverCompare = sampler.bNeverKeep;
+
+	return CDeviceObjectFactory::GetOrCreateSamplerStateHandle(samplerState);
 }
 
 InputLayoutHandle Cry::Renderer::CStageResourceProvider::RegisterLayout(TArray<Shader::SInputElementDescription>& layoutDesc)
@@ -163,4 +180,16 @@ void Cry::Renderer::CStageResourceProvider::BufferEndWrite(uintptr_t handle)
 		return;
 
 	gcpRendD3D->m_DevBufMan.EndReadWrite(handle);
+}
+
+ITexture* Cry::Renderer::CStageResourceProvider::GetCurrentColorTarget()
+{
+	auto pPipeline = &*gcpRendD3D->GetActiveGraphicsPipeline();
+	return  pPipeline->GetCurrentRenderView()->GetColorTarget();
+}
+
+ITexture* Cry::Renderer::CStageResourceProvider::GetCurrentDepthTarget()
+{
+	auto pPipeline = &*gcpRendD3D->GetActiveGraphicsPipeline();
+	return pPipeline->GetCurrentRenderView()->GetDepthTarget();
 }

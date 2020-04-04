@@ -41,9 +41,11 @@ namespace Cry
 
 			virtual int						RegisterConstantName(const char* name) = 0;
 
+			virtual void					UpdateTextureRegion(ITexture* pTexture, const IRenderer::SUpdateRect* rects, size_t numRects, const uint8* pSrcData, size_t rowPitch, ETEX_Format eSrcFormat) = 0;
+
 			virtual InputLayoutHandle		RegisterLayout(const Shader::SInputElementDescription* pDescriptions, size_t count) = 0;
 			virtual InputLayoutHandle		RegisterLayout(TArray<Shader::SInputElementDescription>& layoutDesc) = 0;
-			virtual void					RegisterSamplers() = 0;
+			virtual SamplerStateHandle		RegisterSamplers(const Renderer::Sampler::SState& sampler) = 0;
 
 			virtual uintptr_t				CreateConstantBuffer(size_t sizeInBytes, const char* dbgName = nullptr) = 0;
 			virtual void					FreeConstantBuffer(uintptr_t buffer) = 0;
@@ -53,6 +55,9 @@ namespace Cry
 
 			virtual void*					BufferBeginWrite(uintptr_t handle) = 0;
 			virtual void					BufferEndWrite(uintptr_t handle) = 0;
+
+			virtual ITexture* GetCurrentColorTarget() = 0;
+			virtual ITexture* GetCurrentDepthTarget() = 0;
 		};
 	}
 }

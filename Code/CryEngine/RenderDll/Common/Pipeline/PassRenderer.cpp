@@ -101,7 +101,7 @@ void RenderPass::DrawPrimitive(CRenderPrimitive& primitive, const SDrawParamsRen
 
 void RenderPass::DrawPrimitive(CRenderPrimitive& primitive, const SDrawParamsExternalBuffers& params)
 {
-	primitive.SetCustomVertexStream(params.inputBuffer, params.inputLayout, params.inputStride);
+	primitive.SetCustomVertexStream(params.inputBuffer, params.inputLayout, params.inputStride, params.inputByteOffset);
 	primitive.SetCustomIndexStream(params.idxBuffer, params.isIDX32 ? Index32 : Index16);
 
 	primitive.SetDrawInfo((ERenderPrimitiveType)params.drawType, params.inputOffset, params.idxOffset, params.idxSize);

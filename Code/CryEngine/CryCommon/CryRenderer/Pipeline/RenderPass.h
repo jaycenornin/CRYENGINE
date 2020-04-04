@@ -38,6 +38,7 @@ namespace Cry
 
 					size_t				inputOffset = 0;
 					size_t				idxOffset = 0;
+					uint32				inputByteOffset = 0;
 				};
 
 				struct SDrawParamsRenderMesh : public SDrawParams

@@ -7,6 +7,54 @@ namespace Cry
 {
 	namespace Renderer
 	{
+		
+			enum class EPassClearMask : uint8
+			{
+				None	=	0,
+				Stencil =	1u << 1,
+				Color	=	1u << 2
+			};
+			CRY_CREATE_ENUM_FLAG_OPERATORS(EPassClearMask);
+		
+		namespace Sampler
+		{
+			enum class EReduction : uint8
+			{
+				Standard = 0,
+				Comparison = 1,
+				Minimum = 2,
+				Maximum = 3,
+			};
+
+			enum class EFilter : uint8
+			{
+				Point = 0,
+				Linear = 1,
+			};
+
+			enum class EAddressMode : uint8
+			{
+				Wrap = 0,
+				Mirror = 1,
+				Clamp = 2,
+				Border = 3
+			};
+
+
+			struct SState
+			{
+				uint8 min;
+				uint8 mag;
+				uint8 mip;
+
+				EAddressMode addressU;
+				EAddressMode addressV;
+				EAddressMode addressW;
+
+				bool bNeverKeep = false;
+			};
+		}
+
 		namespace Buffers
 		{
 			constexpr uint32 CINVALID_BUFFER = ~0u;
@@ -18,6 +66,7 @@ namespace Cry
 				Constant,
 				Count
 			};
+
 
 			enum class EBufferUsage : unsigned char
 			{
@@ -104,30 +153,44 @@ namespace Cry
 			constexpr uint32 CFSS_STENCPASS_SHIFT = 12;
 			constexpr uint32 CFSS_STENCPASS_MASK = (0x7 << CFSS_STENCPASS_SHIFT);
 
-			constexpr auto CSTENC_FUNC(uint32 op) {
-				return op;
+			template<typename T>
+			constexpr auto CSTENC_FUNC(T op) {
+				return (uint32)op;
 			};
 
-			constexpr auto CSTENC_CCW_FUNC(uint32 op) {
-				return (op << CFSS_CCW_SHIFT);
+			template<typename T>
+			constexpr auto CSTENC_CCW_FUNC(T op) {
+				return ((uint32)op << (uint32)CFSS_CCW_SHIFT);
 			}
-			constexpr auto CSTENCOP_FAIL(uint32 op) {
-				return(op << CFSS_STENCFAIL_SHIFT);
+
+			template<typename T>
+			constexpr auto CSTENCOP_FAIL(T op) {
+				return((uint32)op << (uint32)CFSS_STENCFAIL_SHIFT);
 			}
-			constexpr auto CSTENCOP_ZFAIL(uint32 op) {
-				return(op << CFSS_STENCZFAIL_SHIFT);
+
+			template<typename T>
+			constexpr auto CSTENCOP_ZFAIL(T op) {
+				return((uint32)op << (uint32)CFSS_STENCZFAIL_SHIFT);
 			}
-			constexpr auto CSTENCOP_PASS(uint32 op) {
-				return(op << CFSS_STENCPASS_SHIFT);
+
+			template<typename T>
+			constexpr auto CSTENCOP_PASS(T op) {
+				return((uint32)op << (uint32)CFSS_STENCPASS_SHIFT);
 			}
-			constexpr auto CSTENCOP_CCW_FAIL(uint32 op) {
-				return(op << (CFSS_STENCFAIL_SHIFT + CFSS_CCW_SHIFT));
+
+			template<typename T>
+			constexpr auto CSTENCOP_CCW_FAIL(T op) {
+				return((uint32)op << ((uint32)CFSS_STENCFAIL_SHIFT + (uint32)CFSS_CCW_SHIFT));
 			}
-			constexpr auto CSTENCOP_CCW_ZFAIL(uint32 op) {
-				return(op << (CFSS_STENCZFAIL_SHIFT + CFSS_CCW_SHIFT));
+
+			template<typename T>
+			constexpr auto CSTENCOP_CCW_ZFAIL(T op) {
+				return((uint32)op << ((uint32)CFSS_STENCZFAIL_SHIFT + (uint32)CFSS_CCW_SHIFT));
 			}
-			constexpr auto CSTENCOP_CCW_PASS(uint32 op) {
-				return(op << (CFSS_STENCPASS_SHIFT + CFSS_CCW_SHIFT));
+
+			template<typename T>
+			constexpr auto CSTENCOP_CCW_PASS(T op) {
+				return((uint32)op << ((uint32)CFSS_STENCPASS_SHIFT + (uint32)CFSS_CCW_SHIFT));
 			}
 
 			//Stencil masks

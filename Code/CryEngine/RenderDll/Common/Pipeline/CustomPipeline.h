@@ -172,6 +172,8 @@ namespace Cry
 
 
 				virtual void RT_UpdatePassData(SStageBase& stageBase, uint32 passIDX, const Pass::SPassParams& params) override;
+
+				void RT_StretchToColorTarget(ITexture* pSrc, uint32 stateMask) override final;
 				//
 
 				void RT_Render();
@@ -185,6 +187,9 @@ namespace Cry
 				TRenderList m_renderList;
 
 				std::unique_ptr<Renderer::CStageResourceProvider> m_pResourceProvider;
+
+				std::unique_ptr<CStretchRectPass> m_copyBackPass;
+				std::unique_ptr<CStretchRectPass> m_compositionPass;
 			};
 		}
 	}

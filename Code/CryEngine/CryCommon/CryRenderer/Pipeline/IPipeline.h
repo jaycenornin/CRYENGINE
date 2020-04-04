@@ -127,6 +127,9 @@ namespace Cry
 
 				//Update the pass data for a preallocated render pass
 				virtual void RT_UpdatePassData(SStageBase& stageBase, uint32 passIDX, const Pass::SPassParams& params) = 0;
+
+				//TODO: Replace with proper api
+				virtual void RT_StretchToColorTarget(ITexture* pSrc, uint32 stateMask = 0) = 0;
 			};
 			DECLARE_SHARED_POINTERS(ICustomPipeline);
 
