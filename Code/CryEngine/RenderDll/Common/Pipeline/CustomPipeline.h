@@ -79,6 +79,8 @@ namespace Cry
 				CPrimitiveHeap		primitives; //TODO: This can probably be stored in a more clever way
 
 				CConstantBufferHeap constantBuffers;
+
+				std::unique_ptr<CClearRegionPass> clearRegionPass;
 			};
 
 			struct SStage : public SStageBase
@@ -174,6 +176,13 @@ namespace Cry
 				virtual void RT_UpdatePassData(SStageBase& stageBase, uint32 passIDX, const Pass::SPassParams& params) override;
 
 				void RT_StretchToColorTarget(ITexture* pSrc, uint32 stateMask) override final;
+
+
+				void RT_ClearDepthSurface(SStageBase& stageBase, const ITexture* pDepthTex, const int nFlags, const float cDepth, const uint8 cStencil) override final;
+				void RT_ClearDepthSurfaceRegion(SStageBase& stageBase, ITexture* pDepthTex, const int nFlags, const float cDepth, const uint8 cStencil, const uint numRects, const Vec4_tpl<ulong>* pRects) override final;
+
+				void RT_ClearSurface(SStageBase& stageBase, const ITexture* pColorTex, const ColorF& cClear) override final;
+				void RT_ClearSurfaceRegion(SStageBase& stageBase, ITexture* pSrc, const ColorF& cClear, const uint numRects, const Vec4_tpl<ulong>* pRects) override final;
 				//
 
 				void RT_Render();

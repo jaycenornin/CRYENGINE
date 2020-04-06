@@ -88,7 +88,7 @@ namespace Cry
 				Creates a new render stage. Once the stage is created on the render thread, the provided creation callback will be called.
 				Once the stage is destructed on the render thread, for example on shutdown, the shutdown callback will be called.
 				Should a render callback be provided it will be automatically invoked each frame and the per frame resources cleaned up.
-				Should no render callback be provided, the user needs to manually add a render entry and call RT_ResetDynamicStageData after each callback.
+				Should no render callback be provided, the user needs to manually add a render entry.
 				*/
 				virtual void CreateRenderStage(const char* name, uint32 hash, SStageCallbacks renderCallback, uint32 maxConstantBufferSize = 0) = 0;
 		
@@ -130,6 +130,13 @@ namespace Cry
 
 				//TODO: Replace with proper api
 				virtual void RT_StretchToColorTarget(ITexture* pSrc, uint32 stateMask = 0) = 0;
+
+				virtual void RT_ClearDepthSurface(SStageBase& stageBase, const ITexture* pDepthTex, const int nFlags, const float cDepth, const uint8 cStencil) = 0;
+				virtual void RT_ClearDepthSurfaceRegion(SStageBase& stageBase, ITexture* pDepthTex, const int nFlags, const float cDepth, const uint8 cStencil, const uint numRects, const Vec4_tpl<ulong>* pRects) = 0;
+
+				virtual void RT_ClearSurface(SStageBase& stageBase, const ITexture* pColorTex, const ColorF& cClear) = 0;
+				virtual void RT_ClearSurfaceRegion(SStageBase& stageBase, ITexture* pSrc, const ColorF& cClear, const uint numRects, const Vec4_tpl<ulong>* pRects) = 0;
+
 			};
 			DECLARE_SHARED_POINTERS(ICustomPipeline);
 

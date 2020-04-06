@@ -184,12 +184,13 @@ void Cry::Renderer::Pipeline::RenderPass::SetShaderConstants(CRenderPrimitive& p
 
 		if (buffer.isDirty && !buffer.values.empty())
 		{
-			uint32 offset = 0;
+			void* pData = pBuffer->BeginWrite();
 			for (auto &value : buffer.values)
 			{
-				pBuffer->UpdateBuffer(value.newData, value.dataSize, offset);
-				offset += value.dataSize;
+				memcpy(pData, value.newData, value.dataSize);
+				pData = (uint8*)pData + value.dataSize;
 			}
+			pBuffer->EndWrite(true);
 		}
 			
 		primitive.SetInlineConstantBuffer((EConstantBufferShaderSlot)buffer.slot, pBuffer, (EShaderStage)buffer.stages);

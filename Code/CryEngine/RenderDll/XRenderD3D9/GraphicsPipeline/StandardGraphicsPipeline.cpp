@@ -464,9 +464,6 @@ void CStandardGraphicsPipeline::Execute()
 			UpdatePerPassResourceSet();
 			UpdateRenderPasses();
 #endif
-
-			
-
 			// CRendererResources::s_ptexDisplayTarget -> CRenderOutput->m_pColorTarget (PostAA)
 			// Post effects disabled, copy diffuse to color target
 			if (GetStage<CPostEffectStage>()->IsStageActive(m_renderingFlags))
@@ -474,16 +471,16 @@ void CStandardGraphicsPipeline::Execute()
 			else
 				m_PostToFramePass->Execute(m_pipelineResources.m_pTexDisplayTargetDst, pRenderView->GetRenderOutput()->GetColorTarget());
 
-			if (auto pCustomStage = Cry::Renderer::Pipeline::CCustomPipeline::Get())
-			{
-				pCustomStage->RT_Render(); //Add multiple calls to this later so we can sort stages
-			}
+			
 		}
 			
 		// CRenderOutput->m_pColorTarget
 		GetStage<CSceneForwardStage>()->ExecuteAfterPostProcessLDR();
 
-			
+		if (auto pCustomStage = Cry::Renderer::Pipeline::CCustomPipeline::Get())
+		{
+			pCustomStage->RT_Render(); //Add multiple calls to this later so we can sort stages
+		}
 
 		if (GetStage<CSceneCustomStage>()->IsSelectionHighlightEnabled())
 		{

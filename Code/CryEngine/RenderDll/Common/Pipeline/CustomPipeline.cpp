@@ -147,6 +147,7 @@ _smart_ptr<SStageBase> CCustomPipeline::RT_CreateRenderStage(string name, uint32
 	_smart_ptr<SStage> pStage = new SStage(std::move(name), hash);
 	pStage->callbacks = std::move(renderCallback);
 	pStage->dataStorage.constantBuffers.SetSize(maxConstantBufferSize);
+	pStage->dataStorage.clearRegionPass = std::make_unique<CClearRegionPass>(&*gcpRendD3D->GetActiveGraphicsPipeline());
 
 	auto stage = pStage.get();
 
@@ -344,7 +345,7 @@ void Cry::Renderer::Pipeline::CCustomPipeline::RT_StretchToColorTarget(ITexture*
 		m_compositionPass = std::make_unique<CStretchRectPass>(pPipeline);
 
 	auto pColorTarget = pPipeline->GetCurrentRenderView()->GetColorTarget();
-
+	//auto pColorTarget = pPipeline->GetPipelineResources().m_pTexDisplayTargetDst;
 
 	if (!pColorTarget)
 		return;
@@ -352,5 +353,25 @@ void Cry::Renderer::Pipeline::CCustomPipeline::RT_StretchToColorTarget(ITexture*
 	m_compositionPass->Execute(static_cast<CTexture*>(pSrc), pColorTarget, true, stateMask);
 }
 
+
+void Cry::Renderer::Pipeline::CCustomPipeline::RT_ClearSurface(SStageBase& stageBase, const ITexture* pColorTex, const ColorF& cClear)
+{
+	CClearSurfacePass::Execute(static_cast<const CTexture*>(pColorTex), cClear);
+}
+
+void Cry::Renderer::Pipeline::CCustomPipeline::RT_ClearSurfaceRegion(SStageBase& stageBase, ITexture* pTex, const ColorF& cClear, const uint numRects, const Vec4_tpl<ulong>* pRects)
+{
+	static_cast<SStage&>(stageBase).dataStorage.clearRegionPass->Execute(static_cast<CTexture*>(pTex), cClear, numRects, (RECT*)pRects);
+}
+
+void Cry::Renderer::Pipeline::CCustomPipeline::RT_ClearDepthSurfaceRegion(SStageBase& stageBase, ITexture* pDepthTex, const int nFlags, const float cDepth, const uint8 cStencil, const uint numRects, const Vec4_tpl<ulong>* pRects)
+{
+	static_cast<SStage&>(stageBase).dataStorage.clearRegionPass->Execute(static_cast<CTexture*>(pDepthTex), nFlags, cDepth, cStencil, numRects, (RECT*)pRects);
+}
+
+void Cry::Renderer::Pipeline::CCustomPipeline::RT_ClearDepthSurface(SStageBase& stageBase, const ITexture* pDepthTex, const int nFlags, const float cDepth, const uint8 cStencil)
+{
+	CClearSurfacePass::Execute(static_cast<const CTexture*>(pDepthTex), nFlags, cDepth, cStencil);
+}
 
 CRYREGISTER_SINGLETON_CLASS(Cry::Renderer::Pipeline::CCustomPipeline);
