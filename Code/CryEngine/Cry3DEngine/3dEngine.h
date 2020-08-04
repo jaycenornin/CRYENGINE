@@ -1125,6 +1125,7 @@ public:
 	void                 ProcessOcean(const SRenderingPassInfo& passInfo);
 	void                 ReRegisterKilledVegetationInstances();
 	Vec3                 GetEntityRegisterPoint(IRenderNode* pEnt);
+	Vec3                 GetEntityRegisterPoint(IRenderNode* pEnt, const AABB& bbox);
 
 	void                 RenderRenderNode_ShadowPass(IShadowCaster* pRNode, const SRenderingPassInfo& passInfo);
 	void                 ProcessCVarsChange();

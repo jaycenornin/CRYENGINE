@@ -6604,7 +6604,7 @@ void C3DEngine::AsyncOctreeUpdate(IRenderNode* pEnt, uint32 nFrameID, bool bUnRe
 		if (GetCVars()->e_ObjFastRegister && pEnt->GetParent() && ((COctreeNode*)pEnt->GetParent())->IsRightNode(aabb, fObjRadiusSqr, pEnt->m_fWSMaxViewDist))
 		{
 			// same octree node
-			Vec3 vEntCenter = GetEntityRegisterPoint(pEnt);
+			Vec3 vEntCenter = GetEntityRegisterPoint(pEnt, aabb);
 
 			IVisArea* pVisArea = pEnt->GetEntityVisArea();
 			if (pVisArea && pVisArea->IsPointInsideVisArea(vEntCenter))
@@ -6781,6 +6781,12 @@ Vec3 C3DEngine::GetEntityRegisterPoint(IRenderNode* pEnt)
 {
 	const AABB aabb = pEnt->GetBBox();
 
+	return GetEntityRegisterPoint(pEnt, aabb);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+Vec3 C3DEngine::GetEntityRegisterPoint(IRenderNode* pEnt, const AABB& aabb)
+{
 	Vec3 vPoint;
 
 	if (pEnt->GetRndFlags() & ERF_REGISTER_BY_POSITION)
@@ -6794,11 +6800,11 @@ Vec3 C3DEngine::GetEntityRegisterPoint(IRenderNode* pEnt)
 			if (aabb.GetDistanceSqr(vPoint) > sqr(128.f))
 			{
 				Warning("I3DEngine::RegisterEntity: invalid entity position: Name: %s, Class: %s, Pos=(%.1f,%.1f,%.1f), BoxMin=(%.1f,%.1f,%.1f), BoxMax=(%.1f,%.1f,%.1f)",
-				        pEnt->GetName(), pEnt->GetEntityClassName(),
-				        pEnt->GetPos().x, pEnt->GetPos().y, pEnt->GetPos().z,
-				        pEnt->GetBBox().min.x, pEnt->GetBBox().min.y, pEnt->GetBBox().min.z,
-				        pEnt->GetBBox().max.x, pEnt->GetBBox().max.y, pEnt->GetBBox().max.z
-				        );
+					pEnt->GetName(), pEnt->GetEntityClassName(),
+					pEnt->GetPos().x, pEnt->GetPos().y, pEnt->GetPos().z,
+					pEnt->GetBBox().min.x, pEnt->GetBBox().min.y, pEnt->GetBBox().min.z,
+					pEnt->GetBBox().max.x, pEnt->GetBBox().max.y, pEnt->GetBBox().max.z
+				);
 			}
 			// clamp by bbox
 			vPoint.CheckMin(aabb.max);
@@ -6810,6 +6816,7 @@ Vec3 C3DEngine::GetEntityRegisterPoint(IRenderNode* pEnt)
 
 	return vPoint;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 Vec3 C3DEngine::GetSunDirNormalized() const
