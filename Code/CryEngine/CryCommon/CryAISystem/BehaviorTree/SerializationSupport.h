@@ -9,6 +9,7 @@
 #include <CrySerialization/SerializationUtils.h>
 
 #include <bitset>
+#include "../../CrySerialization/SerializationUtils.h"
 
 namespace BehaviorTree
 {

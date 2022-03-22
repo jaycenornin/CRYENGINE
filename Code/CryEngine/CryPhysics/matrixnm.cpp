@@ -3,6 +3,7 @@
 #include "StdAfx.h"
 
 #include "utils.h"
+#include "matrixnm.h"
 
 #if defined(USE_MATRIX_POOLS)
 	DECLARE_MTXNxM_POOL(float,512)
